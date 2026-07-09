@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1b1f24">
+<meta name="color-scheme" content="dark">
 <title>The Garage &middot; Dual Build Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +32,7 @@
   }
 
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%;}
   body{
     margin:0;
     background:var(--steel-900);
@@ -98,7 +100,7 @@
   .chip.hot b{color:#ffb3a6;}
 
   /* ---------- SECTION FRAME ---------- */
-  section{padding:46px 0;border-bottom:1px solid var(--line-steel);}
+  section{padding:34px 0;border-bottom:1px solid var(--line-steel);}
   .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:24px;flex-wrap:wrap;}
   .sec-num{
     font-family:"IBM Plex Mono",monospace;
@@ -134,7 +136,7 @@
   .money-fig{
     font-family:"Saira Condensed",sans-serif;font-weight:800;
     font-size:clamp(2.6rem,9vw,3.6rem);line-height:.9;color:var(--ink);
-    border-right:3px solid var(--redline);padding-right:20px;
+    border-bottom:3px solid var(--redline);padding-bottom:12px;
   }
   .money-fig small{display:block;font-size:.8rem;font-family:"IBM Plex Mono",monospace;
     letter-spacing:.12em;text-transform:uppercase;color:var(--redline-deep);font-weight:600;margin-top:6px;}
@@ -183,10 +185,12 @@
   .tag.fam{background:transparent;color:var(--ink-soft);}
 
   .spec-grid{
-    display:grid;grid-template-columns:repeat(5,1fr);
+    display:grid;grid-template-columns:repeat(2,1fr);
     border-bottom:1px solid var(--line);
   }
   .spec-cell{padding:12px 14px;border-right:1px solid var(--line);}
+  .spec-cell:nth-child(2n){border-right:none;}
+  .spec-cell:nth-child(n+3){border-top:1px solid var(--line);}
   .spec-cell:last-child{border-right:none;}
   .spec-cell .k{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.1em;
     text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:3px;}
@@ -229,7 +233,7 @@
   .mkt-legend b{color:var(--paper);font-weight:600;}
   .mkt-card{background:var(--paper);color:var(--ink);border-radius:5px;border:1px solid var(--paper-edge);
     box-shadow:var(--shadow);overflow:hidden;margin-bottom:14px;}
-  .mkt-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+  .mkt-head{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;gap:3px;
     padding:13px 16px;background:linear-gradient(180deg,#f1eee6,var(--paper));border-bottom:1px solid var(--line);}
   .mkt-head h4{font-family:"Saira Condensed",sans-serif;font-weight:700;text-transform:uppercase;
     font-size:1.18rem;letter-spacing:.01em;margin:0;}
@@ -239,11 +243,11 @@
   table.mkt{width:100%;border-collapse:collapse;}
   table.mkt th{font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.1em;
     text-transform:uppercase;color:var(--ink-faint);text-align:left;font-weight:600;
-    padding:9px 16px;background:var(--paper-dim);border-bottom:1px solid var(--line);}
+    padding:9px 11px;background:var(--paper-dim);border-bottom:1px solid var(--line);}
   table.mkt th.n,table.mkt td.n{text-align:right;}
-  table.mkt td{padding:10px 16px;border-bottom:1px solid var(--line);font-size:.92rem;color:var(--ink-soft);}
+  table.mkt td{padding:10px 11px;border-bottom:1px solid var(--line);font-size:.82rem;color:var(--ink-soft);}
   table.mkt tr:last-child td{border-bottom:none;}
-  table.mkt td.yr{font-family:"Saira Condensed",sans-serif;font-weight:700;color:var(--ink);font-size:1.08rem;letter-spacing:.02em;}
+  table.mkt td.yr{font-family:"Saira Condensed",sans-serif;font-weight:700;color:var(--ink);font-size:.98rem;letter-spacing:.02em;}
   table.mkt td.ask{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-weight:500;}
   table.mkt td.kbb{font-family:"IBM Plex Mono",monospace;}
   table.mkt td.mi{font-family:"IBM Plex Mono",monospace;}
@@ -293,10 +297,13 @@
   .cand-card.passed .cand-col li::before{background:var(--ink-faint);}
   .cand-offer.pass{background:#3b4046;}
   .cand-offer.pass .ol{color:#a8adb2;}
-  .cand-facts{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line);}
+  .cand-facts{display:grid;grid-template-columns:repeat(2,1fr);border-bottom:1px solid var(--line);}
   .cand-card.blank .cand-facts{border-bottom-color:var(--line-steel);}
   .cand-fact{padding:11px 14px;border-right:1px solid var(--line);}
   .cand-card.blank .cand-fact{border-right-color:var(--line-steel);}
+  .cand-fact:nth-child(2n){border-right:none;}
+  .cand-fact:nth-child(n+3){border-top:1px solid var(--line);}
+  .cand-card.blank .cand-fact:nth-child(n+3){border-top-color:var(--line-steel);}
   .cand-fact:last-child{border-right:none;}
   .cand-fact .k{font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;
     color:var(--ink-faint);display:block;margin-bottom:3px;}
@@ -314,9 +321,9 @@
     font-family:"IBM Plex Mono",monospace;font-size:.58rem;color:var(--ink);white-space:nowrap;font-weight:600;}
   .pos-foot{font-size:.86rem;color:#33373c;margin-top:14px;}
   .pos-foot b{color:var(--ink);}
-  .cand-cols{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line);}
+  .cand-cols{display:grid;grid-template-columns:1fr;border-bottom:1px solid var(--line);}
   .cand-col{padding:14px 16px;}
-  .cand-col:first-child{border-right:1px solid var(--line);}
+  .cand-col:first-child{border-bottom:1px solid var(--line);}
   .cand-col h5{font-family:"Saira Condensed",sans-serif;font-weight:700;text-transform:uppercase;font-size:.92rem;
     letter-spacing:.04em;margin:0 0 8px;color:var(--ink);}
   .cand-col ul{list-style:none;margin:0;padding:0;}
@@ -388,7 +395,7 @@
     letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:4px;}
 
   /* ---------- SHOPPING ---------- */
-  .shop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .shop-grid{display:grid;grid-template-columns:1fr;gap:14px;}
   .shop-col{background:var(--paper);color:var(--ink);border-radius:5px;border:1px solid var(--paper-edge);
     box-shadow:var(--shadow);padding:16px 18px;}
   .shop-col h4{font-family:"Saira Condensed",sans-serif;font-weight:700;text-transform:uppercase;
@@ -421,25 +428,34 @@
   footer .sig{margin-top:18px;font-family:"Saira Condensed",sans-serif;font-weight:700;
     text-transform:uppercase;letter-spacing:.3em;color:var(--steel-700);font-size:.9rem;}
 
-  /* ---------- RESPONSIVE ---------- */
-  @media (max-width:680px){
-    .spec-grid{grid-template-columns:repeat(2,1fr);}
-    .spec-cell:nth-child(2){border-right:none;}
-    .spec-cell:nth-child(n+3){border-top:1px solid var(--line);}
-    .shop-grid{grid-template-columns:1fr;}
-    .money-fig{border-right:none;border-bottom:3px solid var(--redline);padding-right:0;padding-bottom:12px;}
-    table.mkt th,table.mkt td{padding-left:11px;padding-right:11px;font-size:.82rem;}
-    table.mkt td.yr{font-size:.98rem;}
-    .mkt-head{flex-direction:column;gap:3px;}
-    .cand-facts{grid-template-columns:repeat(2,1fr);}
-    .cand-fact:nth-child(2){border-right:none;}
-    .cand-fact:nth-child(n+3){border-top:1px solid var(--line);}
-    .cand-card.blank .cand-fact:nth-child(n+3){border-top-color:var(--line-steel);}
-    .cand-cols{grid-template-columns:1fr;}
-    .cand-col:first-child{border-right:none;border-bottom:1px solid var(--line);}
+  /* ---------- RESPONSIVE — mobile-first, scale up with min-width ---------- */
+  /* Base styles above target the phone. These queries add columns and
+     side-by-side layout as the viewport grows. */
+  @media (min-width:601px){
+    .proj-grid{grid-template-columns:1fr 1fr;}
+    .topnav-inner{padding:11px 18px;}
+    .tab{padding:7px 13px;font-size:.7rem;}
+    .wordmark{font-size:1.02rem;letter-spacing:.14em;}
+    .gauge-row{gap:26px;}
   }
-  @media (max-width:420px){
-    .spec-grid{grid-template-columns:1fr 1fr;}
+  @media (min-width:681px){
+    section{padding:46px 0;}
+    .spec-grid{grid-template-columns:repeat(5,1fr);}
+    .spec-cell:nth-child(2n){border-right:1px solid var(--line);}
+    .spec-cell:nth-child(n+3){border-top:none;}
+    .spec-cell:last-child{border-right:none;}
+    .cand-facts{grid-template-columns:repeat(4,1fr);}
+    .cand-fact:nth-child(2n){border-right:1px solid var(--line);}
+    .cand-fact:nth-child(n+3){border-top:none;}
+    .cand-fact:last-child{border-right:none;}
+    .cand-cols{grid-template-columns:1fr 1fr;}
+    .cand-col:first-child{border-right:1px solid var(--line);border-bottom:none;}
+    .money-fig{border-right:3px solid var(--redline);border-bottom:none;padding-right:20px;padding-bottom:0;}
+    .mkt-head{flex-direction:row;align-items:baseline;gap:10px;}
+    .shop-grid{grid-template-columns:repeat(3,1fr);}
+    table.mkt th,table.mkt td{padding-left:16px;padding-right:16px;}
+    table.mkt td{font-size:.92rem;}
+    table.mkt td.yr{font-size:1.08rem;}
   }
   @media (prefers-reduced-motion:reduce){
     *{transition:none!important;scroll-behavior:auto!important;}
@@ -448,13 +464,13 @@
   /* ---------- HUB: NAV + ROUTING ---------- */
   .topnav{position:sticky;top:0;z-index:50;background:rgba(27,31,36,.94);
     backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line-steel);}
-  .topnav-inner{max-width:880px;margin:0 auto;padding:11px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .topnav-inner{max-width:880px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
   .wordmark{font-family:"Saira Condensed",sans-serif;font-weight:800;text-transform:uppercase;
-    letter-spacing:.14em;font-size:1.02rem;color:var(--paper);display:flex;align-items:center;gap:9px;}
+    letter-spacing:.1em;font-size:.9rem;color:var(--paper);display:flex;align-items:center;gap:9px;}
   .wordmark::before{content:"";width:11px;height:11px;background:var(--redline);border-radius:2px;transform:rotate(45deg);flex:0 0 auto;}
   .tabs{display:flex;gap:2px;background:var(--steel-850);border:1px solid var(--line-steel-strong);border-radius:4px;padding:3px;}
-  .tab{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;
-    color:#b7b3a9;padding:7px 13px;border-radius:2px;text-decoration:none;font-weight:600;transition:.12s;white-space:nowrap;}
+  .tab{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+    color:#b7b3a9;padding:7px 10px;border-radius:2px;text-decoration:none;font-weight:600;transition:.12s;white-space:nowrap;}
   .tab:hover{color:var(--paper);}
   .tab.active{background:var(--redline);color:#fff;}
 
@@ -462,13 +478,13 @@
   .view.active{display:block;}
 
   /* ---------- HUB: DUAL GAUGE ---------- */
-  .gauge-row{display:flex;gap:26px;justify-content:center;align-items:flex-end;margin-bottom:4px;}
+  .gauge-row{display:flex;gap:16px;justify-content:center;align-items:flex-end;margin-bottom:4px;}
   .gauge-unit{display:flex;flex-direction:column;align-items:center;gap:2px;}
   .gauge-mini{width:120px;height:66px;display:block;}
   .gauge-unit span{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);}
 
   /* ---------- HUB: PROJECT TILES ---------- */
-  .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px;}
+  .proj-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:22px;}
   .proj-tile{background:var(--paper);color:var(--ink);border-radius:6px;border:1px solid var(--paper-edge);
     box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;}
   .pt-top{padding:16px 18px 14px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#f1eee6,var(--paper));
@@ -509,13 +525,6 @@
     border-radius:0 4px 4px 0;font-size:.9rem;color:#cfcbc1;}
   .port-note b{color:var(--paper);}
 
-  @media (max-width:600px){
-    .proj-grid{grid-template-columns:1fr;}
-    .topnav-inner{padding:10px 14px;}
-    .tab{padding:7px 10px;font-size:.66rem;}
-    .wordmark{font-size:.9rem;letter-spacing:.1em;}
-    .gauge-row{gap:16px;}
-  }
   section.view{padding:0;border-bottom:none;}
 </style>
 </head>
