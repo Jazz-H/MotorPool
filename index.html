@@ -1853,5 +1853,34 @@ if ('serviceWorker' in navigator) {
 })();
 </script>
 
+<script>
+// Persist checklist state — every checkbox remembers itself across reloads.
+(function () {
+  function slug(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 64); }
+  var used = {};
+  function keyFor(text) {
+    var base = 'mp.chk.' + (slug(text) || 'item');
+    var k = base, n = 1;
+    while (used[k]) { n++; k = base + '.' + n; }
+    used[k] = 1;
+    return k;
+  }
+  var boxes = document.querySelectorAll('.check-list input[type="checkbox"]');
+  boxes.forEach(function (box) {
+    var label = box.closest('label');
+    var k = keyFor(label ? (label.textContent || '').trim() : '');
+    box.dataset.persistKey = k;
+    try {
+      var v = localStorage.getItem(k);
+      if (v === '1') box.checked = true;
+      else if (v === '0') box.checked = false;
+    } catch (e) {}
+    box.addEventListener('change', function () {
+      try { localStorage.setItem(k, box.checked ? '1' : '0'); } catch (e) {}
+    });
+  });
+})();
+</script>
+
 </body>
 </html>
