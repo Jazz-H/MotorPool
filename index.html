@@ -536,6 +536,10 @@
   .ledger-row.sub .item small{font-weight:400;}
   .ledger-row.sub .amt{font-weight:600;color:#2a2d31;}
   .ledger-row.sub.div{border-top:2px solid var(--line-strong);}
+  .val-in{appearance:none;-webkit-appearance:none;border:none;background:transparent;
+    font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:.92rem;color:var(--ink);
+    text-align:right;width:76px;border-bottom:1px dashed var(--line-strong);padding:1px 0;margin-left:1px;}
+  .val-in:focus{outline:none;border-bottom-color:var(--amber);}
   .amt .modrm{margin-left:9px;border:none;background:transparent;color:var(--ink-faint);cursor:pointer;
     font-size:1.05rem;line-height:1;padding:0 2px;vertical-align:middle;-webkit-tap-highlight-color:transparent;}
   .amt .modrm:hover{color:var(--redline-deep);}
@@ -876,6 +880,19 @@
         <div class="spec-cell"><span class="k">Mods</span><span class="v">6<small> &middot; $1.35k</small></span></div>
       </div>
     </div>
+
+    <h4 class="dash-h">Value &amp; Equity</h4>
+    <div class="panel" style="margin-bottom:16px;">
+      <div class="ledger">
+        <div class="ledger-row"><span class="item">KBB Trade-In <small>rough &mdash; update from KBB</small></span><span class="amt">$<input class="val-in" type="text" data-v="trade" inputmode="numeric" value="30500" aria-label="KBB trade-in value"></span></div>
+        <div class="ledger-row"><span class="item">KBB Private Party <small>rough &mdash; update from KBB</small></span><span class="amt">$<input class="val-in" type="text" data-v="private" inputmode="numeric" value="33000" aria-label="KBB private-party value"></span></div>
+        <div class="ledger-row"><span class="item">KBB Retail <small>rough &mdash; update from KBB</small></span><span class="amt">$<input class="val-in" type="text" data-v="retail" inputmode="numeric" value="36500" aria-label="KBB retail value"></span></div>
+        <div class="ledger-row"><span class="item">Owed <small>loan balance</small></span><span class="amt">$<input class="val-in" type="text" data-v="owed" inputmode="numeric" value="24380" aria-label="Amount owed"></span></div>
+        <div class="ledger-row total"><span class="item">Equity <small id="eqNote">private party &minus; owed</small></span><span class="amt" id="eqVal">&mdash;</span></div>
+        <div class="ledger-row sub"><span class="item">Loan-to-value <small>owed &divide; private party</small></span><span class="amt" id="ltvVal">&mdash;</span></div>
+      </div>
+    </div>
+    <div class="callout">KBB has no free data feed, so this can&rsquo;t auto-pull &mdash; the figures are rough estimates for a 2026 EcoBoost Premium at 3,500 mi. <b>Punch in your real numbers</b> from <a href="https://www.kbb.com/whats-my-car-worth/" target="_blank" rel="noopener" style="color:var(--amber);text-decoration:underline">KBB&rsquo;s valuation tool &#8599;</a> and the equity updates live. Owed is set to <b>$24,380</b>.</div>
 
     <h4 class="dash-h">Mod List</h4>
     <div class="panel" style="margin-bottom:16px;">
@@ -2257,6 +2274,41 @@ if ('serviceWorker' in navigator) {
     el.hidden = true;
     try { localStorage.setItem(KEY, '1'); } catch (e) {}
   });
+})();
+</script>
+
+<script>
+// Value & Equity — editable KBB figures, live equity / loan-to-value, persisted.
+(function () {
+  var P = 'mp.val.';
+  var keys = ['trade', 'private', 'retail', 'owed'];
+  var inp = {};
+  keys.forEach(function (k) { inp[k] = document.querySelector('.val-in[data-v="' + k + '"]'); });
+  if (!inp.private || !inp.owed) return;
+  function num(k) { var v = parseFloat(((inp[k] && inp[k].value) || '').replace(/[^0-9.]/g, '')); return isFinite(v) ? v : 0; }
+  function money(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+  function compute() {
+    var priv = num('private'), owed = num('owed');
+    var eq = priv - owed;
+    var eqEl = document.getElementById('eqVal');
+    var eqNote = document.getElementById('eqNote');
+    var ltvEl = document.getElementById('ltvVal');
+    if (eqEl) {
+      eqEl.textContent = (eq < 0 ? '−' : '') + money(Math.abs(eq));
+      eqEl.style.color = eq >= 0 ? '#4f9e6a' : 'var(--redline-deep)';
+    }
+    if (eqNote) eqNote.textContent = (eq >= 0 ? 'above water' : 'underwater') + ' · private − owed';
+    if (ltvEl) ltvEl.textContent = priv > 0 ? Math.round(owed / priv * 100) + '%' : '—';
+  }
+  keys.forEach(function (k) {
+    if (!inp[k]) return;
+    try { var s = localStorage.getItem(P + k); if (s !== null) inp[k].value = s; } catch (e) {}
+    inp[k].addEventListener('input', function () {
+      try { localStorage.setItem(P + k, inp[k].value); } catch (e) {}
+      compute();
+    });
+  });
+  compute();
 })();
 </script>
 
