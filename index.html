@@ -319,6 +319,7 @@
   .cand-fact .v{font-family:"Saira Condensed",sans-serif;font-weight:600;font-size:1.12rem;line-height:1.1;}
   .cand-fact .v small{font-family:"IBM Plex Mono",monospace;font-size:.6rem;font-weight:400;color:var(--ink-soft);
     text-decoration:line-through;margin-left:3px;}
+  .cand-card.carpick .cand-fact .v small{text-decoration:none;margin-left:2px;}
   .pos{padding:14px 16px;border-bottom:1px solid var(--line);background:var(--paper-dim);}
   .pos-row{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:.64rem;
     letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:7px;}
@@ -592,6 +593,28 @@
   .addcand:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
   .addcand .plus{color:var(--redline);margin-right:8px;font-size:1.1rem;}
 
+  /* ---------- WHAT'S-NEW BANNER ---------- */
+  .whatsnew{background:linear-gradient(90deg,rgba(216,58,41,.16),var(--steel-850));border-bottom:1px solid var(--line-steel);}
+  .whatsnew[hidden]{display:none;}
+  .whatsnew-inner{max-width:880px;margin:0 auto;padding:9px 16px;display:flex;align-items:center;gap:11px;}
+  .wn-tag{font-family:"IBM Plex Mono",monospace;font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;
+    font-weight:700;color:#fff;background:var(--redline);padding:3px 7px;border-radius:2px;flex:0 0 auto;}
+  .wn-text{flex:1;min-width:0;font-size:.82rem;color:#d2cec4;line-height:1.4;}
+  .wn-text b{color:var(--paper);font-weight:600;}
+  .wn-x{flex:0 0 auto;border:none;background:transparent;color:#9a9fa5;font-size:1.25rem;line-height:1;
+    cursor:pointer;padding:0 2px;-webkit-tap-highlight-color:transparent;}
+  .wn-x:hover{color:var(--paper);}
+  .wn-x:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
+
+  /* ---------- DAILY PHOTO ---------- */
+  .daily-photo{position:relative;width:100%;aspect-ratio:12/5;background:var(--steel-900);
+    overflow:hidden;border-bottom:1px solid var(--line);}
+  .daily-photo-img{width:100%;height:100%;object-fit:cover;display:block;}
+  .daily-photo-fb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(120% 100% at 50% 0,#2a3138,#1b1f24);}
+  .daily-photo-fb span{font-family:"Saira Condensed",sans-serif;font-weight:700;text-transform:uppercase;
+    letter-spacing:.05em;color:#8a9098;font-size:1.05rem;}
+
   /* ---------- COLLAPSIBLE SECTIONS ---------- */
   details.sec-block{padding:34px 0;border-bottom:1px solid var(--line-steel);}
   details.sec-block > summary{display:block;position:relative;list-style:none;cursor:pointer;
@@ -714,6 +737,14 @@
   </div>
 </nav>
 
+<div id="whatsnew" class="whatsnew" role="status" hidden>
+  <div class="whatsnew-inner">
+    <span class="wn-tag">New</span>
+    <span class="wn-text">A <b>Garage</b> tab for your daily &amp; mods, collapsible <b>insights</b>, and one-tap <b>install as an app</b>.</span>
+    <button class="wn-x" type="button" aria-label="Dismiss">&times;</button>
+  </div>
+</div>
+
 <!-- =================== HUB =================== -->
 <section id="view-garage" class="view active">
   <div class="wrap">
@@ -764,13 +795,13 @@
         <div class="proj-tile">
           <div class="pt-top">
             <div><span class="pt-ey">Project 02 &middot; Four Wheels</span><h3 class="pt-title">Car<br>Build</h3></div>
-            <span class="pt-phase">Scouting</span>
+            <span class="pt-phase">Comparing</span>
           </div>
           <div class="pt-stats">
             <div class="pt-stat"><span class="k">Budget</span><span class="v">$10,000 <small>program</small></span></div>
-            <div class="pt-stat"><span class="k">Candidates</span><span class="v">0 <small>logged</small></span></div>
+            <div class="pt-stat"><span class="k">Candidates</span><span class="v">3 <small>logged</small></span></div>
             <div class="pt-stat"><span class="k">Front-runner</span><span class="v">&mdash; <small>TBD</small></span></div>
-            <div class="pt-stat"><span class="k">Shortlist</span><span class="v">Miata &middot; E46 &middot; Z</span></div>
+            <div class="pt-stat"><span class="k">Shortlist</span><span class="v">Corvette &middot; Wrangler</span></div>
           </div>
           <a class="pt-open" href="#car">Open Car <span class="arr">&rarr;</span></a>
         </div>
@@ -791,7 +822,7 @@
         <li><label><input type="checkbox"><span><span class="queue-tag moto">Moto</span>Message Ducati seller &mdash; when were the timing belts last done?</span></label></li>
         <li><label><input type="checkbox"><span><span class="queue-tag moto">Moto</span>Confirm CB500F service history + book the test ride</span></label></li>
         <li><label><input type="checkbox"><span><span class="queue-tag moto">Moto</span>Get insurance quotes: CB500F vs Triumph Speed 400</span></label></li>
-        <li><label><input type="checkbox"><span><span class="queue-tag car">Car</span>Pick the project goal (track / drift / stance / daily+)</span></label></li>
+        <li><label><input type="checkbox"><span><span class="queue-tag car">Car</span>Decide the vibe: fun sports (Corvette) vs. off-road (Wrangler)</span></label></li>
         <li><label><input type="checkbox"><span><span class="queue-tag car">Car</span>Shortlist 1&ndash;2 platforms + learn their weak points</span></label></li>
         <li><label><input type="checkbox"><span><span class="queue-tag car">Car</span>Set the car-vs-build budget split</span></label></li>
       </ul>
@@ -827,6 +858,12 @@
     <p class="sec-note">The one you actually daily &mdash; and every mod on the list.</p>
 
     <div class="proj-tile" style="margin-bottom:18px;">
+      <div class="daily-photo">
+        <img class="daily-photo-img" src="https://loremflickr.com/1200/500/ford,mustang/all?lock=7"
+             alt="Ford Mustang" title="Stock photo — LoremFlickr (CC)" loading="lazy"
+             onerror="this.remove();var fb=document.getElementById('dpFallback');if(fb)fb.hidden=false;">
+        <div id="dpFallback" class="daily-photo-fb" hidden><span>2026 Mustang &middot; EcoBoost</span></div>
+      </div>
       <div class="pt-top">
         <div><span class="pt-ey">Daily Driver &middot; Owned</span><h3 class="pt-title">2026 Mustang<br>EcoBoost Premium</h3></div>
         <span class="pt-phase">Daily</span>
@@ -1388,10 +1425,10 @@
   <h1>Project Car<br><span class="rev">Hunt</span></h1>
   <p class="hero-sub">How to find a project worth building &mdash; the platforms, the money, and the checks that separate a good one from someone else&rsquo;s headache.</p>
   <div class="chips">
-    <span class="chip hot"><b>&le; $10K</b> program</span>
-    <span class="chip">not just the <b>car</b></span>
-    <span class="chip"><b>manual</b> preferred</span>
-    <span class="chip"><b>aftermarket</b> = everything</span>
+    <span class="chip hot"><b>fun</b> secondary</span>
+    <span class="chip">no <b>track</b> / drift</span>
+    <span class="chip">maybe <b>off-road</b></span>
+    <span class="chip">Corvette vs <b>Wrangler</b></span>
     <span class="chip">condition &gt; miles</span>
   </div>
 </header>
@@ -1422,6 +1459,7 @@
   <!-- CONTENDERS -->
   <section>
     <div class="sec-head"><span class="sec-num">02</span><h2>The Contenders</h2></div>
+    <div class="callout" style="margin-bottom:18px;">Heads up &mdash; the direction shifted to a <b>fun secondary car</b> (no track/drift, maybe light off-road). The picks in your <b>Candidate Log</b> below &mdash; Corvette, Wrangler, 4Runner &mdash; reflect that. The sport-project platforms here are kept for reference from the earlier framing and are due for a rework.</div>
     <p class="sec-note">The platforms that keep topping every under-$10k list &mdash; chosen for cheap parts, deep aftermarket, active communities, and a sound base to build from. The power bar is <b style="color:#e6e2d8">stock output</b>; most of these have huge room to grow.</p>
 
     <!-- MIATA -->
@@ -1581,48 +1619,105 @@
   <!-- CANDIDATE LOG -->
   <section>
     <div class="sec-head"><span class="sec-num">04</span><h2>Candidate Log</h2></div>
-    <p class="sec-note">Log cars you&rsquo;re looking at and score them against the platforms above. Tap the blank fields to fill them in as you shop.</p>
+    <p class="sec-note">Goal: a <b style="color:#e6e2d8">fun secondary car</b> &mdash; no track or drift, maybe some light off-road. Your two loves pull in opposite directions (open-road V8 vs. go-anywhere 4x4); here they are side by side, plus a do-it-all wildcard. Add more with the button below.</p>
 
-    <article class="cand-card blank">
+    <article class="cand-card carpick">
       <div class="cand-top">
-        <div><span class="cand-ey">Candidate 01</span><h3 class="cand-name"><span class="fill" contenteditable="true" data-ph="year / make / model"></span></h3></div>
-        <span class="vbadge todo">TBD</span>
+        <div><span class="cand-ey">Candidate 01 &middot; Fun / sports</span><h3 class="cand-name">Chevrolet Corvette C5</h3></div>
+        <span class="vbadge">Loved</span>
       </div>
       <div class="cand-facts">
-        <div class="cand-fact"><span class="k">Price</span><span class="v"><span class="fill" contenteditable="true" data-ph="$"></span></span></div>
-        <div class="cand-fact"><span class="k">Miles</span><span class="v"><span class="fill" contenteditable="true" data-ph="&mdash;"></span></span></div>
-        <div class="cand-fact"><span class="k">Title</span><span class="v"><span class="fill" contenteditable="true" data-ph="clean?"></span></span></div>
-        <div class="cand-fact"><span class="k">Location</span><span class="v"><span class="fill" contenteditable="true" data-ph="&mdash;"></span></span></div>
+        <div class="cand-fact"><span class="k">Engine</span><span class="v">5.7<small>L V8</small></span></div>
+        <div class="cand-fact"><span class="k">Power</span><span class="v">~345<small>hp</small></span></div>
+        <div class="cand-fact"><span class="k">Drive</span><span class="v">RWD</span></div>
+        <div class="cand-fact"><span class="k">Price</span><span class="v">$11&ndash;16<small>k</small></span></div>
       </div>
-      <div class="blank-hint">// Check it against Market Values, run the VIN, note mods + rust + records, then set a target offer.</div>
+      <div class="cand-cols">
+        <div class="cand-col">
+          <h5>Why it fits</h5>
+          <ul>
+            <li>Effortless LS1 V8 grunt &mdash; fast without a track</li>
+            <li>Targa top; a genuine weekend cruiser</li>
+            <li>Cheap, bulletproof LS; endless parts</li>
+            <li>The pure-fun answer to &ldquo;secondary car&rdquo;</li>
+          </ul>
+        </div>
+        <div class="cand-col">
+          <h5>Watch</h5>
+          <ul>
+            <li>Tired interior bits, seat bolsters</li>
+            <li>Column-lock &amp; steering quirks (early cars)</li>
+            <li>Not an off-roader &mdash; opposite of the Jeep</li>
+            <li>Runs a touch above the old $10k program</li>
+          </ul>
+        </div>
+      </div>
     </article>
 
-    <article class="cand-card blank">
+    <article class="cand-card carpick">
       <div class="cand-top">
-        <div><span class="cand-ey">Candidate 02</span><h3 class="cand-name"><span class="fill" contenteditable="true" data-ph="year / make / model"></span></h3></div>
-        <span class="vbadge todo">TBD</span>
+        <div><span class="cand-ey">Candidate 02 &middot; Off-road fun</span><h3 class="cand-name">Jeep Wrangler JK</h3></div>
+        <span class="vbadge">Loved</span>
       </div>
       <div class="cand-facts">
-        <div class="cand-fact"><span class="k">Price</span><span class="v"><span class="fill" contenteditable="true" data-ph="$"></span></span></div>
-        <div class="cand-fact"><span class="k">Miles</span><span class="v"><span class="fill" contenteditable="true" data-ph="&mdash;"></span></span></div>
-        <div class="cand-fact"><span class="k">Title</span><span class="v"><span class="fill" contenteditable="true" data-ph="clean?"></span></span></div>
-        <div class="cand-fact"><span class="k">Location</span><span class="v"><span class="fill" contenteditable="true" data-ph="&mdash;"></span></span></div>
+        <div class="cand-fact"><span class="k">Engine</span><span class="v">3.6<small>L V6</small></span></div>
+        <div class="cand-fact"><span class="k">Power</span><span class="v">~285<small>hp</small></span></div>
+        <div class="cand-fact"><span class="k">Drive</span><span class="v">4x4</span></div>
+        <div class="cand-fact"><span class="k">Price</span><span class="v">$13&ndash;20<small>k</small></span></div>
       </div>
-      <div class="blank-hint">// Check it against Market Values, run the VIN, note mods + rust + records, then set a target offer.</div>
+      <div class="cand-cols">
+        <div class="cand-col">
+          <h5>Why it fits</h5>
+          <ul>
+            <li>Doors &amp; top come off &mdash; open-air fun</li>
+            <li>Go-anywhere 4x4, huge trail aftermarket</li>
+            <li>Holds value; easy to sell on later</li>
+            <li>The ideal weekend / off-road toy</li>
+          </ul>
+        </div>
+        <div class="cand-col">
+          <h5>Watch</h5>
+          <ul>
+            <li>Prefer the <b>3.6 Pentastar (2012+)</b> over the weak 3.8</li>
+            <li>&ldquo;Death wobble&rdquo; &mdash; check steering &amp; track bar</li>
+            <li>Rust, and lifted/abused examples</li>
+            <li>Thirsty; slow-ish on-road</li>
+          </ul>
+        </div>
+      </div>
     </article>
 
-    <article class="cand-card blank">
+    <article class="cand-card carpick">
       <div class="cand-top">
-        <div><span class="cand-ey">Candidate 03</span><h3 class="cand-name"><span class="fill" contenteditable="true" data-ph="year / make / model"></span></h3></div>
-        <span class="vbadge todo">TBD</span>
+        <div><span class="cand-ey">Candidate 03 &middot; Do-it-all</span><h3 class="cand-name">Toyota 4Runner (4th gen)</h3></div>
+        <span class="vbadge pass">Suggested</span>
       </div>
       <div class="cand-facts">
-        <div class="cand-fact"><span class="k">Price</span><span class="v"><span class="fill" contenteditable="true" data-ph="$"></span></span></div>
-        <div class="cand-fact"><span class="k">Miles</span><span class="v"><span class="fill" contenteditable="true" data-ph="&mdash;"></span></span></div>
-        <div class="cand-fact"><span class="k">Title</span><span class="v"><span class="fill" contenteditable="true" data-ph="clean?"></span></span></div>
-        <div class="cand-fact"><span class="k">Location</span><span class="v"><span class="fill" contenteditable="true" data-ph="&mdash;"></span></span></div>
+        <div class="cand-fact"><span class="k">Engine</span><span class="v">4.0<small>L V6</small></span></div>
+        <div class="cand-fact"><span class="k">Power</span><span class="v">~236<small>hp</small></span></div>
+        <div class="cand-fact"><span class="k">Drive</span><span class="v">4WD</span></div>
+        <div class="cand-fact"><span class="k">Price</span><span class="v">$9&ndash;16<small>k</small></span></div>
       </div>
-      <div class="blank-hint">// Check it against Market Values, run the VIN, note mods + rust + records, then set a target offer.</div>
+      <div class="cand-cols">
+        <div class="cand-col">
+          <h5>Why it fits</h5>
+          <ul>
+            <li>Legendary reliability &mdash; a keep-forever</li>
+            <li>Genuinely capable off-road, but comfy</li>
+            <li>Room for gear; usable as a real secondary</li>
+            <li>Middle ground between Jeep and daily</li>
+          </ul>
+        </div>
+        <div class="cand-col">
+          <h5>Watch</h5>
+          <ul>
+            <li>Frame &amp; rear-hatch rust (salt-belt cars)</li>
+            <li>High miles common (they run to 250k+)</li>
+            <li>Less toy, more capable wagon</li>
+            <li>The 4.7 V8 is smoother but thirstier</li>
+          </ul>
+        </div>
+      </div>
     </article>
   </section>
 
@@ -2142,6 +2237,23 @@ if ('serviceWorker' in navigator) {
       var arr = load(scope);
       if (idx >= 0 && idx < arr.length) { arr.splice(idx, 1); save(scope, arr); render(container, scope); }
     });
+  });
+})();
+</script>
+
+<script>
+// What's-new banner — shows once, remembers dismissal. Bump the version to re-announce.
+(function () {
+  var KEY = 'mp.whatsnew.v1';
+  var el = document.getElementById('whatsnew');
+  if (!el) return;
+  var dismissed = false;
+  try { dismissed = localStorage.getItem(KEY) === '1'; } catch (e) {}
+  if (!dismissed) el.hidden = false;
+  var x = el.querySelector('.wn-x');
+  if (x) x.addEventListener('click', function () {
+    el.hidden = true;
+    try { localStorage.setItem(KEY, '1'); } catch (e) {}
   });
 })();
 </script>
