@@ -560,6 +560,38 @@
   .modadd-btn:active{transform:scale(.96);}
   .modadd-btn:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
 
+  /* ---------- ADD-CANDIDATE ---------- */
+  .usercands{display:block;}
+  .cand-card.usercand .cand-ey{color:var(--ink-soft);}
+  .cand-card.usercand .cand-top{align-items:center;}
+  .uc-name,.cand-fact input.uc-f,.uc-note{appearance:none;-webkit-appearance:none;border:none;background:transparent;
+    width:100%;color:var(--ink);}
+  .uc-name{font-family:"Saira Condensed",sans-serif;font-weight:700;text-transform:uppercase;font-size:1.4rem;
+    line-height:1;letter-spacing:.01em;border-bottom:1px dashed var(--line-strong);padding:2px 0;}
+  .uc-name::placeholder{color:var(--ink-faint);font-weight:600;font-size:.92rem;text-transform:none;
+    font-family:"IBM Plex Sans",system-ui,sans-serif;}
+  .cand-fact input.uc-f{font-family:"Saira Condensed",sans-serif;font-weight:600;font-size:1.12rem;line-height:1.1;
+    border-bottom:1px dashed var(--line);padding:1px 0;}
+  .cand-fact input.uc-f::placeholder{color:var(--ink-faint);font-family:"IBM Plex Sans",system-ui,sans-serif;
+    font-size:.78rem;font-weight:400;}
+  .uc-note-wrap{padding:13px 16px;}
+  .uc-note{color:#3a3e43;font-size:.9rem;font-family:"IBM Plex Sans",system-ui,sans-serif;
+    border-bottom:1px dashed var(--line);padding:4px 0;}
+  .uc-note::placeholder{color:var(--ink-faint);}
+  .uc-name:focus,.cand-fact input.uc-f:focus,.uc-note:focus{outline:none;border-bottom-color:var(--amber);}
+  .uc-rm{border:none;background:transparent;color:var(--ink-faint);cursor:pointer;font-size:1.35rem;line-height:1;
+    padding:0 2px;flex:0 0 auto;-webkit-tap-highlight-color:transparent;}
+  .uc-rm:hover{color:var(--redline-deep);}
+  .uc-rm:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
+  .addcand{display:block;width:100%;margin-bottom:16px;font-family:"Saira Condensed",sans-serif;font-weight:700;
+    text-transform:uppercase;letter-spacing:.04em;font-size:.98rem;color:var(--paper);background:var(--steel-850);
+    border:1px dashed var(--line-steel-strong);border-radius:6px;padding:15px;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;transition:border-color .15s,color .15s;}
+  .addcand:hover{border-color:var(--redline);color:#fff;}
+  .addcand:active{transform:scale(.995);}
+  .addcand:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+  .addcand .plus{color:var(--redline);margin-right:8px;font-size:1.1rem;}
+
   /* ---------- COLLAPSIBLE SECTIONS ---------- */
   details.sec-block{padding:34px 0;border-bottom:1px solid var(--line-steel);}
   details.sec-block > summary{display:block;position:relative;list-style:none;cursor:pointer;
@@ -2036,6 +2068,81 @@ if ('serviceWorker' in navigator) {
 
   renderUser();
   recompute();
+})();
+</script>
+
+<script>
+// Add-a-candidate: log new candidates in the Moto & Car candidate logs; persisted.
+(function () {
+  function key(scope) { return 'mp.cands.' + scope; }
+  function load(scope) { try { return JSON.parse(localStorage.getItem(key(scope)) || '[]'); } catch (e) { return []; } }
+  function save(scope, a) { try { localStorage.setItem(key(scope), JSON.stringify(a)); } catch (e) {} }
+  function attr(s) { return (s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  function fact(label, f, ph, val) {
+    return '<div class="cand-fact"><span class="k">' + label + '</span>' +
+      '<input class="uc-f" data-f="' + f + '" maxlength="24" placeholder="' + ph + '" value="' + attr(val) + '"></div>';
+  }
+  function cardHtml(c, i) {
+    return '<article class="cand-card usercand" data-idx="' + i + '">' +
+      '<div class="cand-top"><div><span class="cand-ey">Your candidate</span>' +
+      '<input class="uc-name" data-f="name" maxlength="60" placeholder="Year / make / model" value="' + attr(c.name) + '"></div>' +
+      '<button class="uc-rm" type="button" aria-label="Remove candidate">&times;</button></div>' +
+      '<div class="cand-facts">' +
+      fact('Price', 'price', '$', c.price) + fact('Miles', 'miles', '—', c.miles) +
+      fact('Title', 'title', 'clean?', c.title) + fact('Location', 'loc', '—', c.loc) +
+      '</div>' +
+      '<div class="uc-note-wrap"><input class="uc-note" data-f="note" maxlength="140" ' +
+      'placeholder="Notes — mods, condition, target offer…" value="' + attr(c.note) + '"></div>' +
+      '</article>';
+  }
+  function render(container, scope) {
+    container.innerHTML = load(scope).map(cardHtml).join('');
+  }
+
+  var heads = document.querySelectorAll('.sec-head h2');
+  Array.prototype.forEach.call(heads, function (h) {
+    if ((h.textContent || '').trim() !== 'Candidate Log') return;
+    var sec = h.closest('section, details');
+    if (!sec) return;
+    var view = h.closest('.view');
+    var scope = (view && /car/.test(view.id)) ? 'car' : 'moto';
+
+    var container = document.createElement('div');
+    container.className = 'usercands';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'addcand';
+    btn.innerHTML = '<span class="plus">+</span> Add candidate';
+    sec.appendChild(container);
+    sec.appendChild(btn);
+    render(container, scope);
+
+    btn.addEventListener('click', function () {
+      var arr = load(scope);
+      arr.push({ name: '', price: '', miles: '', title: '', loc: '', note: '' });
+      save(scope, arr);
+      render(container, scope);
+      var last = container.querySelector('.cand-card.usercand:last-child .uc-name');
+      if (last) last.focus();
+    });
+    container.addEventListener('input', function (e) {
+      var inp = e.target.closest('input[data-f]');
+      if (!inp) return;
+      var card = inp.closest('.cand-card.usercand');
+      var idx = parseInt(card.getAttribute('data-idx'), 10);
+      var arr = load(scope);
+      if (arr[idx]) { arr[idx][inp.getAttribute('data-f')] = inp.value; save(scope, arr); }
+    });
+    container.addEventListener('click', function (e) {
+      var rm = e.target.closest('.uc-rm');
+      if (!rm) return;
+      var card = rm.closest('.cand-card.usercand');
+      var idx = parseInt(card.getAttribute('data-idx'), 10);
+      var arr = load(scope);
+      if (idx >= 0 && idx < arr.length) { arr.splice(idx, 1); save(scope, arr); render(container, scope); }
+    });
+  });
 })();
 </script>
 
