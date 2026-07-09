@@ -577,6 +577,41 @@
   }
   @keyframes viewIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
 
+  /* ---------- INSTALL PROMPT (A2HS) ---------- */
+  .a2hs{position:fixed;left:12px;right:12px;z-index:70;
+    bottom:calc(70px + env(safe-area-inset-bottom));
+    opacity:0;transform:translateY(16px);pointer-events:none;
+    transition:opacity .3s ease, transform .3s cubic-bezier(.22,.61,.36,1);}
+  .a2hs.in{opacity:1;transform:none;pointer-events:auto;}
+  .a2hs-card{position:relative;max-width:540px;margin:0 auto;display:flex;align-items:center;gap:14px;
+    background:var(--steel-800);border:1px solid var(--line-steel-strong);border-top:3px solid var(--redline);
+    border-radius:11px;padding:15px 16px;box-shadow:0 20px 46px -18px rgba(0,0,0,.82);}
+  .a2hs-ico{flex:0 0 auto;width:46px;height:46px;border-radius:11px;background:var(--steel-900);
+    border:1px solid var(--line-steel);display:flex;align-items:center;justify-content:center;}
+  .a2hs-ico svg{width:24px;height:24px;display:block;}
+  .a2hs-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;padding-right:18px;}
+  .a2hs-body strong{font-family:"Saira Condensed",sans-serif;font-weight:700;text-transform:uppercase;
+    letter-spacing:.02em;font-size:1.06rem;color:var(--paper);line-height:1;}
+  .a2hs-sub{font-size:.85rem;color:#b7b3a9;}
+  .a2hs-ios{display:none;font-size:.85rem;color:#cfcbc1;line-height:1.5;}
+  .a2hs-ios b{color:var(--paper);}
+  .a2hs-ios .sg{color:var(--redline);font-weight:700;}
+  .a2hs-actions{flex:0 0 auto;}
+  .a2hs-install{font-family:"Saira Condensed",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+    font-size:.92rem;color:#fff;background:var(--redline);border:none;border-radius:6px;padding:11px 17px;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;transition:filter .15s, transform .1s;white-space:nowrap;}
+  .a2hs-install:hover{filter:brightness(1.07);}
+  .a2hs-install:active{transform:scale(.95);}
+  .a2hs-x{position:absolute;top:7px;right:8px;width:27px;height:27px;border:none;background:transparent;
+    color:#9a9fa5;font-size:1.35rem;line-height:1;cursor:pointer;border-radius:5px;-webkit-tap-highlight-color:transparent;}
+  .a2hs-x:hover{color:var(--paper);}
+  .a2hs-x:focus-visible,.a2hs-install:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+  .a2hs.ios .a2hs-sub{display:none;}
+  .a2hs.ios .a2hs-ios{display:block;}
+  .a2hs.ios .a2hs-actions{display:none;}
+  @media (min-width:681px){ .a2hs{left:auto;right:20px;bottom:20px;width:400px;} }
+  @media (prefers-reduced-motion:reduce){ .a2hs{transition:opacity .2s ease;transform:none;} .a2hs.in{transform:none;} }
+
   @media (max-width:680px){
     /* Top bar becomes a slim app title bar; nav moves to the bottom */
     .topnav .tabs{display:none;}
@@ -1723,6 +1758,23 @@
   </a>
 </nav>
 
+<div id="a2hs" class="a2hs" role="dialog" aria-label="Install The Garage" aria-hidden="true">
+  <div class="a2hs-card">
+    <button class="a2hs-x" type="button" aria-label="Dismiss">&times;</button>
+    <div class="a2hs-ico" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2" transform="rotate(45 12 12)" fill="#d83a29"/></svg>
+    </div>
+    <div class="a2hs-body">
+      <strong>Install The Garage</strong>
+      <span class="a2hs-sub">Add it to your home screen for the full app.</span>
+      <span class="a2hs-ios">Tap <span class="sg">Share</span>, then <b>Add to Home Screen</b>.</span>
+    </div>
+    <div class="a2hs-actions">
+      <button class="a2hs-install" type="button">Install</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   var views = ['garage','daily','moto','car'];
@@ -1741,6 +1793,62 @@
   }
   window.addEventListener('hashchange', route);
   route();
+})();
+</script>
+
+<script>
+// Service worker — enables offline + the Android install prompt.
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  });
+}
+</script>
+
+<script>
+// Install prompt (Add to Home Screen)
+(function () {
+  var KEY = 'garage_a2hs_v1';
+  var el = document.getElementById('a2hs');
+  if (!el) return;
+  var installBtn = el.querySelector('.a2hs-install');
+  var xBtn = el.querySelector('.a2hs-x');
+  var deferred = null;
+
+  function standalone() {
+    return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+  }
+  function isIOS() { return /iphone|ipad|ipod/i.test(navigator.userAgent); }
+  function dismissed() { try { return localStorage.getItem(KEY) === '1'; } catch (e) { return false; } }
+  function remember() { try { localStorage.setItem(KEY, '1'); } catch (e) {} }
+  function show() {
+    if (dismissed() || standalone()) return;
+    el.setAttribute('aria-hidden', 'false');
+    requestAnimationFrame(function () { el.classList.add('in'); });
+  }
+  function hide() { el.classList.remove('in'); el.setAttribute('aria-hidden', 'true'); }
+
+  xBtn.addEventListener('click', function () { hide(); remember(); });
+
+  // Android / desktop Chrome: capture the native prompt and show our banner.
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferred = e;
+    el.classList.remove('ios');
+    show();
+  });
+  installBtn.addEventListener('click', function () {
+    if (!deferred) return;
+    deferred.prompt();
+    deferred.userChoice.then(function () { deferred = null; hide(); remember(); });
+  });
+  window.addEventListener('appinstalled', function () { hide(); remember(); });
+
+  // iOS Safari: no prompt event — show Add-to-Home-Screen instructions instead.
+  if (isIOS() && !standalone() && !dismissed()) {
+    el.classList.add('ios');
+    window.addEventListener('load', function () { setTimeout(show, 1400); });
+  }
 })();
 </script>
 
