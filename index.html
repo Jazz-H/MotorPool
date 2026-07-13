@@ -556,6 +556,13 @@
     font-size:1.05rem;line-height:1;padding:0 2px;vertical-align:middle;-webkit-tap-highlight-color:transparent;}
   .amt .modrm:hover{color:var(--redline-deep);}
   .amt .modrm:focus-visible{outline:2px solid var(--amber);outline-offset:1px;border-radius:3px;}
+  .modgrip{display:inline-block;margin-right:9px;color:var(--ink-faint);cursor:grab;
+    touch-action:none;-webkit-tap-highlight-color:transparent;font-size:.95rem;line-height:1;
+    vertical-align:middle;user-select:none;-webkit-user-select:none;letter-spacing:-1px;}
+  .modgrip:active{cursor:grabbing;color:var(--ink);}
+  #modLedger .ledger-row.dragging{opacity:.9;background:var(--paper-dim);
+    box-shadow:0 8px 20px rgba(0,0,0,.22);position:relative;z-index:5;border-radius:4px;}
+  #modLedger .ledger-row.dragging .modgrip{cursor:grabbing;color:var(--redline);}
 
   /* ---------- ADD-MOD FORM ---------- */
   .modadd{background:var(--steel-850);border:1px solid var(--line-steel-strong);border-radius:8px;
@@ -2262,14 +2269,18 @@ if ('serviceWorker' in navigator) {
     });
   }
 
+  function uid() { return 'm' + Math.random().toString(36).slice(2, 9); }
   function renderUser() {
     Array.prototype.forEach.call(ledger.querySelectorAll('.ledger-row[data-user]'), function (r) { r.remove(); });
-    var arr = load();
+    var arr = load(), dirty = false;
+    arr.forEach(function (m) { if (!m.id) { m.id = uid(); dirty = true; } });
+    if (dirty) save(arr);
     var firstSub = ledger.querySelector('.ledger-row.sub');
     arr.forEach(function (m, i) {
       var row = document.createElement('div');
       row.className = 'ledger-row' + (m.bought ? ' done' : '');
       row.dataset.user = '1';
+      row.dataset.uid = m.id;
       var badge = m.bought ? '<span class="owned">Bought &check;</span>' : '';
       var note = m.note ? '<small>' + esc(m.note) + '</small>' : '';
       row.innerHTML = '<span class="item">' + esc(m.name) + ' ' + badge + note + '</span>' +
@@ -2301,6 +2312,61 @@ if ('serviceWorker' in navigator) {
     });
   }
 
+  // ----- drag-to-reorder (pointer-based, works on touch + mouse) -----
+  var OKEY = 'mp.mods.order';
+  function loadOrder() { try { return JSON.parse(localStorage.getItem(OKEY) || '[]'); } catch (e) { return []; } }
+  function reorderRows() {
+    return Array.prototype.filter.call(ledger.querySelectorAll('.ledger-row'), function (r) {
+      return !r.classList.contains('sub') && !r.classList.contains('total');
+    });
+  }
+  function rowKey(r) { return r.dataset.user ? 'u:' + (r.dataset.uid || '') : 's:' + (r.dataset.seed || seedKey(r)); }
+  function saveOrder() { try { localStorage.setItem(OKEY, JSON.stringify(reorderRows().map(rowKey))); } catch (e) {} }
+  function applyOrder() {
+    var order = loadOrder(); if (!order.length) return;
+    var firstSub = ledger.querySelector('.ledger-row.sub');
+    var map = {}; reorderRows().forEach(function (r) { map[rowKey(r)] = r; });
+    order.forEach(function (k) { if (map[k]) { ledger.insertBefore(map[k], firstSub); delete map[k]; } });
+  }
+  var drag = null;
+  function onMove(e) {
+    if (!drag) return;
+    var y = e.clientY, firstSub = ledger.querySelector('.ledger-row.sub'), placed = false;
+    reorderRows().forEach(function (r) {
+      if (placed || r === drag.row) return;
+      var rect = r.getBoundingClientRect();
+      if (y < rect.top + rect.height / 2) { ledger.insertBefore(drag.row, r); placed = true; }
+    });
+    if (!placed) ledger.insertBefore(drag.row, firstSub);
+  }
+  function endDrag() {
+    if (!drag) return;
+    drag.row.classList.remove('dragging');
+    var g = drag.grip;
+    try { g.releasePointerCapture(drag.pointerId); } catch (e) {}
+    g.removeEventListener('pointermove', onMove);
+    g.removeEventListener('pointerup', endDrag);
+    g.removeEventListener('pointercancel', endDrag);
+    drag = null; saveOrder();
+  }
+  function addGrip(r) {
+    var it = r.querySelector('.item'); if (!it || it.querySelector('.modgrip')) return;
+    var g = document.createElement('span');
+    g.className = 'modgrip'; g.setAttribute('aria-hidden', 'true'); g.title = 'Drag to reorder';
+    g.innerHTML = '&#9776;';
+    it.insertBefore(g, it.firstChild);
+    g.addEventListener('pointerdown', function (e) {
+      e.preventDefault();
+      drag = { row: r, grip: g, pointerId: e.pointerId };
+      r.classList.add('dragging');
+      try { g.setPointerCapture(e.pointerId); } catch (err) {}
+      g.addEventListener('pointermove', onMove);
+      g.addEventListener('pointerup', endDrag);
+      g.addEventListener('pointercancel', endDrag);
+    });
+  }
+  function initReorder() { reorderRows().forEach(addGrip); applyOrder(); }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var name = form.querySelector('.modadd-name').value.trim();
@@ -2308,9 +2374,9 @@ if ('serviceWorker' in navigator) {
     var note = form.querySelector('.modadd-note').value.trim();
     var bought = form.querySelector('.modadd-boughtcb').checked;
     if (!name || !(price > 0)) return;
-    var arr = load(); arr.push({ name: name, price: price, note: note, bought: bought }); save(arr);
+    var arr = load(); arr.push({ id: uid(), name: name, price: price, note: note, bought: bought }); save(arr);
     form.reset();
-    renderUser(); recompute();
+    renderUser(); initReorder(); recompute(); saveOrder();
     form.querySelector('.modadd-name').focus();
   });
 
@@ -2321,15 +2387,16 @@ if ('serviceWorker' in navigator) {
     if (seed) {
       var rm = loadRm(); if (rm.indexOf(seed) === -1) rm.push(seed); saveRm(rm);
       var row = btn.closest('.ledger-row'); if (row) row.remove();
-      recompute(); return;
+      recompute(); saveOrder(); return;
     }
     var idx = parseInt(btn.getAttribute('data-idx'), 10);
     var arr = load();
-    if (idx >= 0 && idx < arr.length) { arr.splice(idx, 1); save(arr); renderUser(); recompute(); }
+    if (idx >= 0 && idx < arr.length) { arr.splice(idx, 1); save(arr); renderUser(); initReorder(); recompute(); saveOrder(); }
   });
 
   initSeeds();
   renderUser();
+  initReorder();
   recompute();
 })();
 </script>
