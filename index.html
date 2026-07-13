@@ -2236,6 +2236,32 @@ if ('serviceWorker' in navigator) {
     });
   }
 
+  // Make the built-in (hardcoded) mod rows removable too, with removals persisted.
+  var RKEY = 'mp.mods.rmseed';
+  function loadRm() { try { return JSON.parse(localStorage.getItem(RKEY) || '[]'); } catch (e) { return []; } }
+  function saveRm(a) { try { localStorage.setItem(RKEY, JSON.stringify(a)); } catch (e) {} }
+  function seedKey(r) {
+    var it = r.querySelector('.item');
+    var nm = it ? (it.childNodes[0] ? it.childNodes[0].textContent : it.textContent) : '';
+    return (nm || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  }
+  function initSeeds() {
+    var removed = loadRm();
+    seedRows().forEach(function (r) {
+      var key = seedKey(r);
+      r.dataset.seed = key;
+      if (removed.indexOf(key) !== -1) { r.remove(); return; }
+      var amt = r.querySelector('.amt');
+      if (amt && !amt.querySelector('.modrm')) {
+        var btn = document.createElement('button');
+        btn.className = 'modrm'; btn.type = 'button';
+        btn.setAttribute('aria-label', 'Remove mod'); btn.setAttribute('data-seed', key);
+        btn.innerHTML = '&times;';
+        amt.appendChild(btn);
+      }
+    });
+  }
+
   function renderUser() {
     Array.prototype.forEach.call(ledger.querySelectorAll('.ledger-row[data-user]'), function (r) { r.remove(); });
     var arr = load();
@@ -2291,11 +2317,18 @@ if ('serviceWorker' in navigator) {
   ledger.addEventListener('click', function (e) {
     var btn = e.target.closest('.modrm');
     if (!btn) return;
+    var seed = btn.getAttribute('data-seed');
+    if (seed) {
+      var rm = loadRm(); if (rm.indexOf(seed) === -1) rm.push(seed); saveRm(rm);
+      var row = btn.closest('.ledger-row'); if (row) row.remove();
+      recompute(); return;
+    }
     var idx = parseInt(btn.getAttribute('data-idx'), 10);
     var arr = load();
     if (idx >= 0 && idx < arr.length) { arr.splice(idx, 1); save(arr); renderUser(); recompute(); }
   });
 
+  initSeeds();
   renderUser();
   recompute();
 })();
