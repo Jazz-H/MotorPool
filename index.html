@@ -563,6 +563,17 @@
   #modLedger .ledger-row.dragging{opacity:.9;background:var(--paper-dim);
     box-shadow:0 8px 20px rgba(0,0,0,.22);position:relative;z-index:5;border-radius:4px;}
   #modLedger .ledger-row.dragging .modgrip{cursor:grabbing;color:var(--redline);}
+  #modLedger .boughthead{cursor:pointer;background:var(--paper-dim);user-select:none;-webkit-user-select:none;
+    -webkit-tap-highlight-color:transparent;}
+  #modLedger .boughthead .item{font-family:"Saira Condensed",sans-serif;font-weight:700;text-transform:uppercase;
+    letter-spacing:.02em;font-size:.98rem;color:var(--ink);}
+  #modLedger .boughthead .bh-count{font-family:"IBM Plex Sans",sans-serif;text-transform:none;letter-spacing:0;
+    font-weight:400;color:var(--ink-soft);}
+  #modLedger .boughthead .chev{display:inline-block;transition:transform .15s ease;color:var(--ink-soft);
+    margin-right:6px;font-size:.8rem;}
+  #modLedger .boughthead.open .chev{transform:rotate(90deg);}
+  #modLedger .boughthead .bh-sum{color:var(--ink-soft);font-weight:600;}
+  #modLedger.bought-collapsed .ledger-row.done{display:none;}
 
   /* ---------- ADD-MOD FORM ---------- */
   .modadd{background:var(--steel-850);border:1px solid var(--line-steel-strong);border-radius:8px;
@@ -2239,7 +2250,7 @@ if ('serviceWorker' in navigator) {
 
   function seedRows() {
     return Array.prototype.filter.call(ledger.querySelectorAll('.ledger-row'), function (r) {
-      return !r.classList.contains('sub') && !r.classList.contains('total') && !r.dataset.user;
+      return !r.classList.contains('sub') && !r.classList.contains('total') && !r.classList.contains('boughthead') && !r.dataset.user;
     });
   }
 
@@ -2317,7 +2328,7 @@ if ('serviceWorker' in navigator) {
   function loadOrder() { try { return JSON.parse(localStorage.getItem(OKEY) || '[]'); } catch (e) { return []; } }
   function reorderRows() {
     return Array.prototype.filter.call(ledger.querySelectorAll('.ledger-row'), function (r) {
-      return !r.classList.contains('sub') && !r.classList.contains('total');
+      return !r.classList.contains('sub') && !r.classList.contains('total') && !r.classList.contains('boughthead');
     });
   }
   function rowKey(r) { return r.dataset.user ? 'u:' + (r.dataset.uid || '') : 's:' + (r.dataset.seed || seedKey(r)); }
@@ -2367,6 +2378,34 @@ if ('serviceWorker' in navigator) {
   }
   function initReorder() { reorderRows().forEach(addGrip); applyOrder(); }
 
+  // ----- group bought mods into a collapsible section at the bottom -----
+  var BCKEY = 'mp.mods.boughtcollapsed';
+  function boughtCollapsed() { try { return localStorage.getItem(BCKEY) !== '0'; } catch (e) { return true; } }
+  function setBoughtCollapsed(v) { try { localStorage.setItem(BCKEY, v ? '1' : '0'); } catch (e) {} }
+  function groupBought() {
+    var firstSub = ledger.querySelector('.ledger-row.sub');
+    var done = reorderRows().filter(function (r) { return r.classList.contains('done'); });
+    var head = ledger.querySelector('.boughthead');
+    if (!done.length) { if (head) head.remove(); ledger.classList.remove('bought-collapsed'); return; }
+    if (!head) {
+      head = document.createElement('div');
+      head.className = 'ledger-row boughthead';
+      head.innerHTML = '<span class="item"><span class="chev">&#9656;</span>Bought <small class="bh-count"></small></span><span class="amt bh-sum"></span>';
+      head.addEventListener('click', function () {
+        var c = !boughtCollapsed(); setBoughtCollapsed(c);
+        ledger.classList.toggle('bought-collapsed', c); head.classList.toggle('open', !c);
+      });
+    }
+    ledger.insertBefore(head, firstSub);
+    var sum = 0;
+    done.forEach(function (r) { sum += parseAmt(r.querySelector('.amt').textContent); ledger.insertBefore(r, firstSub); });
+    var cnt = head.querySelector('.bh-count'); if (cnt) cnt.textContent = '· ' + done.length + ' installed';
+    var sm = head.querySelector('.bh-sum'); if (sm) sm.textContent = money(sum);
+    var collapsed = boughtCollapsed();
+    ledger.classList.toggle('bought-collapsed', collapsed);
+    head.classList.toggle('open', !collapsed);
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var name = form.querySelector('.modadd-name').value.trim();
@@ -2376,7 +2415,7 @@ if ('serviceWorker' in navigator) {
     if (!name || !(price > 0)) return;
     var arr = load(); arr.push({ id: uid(), name: name, price: price, note: note, bought: bought }); save(arr);
     form.reset();
-    renderUser(); initReorder(); recompute(); saveOrder();
+    renderUser(); initReorder(); groupBought(); recompute(); saveOrder();
     form.querySelector('.modadd-name').focus();
   });
 
@@ -2387,16 +2426,17 @@ if ('serviceWorker' in navigator) {
     if (seed) {
       var rm = loadRm(); if (rm.indexOf(seed) === -1) rm.push(seed); saveRm(rm);
       var row = btn.closest('.ledger-row'); if (row) row.remove();
-      recompute(); saveOrder(); return;
+      groupBought(); recompute(); saveOrder(); return;
     }
     var idx = parseInt(btn.getAttribute('data-idx'), 10);
     var arr = load();
-    if (idx >= 0 && idx < arr.length) { arr.splice(idx, 1); save(arr); renderUser(); initReorder(); recompute(); saveOrder(); }
+    if (idx >= 0 && idx < arr.length) { arr.splice(idx, 1); save(arr); renderUser(); initReorder(); groupBought(); recompute(); saveOrder(); }
   });
 
   initSeeds();
   renderUser();
   initReorder();
+  groupBought();
   recompute();
 })();
 </script>
