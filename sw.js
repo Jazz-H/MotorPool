@@ -1,9 +1,10 @@
 /* The Garage — service worker: network-first for HTML, cache-first for assets. */
-var CACHE = 'motorpool-v3';
+var CACHE = 'motorpool-v4';
 var ASSETS = [
   './',
   './index.html',
   './manifest.webmanifest',
+  './mustang-hero.jpg',
   './icon-192.png',
   './icon-512.png',
   './apple-touch-icon.png',
