@@ -480,6 +480,11 @@
     letter-spacing:.04em;max-width:520px;margin:0 auto;line-height:1.7;}
   footer .sig{margin-top:18px;font-family:"Saira Condensed",sans-serif;font-weight:700;
     text-transform:uppercase;letter-spacing:.3em;color:var(--steel-700);font-size:.9rem;}
+  .fnote-x{border:none;background:transparent;color:var(--ink-faint);cursor:pointer;font-size:1.15rem;line-height:1;
+    padding:2px 6px;margin-left:6px;vertical-align:middle;opacity:.65;-webkit-tap-highlight-color:transparent;
+    transition:opacity .15s,color .15s;}
+  .fnote-x:hover{color:var(--paper);opacity:1;}
+  .fnote-x:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
 
   /* ---------- RESPONSIVE — mobile-first, scale up with min-width ---------- */
   /* Base styles above target the phone. These queries add columns and
@@ -2425,10 +2430,18 @@
 </div>
 </section>
 
-<footer>
-  <p class="fnote">Motorpool &mdash; one daily, two builds, one bench. Prices reflect mid-2026; condition and region swing them hard.</p>
+<footer id="siteFooter">
+  <p class="fnote">Motorpool &mdash; one daily, two builds, one bench. Prices reflect mid-2026; condition and region swing them hard.<button type="button" class="fnote-x" id="footerDismiss" aria-label="Dismiss this note">&times;</button></p>
   <div class="sig">Build both</div>
 </footer>
+<script>
+// Footer note is dismissible — once a user dismisses it, it stays gone.
+(function(){var f=document.getElementById('siteFooter');if(!f)return;
+  try{if(localStorage.getItem('mp.footer.dismissed')){f.hidden=true;return;}}catch(e){}
+  var x=document.getElementById('footerDismiss');
+  if(x)x.addEventListener('click',function(){f.hidden=true;try{localStorage.setItem('mp.footer.dismissed','1');}catch(e){}});
+})();
+</script>
 
 <nav class="tabbar" aria-label="Primary">
   <a id="btab-garage" class="tabbar-item active" href="#garage" aria-label="Hub">
