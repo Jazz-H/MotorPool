@@ -498,6 +498,21 @@
   .data-btn:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
   .data-status{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--amber);letter-spacing:.02em;min-height:1em;}
 
+  /* live daily-driver glance on the Hub */
+  .daily-glance{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center;justify-content:space-between;
+    background:var(--paper);color:var(--ink);border:1px solid var(--paper-edge);border-radius:6px;
+    box-shadow:var(--shadow);padding:15px 20px;margin-bottom:16px;text-decoration:none;
+    transition:transform .16s ease,box-shadow .16s ease;}
+  .dg-ey{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--redline);font-weight:600;display:block;margin-bottom:4px;}
+  .dg-name{font-family:"Saira Condensed",sans-serif;font-weight:700;text-transform:uppercase;font-size:1.25rem;letter-spacing:.01em;line-height:1;}
+  .dg-stats{display:flex;align-items:center;gap:24px;}
+  .dg-stat{display:flex;flex-direction:column;gap:3px;}
+  .dg-stat b{font-family:"Saira Condensed",sans-serif;font-weight:700;font-size:1.3rem;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums;}
+  .dg-stat small{font-family:"IBM Plex Mono",monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+  .dg-arrow{font-size:1.1rem;color:var(--redline);}
+  @media (hover:hover){ .daily-glance:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,0,0,.3);} }
+  .daily-glance:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+
   /* ============ DESKTOP LAYER — Pass 1: Hub + Garage (mobile untouched) ============ */
   @media (min-width:960px){
     .topnav-inner,.whatsnew-inner{max-width:1180px;}
@@ -908,6 +923,15 @@
 
     <section>
       <div class="sec-head"><span class="sec-num">&#9670;</span><h2>Projects</h2></div>
+      <a class="daily-glance" href="#daily">
+        <div><span class="dg-ey">Daily &middot; owned</span><span class="dg-name">2026 Mustang <b>&ldquo;starkv3.0&rdquo;</b></span></div>
+        <div class="dg-stats">
+          <span class="dg-stat"><b id="hubEquity">&mdash;</b><small>equity</small></span>
+          <span class="dg-stat"><b id="hubModSpent">&mdash;</b><small>mods in hand</small></span>
+          <span class="dg-stat"><b id="hubModCount">&mdash;</b><small>mods logged</small></span>
+          <span class="dg-arrow" aria-hidden="true">&rarr;</span>
+        </div>
+      </a>
       <div class="proj-grid">
 
         <div class="proj-tile">
@@ -2468,6 +2492,8 @@ if ('serviceWorker' in navigator) {
         if (v) v.innerHTML = (spentN + buyN) + '<small> &middot; $' + ((spent + toBuy) / 1000).toFixed(2) + 'k</small>';
       }
     });
+    var hs = document.getElementById('hubModSpent'); if (hs) hs.textContent = '$' + Math.round(spent).toLocaleString('en-US');
+    var hc = document.getElementById('hubModCount'); if (hc) hc.textContent = (spentN + buyN);
   }
 
   // ----- drag-to-reorder (pointer-based, works on touch + mouse) -----
@@ -2716,6 +2742,8 @@ if ('serviceWorker' in navigator) {
     }
     if (eqNote) eqNote.textContent = (eq >= 0 ? 'above water' : 'underwater') + ' · private − owed';
     if (ltvEl) ltvEl.textContent = priv > 0 ? Math.round(owed / priv * 100) + '%' : '—';
+    var hubEq = document.getElementById('hubEquity');
+    if (hubEq) { hubEq.textContent = (eq < 0 ? '−' : '') + money(Math.abs(eq)); hubEq.style.color = eq >= 0 ? '#4f9e6a' : 'var(--redline-deep)'; }
   }
   keys.forEach(function (k) {
     if (!inp[k]) return;
