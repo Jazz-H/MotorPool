@@ -731,6 +731,25 @@
     padding:0 2px;flex:0 0 auto;-webkit-tap-highlight-color:transparent;}
   .uc-rm:hover{color:var(--redline-deep);}
   .uc-rm:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
+  /* Candidate decision status */
+  .uc-head-actions{display:flex;align-items:center;gap:8px;flex:0 0 auto;}
+  .uc-status{position:relative;display:inline-flex;align-items:center;}
+  .uc-status select{appearance:none;-webkit-appearance:none;font-family:"IBM Plex Mono",monospace;
+    font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--ink-soft);
+    background:var(--paper-2,#efece5);border:1px solid var(--line-strong);border-radius:999px;
+    padding:5px 22px 5px 11px;cursor:pointer;line-height:1;-webkit-tap-highlight-color:transparent;}
+  .uc-status::after{content:"";position:absolute;right:9px;top:50%;width:5px;height:5px;pointer-events:none;
+    border-right:1.5px solid var(--ink-soft);border-bottom:1.5px solid var(--ink-soft);transform:translateY(-70%) rotate(45deg);}
+  .uc-status select:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+  .cand-card.st-front{border-color:var(--amber);box-shadow:0 0 0 1px var(--amber),0 6px 20px -12px rgba(0,0,0,.5);}
+  .cand-card.st-front .uc-status select{color:#8a5a00;border-color:var(--amber);background:#fbf3df;}
+  .cand-card.st-front .uc-status::after{border-color:#8a5a00;}
+  .cand-card.st-bought{border-color:#4f9e6a;}
+  .cand-card.st-bought .uc-status select{color:#2f7a4a;border-color:#8fc9a6;background:#eaf6ee;}
+  .cand-card.st-bought .uc-status::after{border-color:#2f7a4a;}
+  .cand-card.st-passed{opacity:.62;}
+  .cand-card.st-passed .uc-name{color:var(--ink-soft);text-decoration:line-through;text-decoration-color:var(--ink-faint);}
+  .cand-card.st-passed .uc-status select{color:var(--ink-faint);}
   .addcand{display:block;width:100%;margin-bottom:16px;font-family:"Saira Condensed",sans-serif;font-weight:700;
     text-transform:uppercase;letter-spacing:.04em;font-size:.98rem;color:var(--paper);background:var(--steel-850);
     border:1px dashed var(--line-steel-strong);border-radius:6px;padding:15px;cursor:pointer;
@@ -2640,11 +2659,27 @@ if ('serviceWorker' in navigator) {
     return '<div class="cand-fact"><span class="k">' + label + '</span>' +
       '<input class="uc-f" data-f="' + f + '" maxlength="24" placeholder="' + ph + '" value="' + attr(val) + '"></div>';
   }
+  var STATUSES = [
+    { v: 'watch', label: 'Watching' },
+    { v: 'front', label: 'Front-runner' },
+    { v: 'passed', label: 'Passed' },
+    { v: 'bought', label: 'Bought' }
+  ];
+  var RANK = { front: 0, watch: 1, bought: 2, passed: 3 };
+  function statusSelect(cur) {
+    cur = cur || 'watch';
+    var opts = STATUSES.map(function (s) {
+      return '<option value="' + s.v + '"' + (s.v === cur ? ' selected' : '') + '>' + s.label + '</option>';
+    }).join('');
+    return '<span class="uc-status"><select class="uc-st" aria-label="Candidate status">' + opts + '</select></span>';
+  }
   function cardHtml(c, i) {
-    return '<article class="cand-card usercand" data-idx="' + i + '">' +
+    var st = c.status || 'watch';
+    return '<article class="cand-card usercand st-' + st + '" data-idx="' + i + '">' +
       '<div class="cand-top"><div><span class="cand-ey">Your candidate</span>' +
       '<input class="uc-name" data-f="name" maxlength="60" placeholder="Year / make / model" value="' + attr(c.name) + '"></div>' +
-      '<button class="uc-rm" type="button" aria-label="Remove candidate">&times;</button></div>' +
+      '<div class="uc-head-actions">' + statusSelect(st) +
+      '<button class="uc-rm" type="button" aria-label="Remove candidate">&times;</button></div></div>' +
       '<div class="cand-facts">' +
       fact('Price', 'price', '$', c.price) + fact('Miles', 'miles', '—', c.miles) +
       fact('Title', 'title', 'clean?', c.title) + fact('Location', 'loc', '—', c.loc) +
@@ -2653,8 +2688,16 @@ if ('serviceWorker' in navigator) {
       'placeholder="Notes — mods, condition, target offer…" value="' + attr(c.note) + '"></div>' +
       '</article>';
   }
+  // Stable sort by decision rank: front-runners rise, passed sink, insertion order otherwise.
+  function ordered(arr) {
+    return arr.map(function (c, i) { return { c: c, i: i }; })
+      .sort(function (a, b) {
+        var ra = RANK[a.c.status || 'watch'], rb = RANK[b.c.status || 'watch'];
+        return ra === rb ? a.i - b.i : ra - rb;
+      });
+  }
   function render(container, scope) {
-    container.innerHTML = load(scope).map(cardHtml).join('');
+    container.innerHTML = ordered(load(scope)).map(function (o) { return cardHtml(o.c, o.i); }).join('');
   }
 
   var heads = document.querySelectorAll('.sec-head h2');
@@ -2690,6 +2733,14 @@ if ('serviceWorker' in navigator) {
       var idx = parseInt(card.getAttribute('data-idx'), 10);
       var arr = load(scope);
       if (arr[idx]) { arr[idx][inp.getAttribute('data-f')] = inp.value; save(scope, arr); }
+    });
+    container.addEventListener('change', function (e) {
+      var sel = e.target.closest('.uc-st');
+      if (!sel) return;
+      var card = sel.closest('.cand-card.usercand');
+      var idx = parseInt(card.getAttribute('data-idx'), 10);
+      var arr = load(scope);
+      if (arr[idx]) { arr[idx].status = sel.value; save(scope, arr); render(container, scope); }
     });
     container.addEventListener('click', function (e) {
       var rm = e.target.closest('.uc-rm');
