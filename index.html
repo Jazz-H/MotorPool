@@ -927,9 +927,15 @@
     .gauge{width:146px;height:79px;margin-bottom:2px;}
     .gauge-cap{margin:-2px 0 13px;font-size:.6rem;}
     .hero h1{font-size:clamp(2.35rem,10.5vw,3rem);}
-    .hero-sub{font-size:.94rem;margin:12px auto 16px;max-width:36ch;}
-    .chips{gap:7px;}
-    .chip{font-size:.7rem;padding:6px 10px;}
+    /* Drop the page subtitle on mobile — the title + pills carry it */
+    .hero-sub{display:none;}
+    /* Collapse the stat pills into one compact, horizontally-scrollable row */
+    .hero{padding-top:24px;}
+    .chips{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;gap:7px;
+      margin:14px -18px 0;padding:2px 18px;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+      -webkit-mask-image:linear-gradient(90deg,#000 92%,transparent);mask-image:linear-gradient(90deg,#000 92%,transparent);}
+    .chips::-webkit-scrollbar{display:none;}
+    .chip{flex:0 0 auto;font-size:.7rem;padding:6px 10px;}
 
     /* Touch tap-target sizing for small controls */
     .uc-status select{padding:10px 24px 10px 13px;font-size:.64rem;}
