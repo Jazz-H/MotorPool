@@ -645,6 +645,15 @@
     font-size:1.05rem;line-height:1;padding:0 2px;vertical-align:middle;-webkit-tap-highlight-color:transparent;}
   .amt .modrm:hover{color:var(--redline-deep);}
   .amt .modrm:focus-visible{outline:2px solid var(--amber);outline-offset:1px;border-radius:3px;}
+  .amt .modbought{appearance:none;-webkit-appearance:none;border:none;background:transparent;cursor:pointer;
+    padding:0;margin-left:10px;vertical-align:middle;-webkit-tap-highlight-color:transparent;line-height:0;}
+  .amt .modbought .mb-dot{display:inline-block;width:15px;height:15px;border-radius:50%;
+    border:2px solid var(--line-strong);background:transparent;position:relative;transition:background .12s,border-color .12s;}
+  .amt .modbought:hover .mb-dot{border-color:var(--redline);}
+  .amt .modbought.on .mb-dot{background:var(--redline);border-color:var(--redline);}
+  .amt .modbought.on .mb-dot::after{content:"";position:absolute;left:4px;top:1px;width:4px;height:8px;
+    border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);}
+  .amt .modbought:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:50%;}
   .modgrip{display:inline-block;margin-right:9px;color:var(--ink-faint);cursor:grab;
     touch-action:none;-webkit-tap-highlight-color:transparent;font-size:.95rem;line-height:1;
     vertical-align:middle;user-select:none;-webkit-user-select:none;letter-spacing:-1px;}
@@ -2374,8 +2383,32 @@ if ('serviceWorker' in navigator) {
     var nm = it ? (it.childNodes[0] ? it.childNodes[0].textContent : it.textContent) : '';
     return (nm || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   }
+  // Bought toggle — mark any mod bought/planned; overrides for seed rows persist by key.
+  var SBKEY = 'mp.mods.seedbought';
+  function loadSB() { try { return JSON.parse(localStorage.getItem(SBKEY) || '{}'); } catch (e) { return {}; } }
+  function saveSB(o) { try { localStorage.setItem(SBKEY, JSON.stringify(o)); } catch (e) {} }
+  function setDone(row, done) {
+    row.classList.toggle('done', done);
+    var it = row.querySelector('.item'), badge = it.querySelector('.owned');
+    if (done && !badge) {
+      badge = document.createElement('span'); badge.className = 'owned'; badge.innerHTML = 'Bought &check;';
+      var small = it.querySelector('small');
+      if (small) it.insertBefore(badge, small); else it.appendChild(badge);
+    } else if (!done && badge) { badge.remove(); }
+    var tog = row.querySelector('.modbought');
+    if (tog) { tog.classList.toggle('on', done); tog.setAttribute('aria-pressed', done ? 'true' : 'false');
+      tog.setAttribute('aria-label', done ? 'Mark as not bought' : 'Mark as bought'); }
+  }
+  function addBoughtToggle(row) {
+    var amt = row.querySelector('.amt'); if (!amt || amt.querySelector('.modbought')) return;
+    var t = document.createElement('button'); t.type = 'button'; t.className = 'modbought';
+    t.innerHTML = '<span class="mb-dot"></span>';
+    var rm = amt.querySelector('.modrm');
+    if (rm) amt.insertBefore(t, rm); else amt.appendChild(t);
+    setDone(row, row.classList.contains('done'));
+  }
   function initSeeds() {
-    var removed = loadRm();
+    var removed = loadRm(), sb = loadSB();
     seedRows().forEach(function (r) {
       var key = seedKey(r);
       r.dataset.seed = key;
@@ -2388,6 +2421,8 @@ if ('serviceWorker' in navigator) {
         btn.innerHTML = '&times;';
         amt.appendChild(btn);
       }
+      addBoughtToggle(r);
+      if (Object.prototype.hasOwnProperty.call(sb, key)) setDone(r, !!sb[key]);
     });
   }
 
@@ -2407,6 +2442,7 @@ if ('serviceWorker' in navigator) {
       var note = m.note ? '<small>' + esc(m.note) + '</small>' : '';
       row.innerHTML = '<span class="item">' + esc(m.name) + ' ' + badge + note + '</span>' +
         '<span class="amt">' + money(m.price) + '<button class="modrm" type="button" aria-label="Remove mod" data-idx="' + i + '">&times;</button></span>';
+      addBoughtToggle(row);
       ledger.insertBefore(row, firstSub);
     });
   }
@@ -2531,6 +2567,20 @@ if ('serviceWorker' in navigator) {
   });
 
   ledger.addEventListener('click', function (e) {
+    var tog = e.target.closest('.modbought');
+    if (tog) {
+      var trow = tog.closest('.ledger-row'); if (!trow) return;
+      var nowDone = !trow.classList.contains('done');
+      setDone(trow, nowDone);
+      if (trow.dataset.user) {
+        var uidv = trow.dataset.uid, arr2 = load();
+        for (var j = 0; j < arr2.length; j++) { if (arr2[j].id === uidv) { arr2[j].bought = nowDone; break; } }
+        save(arr2);
+      } else {
+        var sk = trow.dataset.seed || seedKey(trow), sb = loadSB(); sb[sk] = nowDone; saveSB(sb);
+      }
+      groupBought(); recompute(); saveOrder(); return;
+    }
     var btn = e.target.closest('.modrm');
     if (!btn) return;
     var seed = btn.getAttribute('data-seed');
