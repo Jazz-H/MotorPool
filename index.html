@@ -159,6 +159,9 @@
   .ledger-row .item{font-weight:500;}
   .ledger-row .item small{display:block;color:var(--ink-soft);font-weight:400;font-size:.82rem;}
   .ledger-row .amt{font-family:"IBM Plex Mono",monospace;font-weight:500;white-space:nowrap;color:#2a2d31;}
+  .ledger-row .amt .amt-val{cursor:text;border-radius:3px;padding:0 3px;outline:none;transition:background .12s,box-shadow .12s;}
+  @media (hover:hover){ .ledger-row .amt .amt-val:hover{background:rgba(216,58,41,.07);box-shadow:inset 0 -1px 0 var(--line-strong);} }
+  .ledger-row .amt .amt-val:focus{background:#fff;box-shadow:inset 0 -1.5px 0 var(--amber);color:#1a1c1e;}
   .ledger-row.total{background:var(--paper-dim);border-top:2px solid var(--ink);}
   .ledger-row.total .item{font-family:"Saira Condensed",sans-serif;font-weight:700;text-transform:uppercase;font-size:1.15rem;letter-spacing:.02em;}
   .ledger-row.total .amt{font-weight:600;color:var(--redline-deep);}
@@ -2446,6 +2449,27 @@ if ('serviceWorker' in navigator) {
     var nm = it ? (it.childNodes[0] ? it.childNodes[0].textContent : it.textContent) : '';
     return (nm || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   }
+  // Editable prices — persist per-seed price overrides by key; user prices live on the item.
+  var SPKEY = 'mp.mods.seedprice';
+  function loadSP() { try { return JSON.parse(localStorage.getItem(SPKEY) || '{}'); } catch (e) { return {}; } }
+  function saveSP(o) { try { localStorage.setItem(SPKEY, JSON.stringify(o)); } catch (e) {} }
+  // Wrap the leading price text of a row's .amt in an editable span (idempotent).
+  function makePriceEditable(row) {
+    var amt = row.querySelector('.amt');
+    if (!amt || amt.querySelector('.amt-val')) return;
+    var node = amt.firstChild;
+    while (node && node.nodeType === 3 && !node.textContent.trim()) node = node.nextSibling;
+    var span = document.createElement('span');
+    span.className = 'amt-val';
+    span.setAttribute('contenteditable', 'true');
+    span.setAttribute('inputmode', 'decimal');
+    span.setAttribute('role', 'textbox');
+    span.setAttribute('aria-label', 'Edit price');
+    span.textContent = (node && node.nodeType === 3) ? node.textContent.trim() : '';
+    if (node && node.nodeType === 3) amt.replaceChild(span, node);
+    else amt.insertBefore(span, amt.firstChild);
+  }
+
   // Bought toggle — mark any mod bought/planned; overrides for seed rows persist by key.
   var SBKEY = 'mp.mods.seedbought';
   function loadSB() { try { return JSON.parse(localStorage.getItem(SBKEY) || '{}'); } catch (e) { return {}; } }
@@ -2471,11 +2495,15 @@ if ('serviceWorker' in navigator) {
     setDone(row, row.classList.contains('done'));
   }
   function initSeeds() {
-    var removed = loadRm(), sb = loadSB();
+    var removed = loadRm(), sb = loadSB(), sp = loadSP();
     seedRows().forEach(function (r) {
       var key = seedKey(r);
       r.dataset.seed = key;
       if (removed.indexOf(key) !== -1) { r.remove(); return; }
+      makePriceEditable(r);
+      if (Object.prototype.hasOwnProperty.call(sp, key)) {
+        var av = r.querySelector('.amt-val'); if (av) av.textContent = money(sp[key]);
+      }
       var amt = r.querySelector('.amt');
       if (amt && !amt.querySelector('.modrm')) {
         var btn = document.createElement('button');
@@ -2504,7 +2532,8 @@ if ('serviceWorker' in navigator) {
       var badge = m.bought ? '<span class="owned">Bought &check;</span>' : '';
       var note = m.note ? '<small>' + esc(m.note) + '</small>' : '';
       row.innerHTML = '<span class="item">' + esc(m.name) + ' ' + badge + note + '</span>' +
-        '<span class="amt">' + money(m.price) + '<button class="modrm" type="button" aria-label="Remove mod" data-idx="' + i + '">&times;</button></span>';
+        '<span class="amt"><span class="amt-val" contenteditable="true" inputmode="decimal" role="textbox" aria-label="Edit price">' +
+        money(m.price) + '</span><button class="modrm" type="button" aria-label="Remove mod" data-idx="' + i + '">&times;</button></span>';
       addBoughtToggle(row);
       ledger.insertBefore(row, firstSub);
     });
@@ -2657,6 +2686,30 @@ if ('serviceWorker' in navigator) {
     var idx = parseInt(btn.getAttribute('data-idx'), 10);
     var arr = load();
     if (idx >= 0 && idx < arr.length) { arr.splice(idx, 1); save(arr); renderUser(); initReorder(); groupBought(); recompute(); saveOrder(); }
+  });
+
+  // Commit an inline price edit: reformat, persist (seed override or user item), recompute.
+  function commitPrice(el) {
+    var row = el.closest('.ledger-row'); if (!row) return;
+    var val = parseAmt(el.textContent);
+    el.textContent = money(val);
+    if (row.dataset.user) {
+      var uidv = row.dataset.uid, arr = load();
+      for (var j = 0; j < arr.length; j++) { if (arr[j].id === uidv) { arr[j].price = val; break; } }
+      save(arr);
+    } else {
+      var sk = row.dataset.seed || seedKey(row), sp = loadSP(); sp[sk] = val; saveSP(sp);
+    }
+    groupBought(); recompute();
+  }
+  ledger.addEventListener('focusout', function (e) {
+    var el = e.target.closest && e.target.closest('.amt-val');
+    if (el) commitPrice(el);
+  });
+  ledger.addEventListener('keydown', function (e) {
+    var el = e.target.closest && e.target.closest('.amt-val');
+    if (!el) return;
+    if (e.key === 'Enter') { e.preventDefault(); el.blur(); }
   });
 
   initSeeds();
