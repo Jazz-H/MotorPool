@@ -162,6 +162,13 @@
   .ledger-row .amt .amt-val{cursor:text;border-radius:3px;padding:0 3px;outline:none;transition:background .12s,box-shadow .12s;}
   @media (hover:hover){ .ledger-row .amt .amt-val:hover{background:rgba(216,58,41,.07);box-shadow:inset 0 -1px 0 var(--line-strong);} }
   .ledger-row .amt .amt-val:focus{background:#fff;box-shadow:inset 0 -1.5px 0 var(--amber);color:#1a1c1e;}
+  /* Touch: prices can't reveal on hover, so give a persistent editable cue + bigger tap targets */
+  @media (hover:none){
+    .ledger-row .amt .amt-val{display:inline-block;border-bottom:1px dashed var(--line-strong);
+      padding:4px 5px 3px;border-radius:3px 3px 0 0;}
+    .ledger-row .amt .modrm{padding:6px 7px;font-size:1.2rem;}
+    .ledger-row .amt .modbought{padding:6px;margin-left:6px;}
+  }
   .ledger-row.total{background:var(--paper-dim);border-top:2px solid var(--ink);}
   .ledger-row.total .item{font-family:"Saira Condensed",sans-serif;font-weight:700;text-transform:uppercase;font-size:1.15rem;letter-spacing:.02em;}
   .ledger-row.total .amt{font-weight:600;color:var(--redline-deep);}
@@ -886,6 +893,21 @@
     .topnav-inner{justify-content:center;}
     .wordmark{letter-spacing:.16em;}
 
+    /* Tighten the hero so real content clears the fold on every page */
+    .hero{padding:24px 18px 26px;}
+    .gauge{width:146px;height:79px;margin-bottom:2px;}
+    .gauge-cap{margin:-2px 0 13px;font-size:.6rem;}
+    .hero h1{font-size:clamp(2.35rem,10.5vw,3rem);}
+    .hero-sub{font-size:.94rem;margin:12px auto 16px;max-width:36ch;}
+    .chips{gap:7px;}
+    .chip{font-size:.7rem;padding:6px 10px;}
+
+    /* Touch tap-target sizing for small controls */
+    .uc-status select{padding:10px 24px 10px 13px;font-size:.64rem;}
+    .uc-rm{padding:8px 6px;font-size:1.6rem;}
+    .wn-x{padding:6px 4px;font-size:1.5rem;}
+    .cand-verify.collapsible > .vh{padding-top:12px;padding-bottom:12px;}
+
     body{padding-bottom:calc(60px + env(safe-area-inset-bottom));overscroll-behavior-y:none;}
 
     .tabbar{
@@ -908,6 +930,29 @@
     .tabbar-item.active{color:var(--redline);}
     .tabbar-item.active .dot{background:var(--redline);}
     .tabbar-item:active svg{transform:scale(.88);}
+
+    /* Section rail becomes a sticky horizontal chip bar on the long pages */
+    .railnav{
+      display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;
+      position:sticky;top:calc(env(safe-area-inset-top) + 44px);z-index:40;
+      margin:0 -20px 16px;padding:9px 20px;
+      background:rgba(22,26,31,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+      border-top:1px solid var(--line-steel);border-bottom:1px solid var(--line-steel);
+      scrollbar-width:none;scroll-snap-type:x proximity;
+    }
+    .railnav::-webkit-scrollbar{display:none;}
+    .railnav .rl-title{display:none;}
+    .railnav a{
+      flex:0 0 auto;white-space:nowrap;scroll-snap-align:start;
+      border:1px solid var(--line-steel-strong);border-left:1px solid var(--line-steel-strong);
+      border-radius:999px;padding:9px 14px;margin:0;
+      font-size:.72rem;color:#b7bcc2;background:var(--steel-850);
+    }
+    .railnav a:hover{border-left-color:var(--line-steel-strong);}
+    .railnav a.active{background:var(--redline);color:#fff;border-color:var(--redline);}
+    .railnav a.active .rl-n{color:rgba(255,255,255,.72);}
+    /* leave room under the sticky bars when jumping to a section */
+    #view-moto .wrap > section[id],#view-car .wrap > section[id]{scroll-margin-top:100px;}
   }
 </style>
 </head>
