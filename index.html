@@ -475,16 +475,31 @@
   .steps .step p{margin:0;font-size:.95rem;color:#d2cec4;}
   .steps .step b{color:var(--paper);}
 
-  footer{padding:34px 20px 56px;text-align:center;}
-  footer .fnote{font-family:"IBM Plex Mono",monospace;font-size:.74rem;color:var(--ink-faint);
-    letter-spacing:.04em;max-width:520px;margin:0 auto;line-height:1.7;}
-  footer .sig{margin-top:18px;font-family:"Saira Condensed",sans-serif;font-weight:700;
-    text-transform:uppercase;letter-spacing:.3em;color:var(--steel-700);font-size:.9rem;}
-  .fnote-x{border:none;background:transparent;color:var(--ink-faint);cursor:pointer;font-size:1.15rem;line-height:1;
-    padding:2px 6px;margin-left:6px;vertical-align:middle;opacity:.65;-webkit-tap-highlight-color:transparent;
+  /* Footer — command bar: wordmark (home) · centered nav · meta line */
+  footer{border-top:1px solid var(--line-steel);}
+  .foot-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;
+    max-width:1180px;margin:0 auto;padding:20px 20px;}
+  .foot-row .wordmark{grid-column:1;justify-self:start;}
+  .foot-nav{grid-column:2;display:flex;gap:22px;flex-wrap:wrap;justify-content:center;}
+  .foot-nav a{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+    color:#b7b3a9;text-decoration:none;font-weight:600;transition:color .12s;-webkit-tap-highlight-color:transparent;}
+  .foot-nav a:hover{color:var(--paper);}
+  .foot-nav a:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:3px;}
+  .foot-meta{position:relative;text-align:center;font-family:"IBM Plex Mono",monospace;font-size:.7rem;
+    color:var(--ink-faint);letter-spacing:.04em;line-height:1.6;border-top:1px solid var(--line-steel);
+    max-width:1180px;margin:0 auto;padding:15px 40px 30px;}
+  .foot-meta[hidden]{display:none;}
+  .fnote-x{border:none;background:transparent;color:var(--ink-faint);cursor:pointer;font-size:1.1rem;line-height:1;
+    padding:2px 6px;margin-left:4px;vertical-align:middle;opacity:.6;-webkit-tap-highlight-color:transparent;
     transition:opacity .15s,color .15s;}
   .fnote-x:hover{color:var(--paper);opacity:1;}
   .fnote-x:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
+  @media (max-width:680px){
+    /* mobile already has the bottom tab bar — drop the redundant footer nav, keep wordmark + meta */
+    .foot-row{grid-template-columns:1fr;justify-items:center;padding:22px 20px 14px;}
+    .foot-nav{display:none;}
+    .foot-row .wordmark{grid-column:1;}
+  }
 
   /* ---------- RESPONSIVE — mobile-first, scale up with min-width ---------- */
   /* Base styles above target the phone. These queries add columns and
@@ -2431,15 +2446,25 @@
 </section>
 
 <footer id="siteFooter">
-  <p class="fnote">Motorpool &mdash; one daily, two builds, one bench. Prices reflect mid-2026; condition and region swing them hard.<button type="button" class="fnote-x" id="footerDismiss" aria-label="Dismiss this note">&times;</button></p>
-  <div class="sig">Build both</div>
+  <div class="foot-row">
+    <a class="wordmark" href="#garage" aria-label="Motorpool — home">Motorpool</a>
+    <nav class="foot-nav" aria-label="Footer">
+      <a href="#garage">Hub</a>
+      <a href="#daily">Garage</a>
+      <a href="#moto">Moto</a>
+      <a href="#car">Car</a>
+      <a href="#settings">Settings</a>
+    </nav>
+    <span aria-hidden="true"></span>
+  </div>
+  <p class="foot-meta" id="footerMeta">One daily, two builds, one bench &middot; prices reflect mid-2026 &middot; saved on this device only.<button type="button" class="fnote-x" id="footerDismiss" aria-label="Dismiss this note">&times;</button></p>
 </footer>
 <script>
-// Footer note is dismissible — once a user dismisses it, it stays gone.
-(function(){var f=document.getElementById('siteFooter');if(!f)return;
-  try{if(localStorage.getItem('mp.footer.dismissed')){f.hidden=true;return;}}catch(e){}
+// Footer meta line is dismissible — once dismissed it stays gone (the nav row remains).
+(function(){var m=document.getElementById('footerMeta');if(!m)return;
+  try{if(localStorage.getItem('mp.footer.dismissed')){m.hidden=true;return;}}catch(e){}
   var x=document.getElementById('footerDismiss');
-  if(x)x.addEventListener('click',function(){f.hidden=true;try{localStorage.setItem('mp.footer.dismissed','1');}catch(e){}});
+  if(x)x.addEventListener('click',function(){m.hidden=true;try{localStorage.setItem('mp.footer.dismissed','1');}catch(e){}});
 })();
 </script>
 
