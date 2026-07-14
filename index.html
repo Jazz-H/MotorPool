@@ -342,6 +342,14 @@
   .cand-verify{padding:6px 16px 14px;border-bottom:1px solid var(--line);}
   .cand-verify > .vh{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
     color:var(--redline-deep);font-weight:600;margin:12px 0 8px;}
+  .cand-verify.collapsible > .vh{cursor:pointer;display:flex;align-items:center;gap:7px;
+    -webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;}
+  .cand-verify.collapsible > .vh .vchev{display:inline-block;transition:transform .15s ease;flex:0 0 auto;}
+  .cand-verify.collapsible.open > .vh .vchev{transform:rotate(90deg);}
+  .cand-verify.collapsible > .vh .vcount{font-weight:400;opacity:.65;}
+  .cand-verify.collapsible > .vh:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
+  .cand-verify.collapsible .check-list{display:none;}
+  .cand-verify.collapsible.open .check-list{display:block;}
   .cand-offer{padding:15px 18px;background:var(--ink);color:var(--paper);
     display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
   .cand-offer .ol{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
@@ -2661,6 +2669,27 @@ if ('serviceWorker' in navigator) {
     el.addEventListener('change', function () { try { localStorage.setItem(k, el.checked ? '1' : '0'); } catch (e) {} compute(); });
   });
   compute();
+})();
+</script>
+
+<script>
+// Collapse each candidate's inspection checklist behind a disclosure — compare first, dig on demand.
+(function () {
+  var vs = document.querySelectorAll('.cand-card .cand-verify');
+  Array.prototype.forEach.call(vs, function (v) {
+    var vh = v.querySelector('.vh'), list = v.querySelector('.check-list');
+    if (!vh || !list) return;
+    v.classList.add('collapsible');
+    var n = list.querySelectorAll('li').length;
+    var chev = document.createElement('span'); chev.className = 'vchev'; chev.setAttribute('aria-hidden', 'true'); chev.innerHTML = '&#9656;';
+    vh.insertBefore(chev, vh.firstChild);
+    var cnt = document.createElement('span'); cnt.className = 'vcount'; cnt.textContent = ' · ' + n + ' checks';
+    vh.appendChild(cnt);
+    vh.setAttribute('role', 'button'); vh.setAttribute('tabindex', '0'); vh.setAttribute('aria-expanded', 'false');
+    function toggle() { var open = v.classList.toggle('open'); vh.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+    vh.addEventListener('click', toggle);
+    vh.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+  });
 })();
 </script>
 
