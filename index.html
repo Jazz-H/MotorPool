@@ -1034,6 +1034,7 @@
       <a id="tab-daily" class="tab" href="#daily">Garage</a>
       <a id="tab-moto" class="tab" href="#moto">Moto</a>
       <a id="tab-car" class="tab" href="#car">Car</a>
+      <a id="tab-settings" class="tab" href="#settings">Settings</a>
     </div>
   </div>
 </nav>
@@ -1075,7 +1076,7 @@
       <p class="hero-sub">Command center for the whole garage &mdash; your daily, both builds, and the next moves.</p>
     </header>
 
-    <section>
+    <section style="border-bottom:none;">
       <div class="sec-head"><span class="sec-num">&#9670;</span><h2>Projects</h2></div>
       <a class="daily-glance" href="#daily">
         <div><span class="dg-ey">Daily &middot; owned</span><span class="dg-name"><span data-dd-echo="title1">2026 Mustang</span> <b>&ldquo;<span data-dd-echo="nick">starkv3.0</span>&rdquo;</b></span></div>
@@ -1140,18 +1141,6 @@
       </ul>
       </div>
       </div>
-    </section>
-
-    <section style="border-bottom:none;">
-      <div class="sec-head"><span class="sec-num">&#9670;</span><h2>Your Data</h2></div>
-      <p class="sec-note">Everything you enter &mdash; mods, candidates, values, and checklists &mdash; is saved <b style="color:#e6e2d8">on this device only</b>. Export a backup before clearing your browser, reinstalling the app, or switching devices &mdash; then import it anywhere to pick up where you left off.</p>
-      <div class="data-actions">
-        <button type="button" class="data-btn primary" id="dataExport">&darr;&ensp;Export backup</button>
-        <button type="button" class="data-btn" id="dataImport">&uarr;&ensp;Import backup</button>
-        <input type="file" id="dataImportFile" accept="application/json,.json" hidden>
-        <span class="data-status" id="dataStatus" role="status" aria-live="polite"></span>
-      </div>
-      <div class="callout">Import <b>replaces</b> the data on this device with the backup&rsquo;s. The backup is a plain JSON file &mdash; keep it somewhere safe; it&rsquo;s also how you move Motorpool between your phone and desktop.</div>
     </section>
   </div>
 </section>
@@ -2351,6 +2340,28 @@
 </div>
 </section>
 
+<!-- =================== SETTINGS =================== -->
+<section id="view-settings" class="view">
+<header class="hero">
+  <div class="gauge-cap">Settings &middot; Backup &amp; Restore</div>
+  <h1>Your <span class="rev">Data</span></h1>
+  <p class="hero-sub">Everything you enter lives on this device. Back it up, move it between devices, or restore it here.</p>
+</header>
+<div class="wrap">
+  <section style="border-bottom:none;">
+    <div class="sec-head"><span class="sec-num">&#9670;</span><h2>Backup &amp; Restore</h2></div>
+    <p class="sec-note">Everything you enter &mdash; mods, candidates, values, and checklists &mdash; is saved <b style="color:#e6e2d8">on this device only</b>. Export a backup before clearing your browser, reinstalling the app, or switching devices &mdash; then import it anywhere to pick up where you left off.</p>
+    <div class="data-actions">
+      <button type="button" class="data-btn primary" id="dataExport">&darr;&ensp;Export backup</button>
+      <button type="button" class="data-btn" id="dataImport">&uarr;&ensp;Import backup</button>
+      <input type="file" id="dataImportFile" accept="application/json,.json" hidden>
+      <span class="data-status" id="dataStatus" role="status" aria-live="polite"></span>
+    </div>
+    <div class="callout">Import <b>replaces</b> the data on this device with the backup&rsquo;s. The backup is a plain JSON file &mdash; keep it somewhere safe; it&rsquo;s also how you move Motorpool between your phone and desktop.</div>
+  </section>
+</div>
+</section>
+
 <footer>
   <p class="fnote">Motorpool &mdash; one daily, two builds, one bench. Prices reflect mid-2026; condition and region swing them hard.</p>
   <div class="sig">Build both</div>
@@ -2373,6 +2384,10 @@
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.6 15l1.5-4.3A2 2 0 0 1 6 9.4h8.8a2 2 0 0 1 1.7 1l1.6 2.5 2.1.6a1.4 1.4 0 0 1 1 1.35V16a1 1 0 0 1-1 1h-1.6"/><path d="M2.6 15v1.1a.9.9 0 0 0 .9.9H5"/><circle cx="7.6" cy="17" r="2"/><circle cx="16.5" cy="17" r="2"/><path d="M9.6 17h4.9"/></svg>
     <span>Car</span><span class="dot"></span>
   </a>
+  <a id="btab-settings" class="tabbar-item" href="#settings" aria-label="Settings">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.4v3.1M12 18.5v3.1M4.2 4.2l2.2 2.2M17.6 17.6l2.2 2.2M2.4 12h3.1M18.5 12h3.1M4.2 19.8l2.2-2.2M17.6 6.4l2.2-2.2"/></svg>
+    <span>Settings</span><span class="dot"></span>
+  </a>
 </nav>
 
 <div id="a2hs" class="a2hs" role="dialog" aria-label="Install Motorpool" aria-hidden="true">
@@ -2394,7 +2409,7 @@
 
 <script>
 (function(){
-  var views = ['garage','daily','moto','car'];
+  var views = ['garage','daily','moto','car','settings'];
   function route(){
     var h = (location.hash || '#garage').replace('#','');
     if(views.indexOf(h) === -1) h = 'garage';
