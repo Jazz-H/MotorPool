@@ -485,10 +485,13 @@
     color:#b7b3a9;text-decoration:none;font-weight:600;transition:color .12s;-webkit-tap-highlight-color:transparent;}
   .foot-nav a:hover{color:var(--paper);}
   .foot-nav a:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:3px;}
-  .foot-meta{position:relative;text-align:center;font-family:"IBM Plex Mono",monospace;font-size:.7rem;
-    color:var(--ink-faint);letter-spacing:.04em;line-height:1.6;border-top:1px solid var(--line-steel);
+  .foot-bottom{display:flex;align-items:center;gap:16px;border-top:1px solid var(--line-steel);
     max-width:1180px;margin:0 auto;padding:15px 40px 30px;}
+  .foot-meta{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--ink-faint);
+    letter-spacing:.04em;line-height:1.6;margin:0;text-align:left;}
   .foot-meta[hidden]{display:none;}
+  .foot-copy{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:.66rem;color:var(--ink-faint);
+    letter-spacing:.08em;white-space:nowrap;flex:0 0 auto;}
   .fnote-x{border:none;background:transparent;color:var(--ink-faint);cursor:pointer;font-size:1.1rem;line-height:1;
     padding:2px 6px;margin-left:4px;vertical-align:middle;opacity:.6;-webkit-tap-highlight-color:transparent;
     transition:opacity .15s,color .15s;}
@@ -499,6 +502,9 @@
     .foot-row{grid-template-columns:1fr;justify-items:center;padding:22px 20px 14px;}
     .foot-nav{display:none;}
     .foot-row .wordmark{grid-column:1;}
+    .foot-bottom{flex-direction:column;text-align:center;gap:9px;padding:16px 20px 16px;}
+    .foot-meta{text-align:center;}
+    .foot-copy{margin-left:0;}
   }
 
   /* ---------- RESPONSIVE — mobile-first, scale up with min-width ---------- */
@@ -2457,10 +2463,14 @@
     </nav>
     <span aria-hidden="true"></span>
   </div>
-  <p class="foot-meta" id="footerMeta">One daily, two builds, one bench &middot; prices reflect mid-2026 &middot; saved on this device only.<button type="button" class="fnote-x" id="footerDismiss" aria-label="Dismiss this note">&times;</button></p>
+  <div class="foot-bottom">
+    <p class="foot-meta" id="footerMeta">One daily, two builds, one bench &middot; prices reflect mid-2026 &middot; saved on this device only.<button type="button" class="fnote-x" id="footerDismiss" aria-label="Dismiss this note">&times;</button></p>
+    <span class="foot-copy">&copy; <span id="copyYear">2026</span> Motorpool</span>
+  </div>
 </footer>
 <script>
-// Footer meta line is dismissible — once dismissed it stays gone (the nav row remains).
+// Footer: current copyright year + dismissible meta line (nav row remains).
+(function(){var y=document.getElementById('copyYear');if(y){try{y.textContent=new Date().getFullYear();}catch(e){}}})();
 (function(){var m=document.getElementById('footerMeta');if(!m)return;
   try{if(localStorage.getItem('mp.footer.dismissed')){m.hidden=true;return;}}catch(e){}
   var x=document.getElementById('footerDismiss');
