@@ -486,6 +486,18 @@
   .railnav a .rl-n{color:#6b6f74;margin-right:8px;}
   .railnav a:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
 
+  /* backup / data controls */
+  .data-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:2px 0 18px;}
+  .data-btn{display:inline-flex;align-items:center;gap:8px;font-family:"IBM Plex Mono",monospace;
+    font-size:.76rem;letter-spacing:.05em;text-transform:uppercase;font-weight:600;cursor:pointer;
+    padding:10px 16px;border-radius:6px;border:1px solid var(--line-steel-strong);background:transparent;
+    color:var(--paper);transition:background .15s,border-color .15s,color .15s;-webkit-tap-highlight-color:transparent;}
+  .data-btn:hover{border-color:var(--paper);}
+  .data-btn.primary{background:var(--redline);border-color:var(--redline);color:#fff;}
+  .data-btn.primary:hover{background:var(--redline-deep);border-color:var(--redline-deep);}
+  .data-btn:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+  .data-status{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--amber);letter-spacing:.02em;min-height:1em;}
+
   /* ============ DESKTOP LAYER — Pass 1: Hub + Garage (mobile untouched) ============ */
   @media (min-width:960px){
     .topnav-inner,.whatsnew-inner{max-width:1180px;}
@@ -941,6 +953,18 @@
       </ul>
       </div>
       </div>
+    </section>
+
+    <section style="border-bottom:none;">
+      <div class="sec-head"><span class="sec-num">&#9670;</span><h2>Your Data</h2></div>
+      <p class="sec-note">Everything you enter &mdash; mods, candidates, values, and checklists &mdash; is saved <b style="color:#e6e2d8">on this device only</b>. Export a backup before clearing your browser, reinstalling the app, or switching devices &mdash; then import it anywhere to pick up where you left off.</p>
+      <div class="data-actions">
+        <button type="button" class="data-btn primary" id="dataExport">&darr;&ensp;Export backup</button>
+        <button type="button" class="data-btn" id="dataImport">&uarr;&ensp;Import backup</button>
+        <input type="file" id="dataImportFile" accept="application/json,.json" hidden>
+        <span class="data-status" id="dataStatus" role="status" aria-live="polite"></span>
+      </div>
+      <div class="callout">Import <b>replaces</b> the data on this device with the backup&rsquo;s. The backup is a plain JSON file &mdash; keep it somewhere safe; it&rsquo;s also how you move Motorpool between your phone and desktop.</div>
     </section>
   </div>
 </section>
@@ -2705,6 +2729,48 @@ if ('serviceWorker' in navigator) {
     el.addEventListener('change', function () { try { localStorage.setItem(k, el.checked ? '1' : '0'); } catch (e) {} compute(); });
   });
   compute();
+})();
+</script>
+
+<script>
+// Backup & restore — export/import all Motorpool data as portable JSON (moves across devices).
+(function () {
+  function collect() { var o = {}; for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && k.indexOf('mp.') === 0) o[k] = localStorage.getItem(k); } return o; }
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  var expBtn = document.getElementById('dataExport');
+  var impBtn = document.getElementById('dataImport');
+  var file = document.getElementById('dataImportFile');
+  var st = document.getElementById('dataStatus');
+  function say(m) { if (st) st.textContent = m; }
+  if (expBtn) expBtn.addEventListener('click', function () {
+    var data = collect(), n = Object.keys(data).length;
+    var payload = { app: 'motorpool', version: 1, exported: new Date().toISOString(), data: data };
+    var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    var url = URL.createObjectURL(blob), a = document.createElement('a'), d = new Date();
+    a.href = url; a.download = 'motorpool-backup-' + d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + '.json';
+    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    say(n ? 'Backup downloaded · ' + n + ' items.' : 'Nothing saved yet — the backup is empty.');
+  });
+  if (impBtn && file) {
+    impBtn.addEventListener('click', function () { file.click(); });
+    file.addEventListener('change', function () {
+      var f = file.files && file.files[0]; if (!f) return;
+      var r = new FileReader();
+      r.onload = function () {
+        var d;
+        try { var p = JSON.parse(r.result); d = (p && p.data && typeof p.data === 'object') ? p.data : p; }
+        catch (e) { say('That file isn’t valid JSON.'); file.value = ''; return; }
+        if (!d || typeof d !== 'object') { say('That file isn’t a Motorpool backup.'); file.value = ''; return; }
+        var keys = Object.keys(d).filter(function (k) { return k.indexOf('mp.') === 0; });
+        if (!keys.length) { say('No Motorpool data found in that file.'); file.value = ''; return; }
+        if (!window.confirm('Import ' + keys.length + ' items? This replaces the data currently on this device.')) { file.value = ''; say('Import cancelled.'); return; }
+        keys.forEach(function (k) { try { localStorage.setItem(k, String(d[k])); } catch (e) {} });
+        say('Imported ' + keys.length + ' items — reloading…');
+        setTimeout(function () { location.reload(); }, 700);
+      };
+      r.readAsText(f);
+    });
+  }
 })();
 </script>
 
