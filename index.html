@@ -158,6 +158,13 @@
   .ledger-row:last-child{border-bottom:none;}
   .ledger-row .item{font-weight:500;}
   .ledger-row .item small{display:block;color:var(--ink-soft);font-weight:400;font-size:.82rem;}
+  .mod-name,.mod-note{outline:none;border-radius:3px;cursor:text;transition:background .12s,box-shadow .12s;}
+  .mod-name{padding:0 2px;}
+  .mod-note{padding:1px 2px;}
+  @media (hover:hover){ .mod-name:hover,.mod-note:hover{box-shadow:inset 0 -1px 0 var(--line-strong);} }
+  .mod-name:focus,.mod-note:focus{box-shadow:inset 0 -1.5px 0 var(--amber);background:#fff;}
+  @media (hover:none){ .mod-name,.mod-note{border-bottom:1px dashed var(--line-strong);} }
+  .mod-note:empty::before{content:attr(data-ph);color:var(--ink-faint);}
   .ledger-row .amt{font-family:"IBM Plex Mono",monospace;font-weight:500;white-space:nowrap;color:#2a2d31;}
   .ledger-row .amt .amt-val{cursor:text;border-radius:3px;padding:0 3px;outline:none;transition:background .12s,box-shadow .12s;}
   @media (hover:hover){ .ledger-row .amt .amt-val:hover{background:rgba(216,58,41,.07);box-shadow:inset 0 -1px 0 var(--line-strong);} }
@@ -2571,6 +2578,42 @@ if ('serviceWorker' in navigator) {
   }
 
   function uid() { return 'm' + Math.random().toString(36).slice(2, 9); }
+
+  // One-time migration: fold the hardcoded seed mods into your saved data so they're
+  // fully editable and travel in your backup. Honors any prior price/bought/remove edits.
+  var MIGKEY = 'mp.mods.migrated';
+  function migrateSeeds() {
+    var done = false;
+    try { done = localStorage.getItem(MIGKEY) === '1'; } catch (e) {}
+    if (done) {
+      // Already migrated: the hardcoded rows are stale defaults now — strip them every load.
+      seedRows().forEach(function (r) { r.remove(); });
+      return;
+    }
+    var removed = loadRm(), sb = loadSB(), sp = loadSP();
+    var seeded = [];
+    seedRows().forEach(function (r) {
+      var key = seedKey(r);
+      if (removed.indexOf(key) !== -1) { r.remove(); return; } // respect a prior removal
+      var it = r.querySelector('.item');
+      var name = (it && it.childNodes[0]) ? it.childNodes[0].textContent.trim() : (it ? it.textContent.trim() : '');
+      var smallEl = it ? it.querySelector('small') : null;
+      var note = smallEl ? smallEl.textContent.trim() : '';
+      var price = Object.prototype.hasOwnProperty.call(sp, key) ? sp[key] : parseAmt(r.querySelector('.amt').textContent);
+      var bought = Object.prototype.hasOwnProperty.call(sb, key) ? !!sb[key] : r.classList.contains('done');
+      seeded.push({ id: uid(), name: name, note: note, price: price, bought: bought });
+      r.remove();
+    });
+    // Seeds first, then anything you'd already added.
+    save(seeded.concat(load()));
+    // Overrides are now baked into the mods themselves — clear them so backups stay clean.
+    try {
+      localStorage.removeItem(RKEY); localStorage.removeItem(SPKEY);
+      localStorage.removeItem(SBKEY); localStorage.removeItem(OKEY);
+      localStorage.setItem(MIGKEY, '1');
+    } catch (e) {}
+  }
+
   function renderUser() {
     Array.prototype.forEach.call(ledger.querySelectorAll('.ledger-row[data-user]'), function (r) { r.remove(); });
     var arr = load(), dirty = false;
@@ -2583,8 +2626,8 @@ if ('serviceWorker' in navigator) {
       row.dataset.user = '1';
       row.dataset.uid = m.id;
       var badge = m.bought ? '<span class="owned">Bought &check;</span>' : '';
-      var note = m.note ? '<small>' + esc(m.note) + '</small>' : '';
-      row.innerHTML = '<span class="item">' + esc(m.name) + ' ' + badge + note + '</span>' +
+      row.innerHTML = '<span class="item"><span class="mod-name" contenteditable="true" role="textbox" aria-label="Edit mod name">' + esc(m.name) + '</span> ' + badge +
+        '<small class="mod-note" contenteditable="true" role="textbox" aria-label="Edit note" data-ph="add a note">' + esc(m.note) + '</small></span>' +
         '<span class="amt"><span class="amt-val" contenteditable="true" inputmode="decimal" role="textbox" aria-label="Edit price">' +
         money(m.price) + '</span><button class="modrm" type="button" aria-label="Remove mod" data-idx="' + i + '">&times;</button></span>';
       addBoughtToggle(row);
@@ -2755,16 +2798,29 @@ if ('serviceWorker' in navigator) {
     }
     groupBought(); recompute();
   }
+  // Commit a name/note edit on a user mod, keyed by uid.
+  function commitText(el) {
+    var row = el.closest('.ledger-row'); if (!row || !row.dataset.user) return;
+    var field = el.classList.contains('mod-name') ? 'name' : 'note';
+    var val = (el.textContent || '').replace(/\s+/g, ' ').trim();
+    if (field === 'name' && !val) { val = 'Untitled mod'; el.textContent = val; }
+    var uidv = row.dataset.uid, arr = load();
+    for (var j = 0; j < arr.length; j++) { if (arr[j].id === uidv) { arr[j][field] = val; break; } }
+    save(arr);
+  }
   ledger.addEventListener('focusout', function (e) {
-    var el = e.target.closest && e.target.closest('.amt-val');
-    if (el) commitPrice(el);
+    var price = e.target.closest && e.target.closest('.amt-val');
+    if (price) { commitPrice(price); return; }
+    var text = e.target.closest && e.target.closest('.mod-name, .mod-note');
+    if (text) commitText(text);
   });
   ledger.addEventListener('keydown', function (e) {
-    var el = e.target.closest && e.target.closest('.amt-val');
+    var el = e.target.closest && e.target.closest('.amt-val, .mod-name, .mod-note');
     if (!el) return;
     if (e.key === 'Enter') { e.preventDefault(); el.blur(); }
   });
 
+  migrateSeeds();
   initSeeds();
   renderUser();
   initReorder();
