@@ -190,6 +190,13 @@
     background:var(--steel-850);border-radius:0 4px 4px 0;font-size:.92rem;color:#cfcbc1;
   }
   .callout b{color:var(--paper);}
+  .callout[data-dk]{position:relative;padding-right:38px;}
+  .callout[hidden]{display:none;}
+  .callout-x{position:absolute;top:8px;right:8px;border:none;background:transparent;color:var(--ink-faint);
+    cursor:pointer;font-size:1.15rem;line-height:1;padding:2px 6px;opacity:.6;-webkit-tap-highlight-color:transparent;
+    transition:opacity .15s,color .15s;}
+  .callout-x:hover{color:var(--paper);opacity:1;}
+  .callout-x:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
 
   /* ---------- CONTENDER CARDS ---------- */
   .spec-card{
@@ -485,13 +492,12 @@
     color:#b7b3a9;text-decoration:none;font-weight:600;transition:color .12s;-webkit-tap-highlight-color:transparent;}
   .foot-nav a:hover{color:var(--paper);}
   .foot-nav a:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:3px;}
-  .foot-bottom{display:flex;align-items:center;gap:16px;border-top:1px solid var(--line-steel);
+  .foot-copy{grid-column:3;justify-self:end;font-family:"IBM Plex Mono",monospace;font-size:.66rem;
+    color:var(--ink-faint);letter-spacing:.08em;white-space:nowrap;}
+  .foot-meta{text-align:center;font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--ink-faint);
+    letter-spacing:.04em;line-height:1.6;border-top:1px solid var(--line-steel);
     max-width:1180px;margin:0 auto;padding:15px 40px 30px;}
-  .foot-meta{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--ink-faint);
-    letter-spacing:.04em;line-height:1.6;margin:0;text-align:left;}
   .foot-meta[hidden]{display:none;}
-  .foot-copy{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:.66rem;color:var(--ink-faint);
-    letter-spacing:.08em;white-space:nowrap;flex:0 0 auto;}
   .fnote-x{border:none;background:transparent;color:var(--ink-faint);cursor:pointer;font-size:1.1rem;line-height:1;
     padding:2px 6px;margin-left:4px;vertical-align:middle;opacity:.6;-webkit-tap-highlight-color:transparent;
     transition:opacity .15s,color .15s;}
@@ -499,12 +505,11 @@
   .fnote-x:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
   @media (max-width:680px){
     /* mobile already has the bottom tab bar — drop the redundant footer nav, keep wordmark + meta */
-    .foot-row{grid-template-columns:1fr;justify-items:center;padding:22px 20px 14px;}
+    .foot-row{grid-template-columns:1fr;justify-items:center;gap:10px;padding:22px 20px 12px;}
     .foot-nav{display:none;}
     .foot-row .wordmark{grid-column:1;}
-    .foot-bottom{flex-direction:column;text-align:center;gap:9px;padding:16px 20px 16px;}
-    .foot-meta{text-align:center;}
-    .foot-copy{margin-left:0;}
+    .foot-copy{grid-column:1;justify-self:center;}
+    .foot-meta{text-align:center;padding:14px 20px 16px;}
   }
 
   /* ---------- RESPONSIVE — mobile-first, scale up with min-width ---------- */
@@ -1288,7 +1293,7 @@
       </div>
       <div class="val-stamp" id="valStamp" aria-live="polite"></div>
     </div>
-    <div class="callout">KBB has no free data feed, so this can&rsquo;t auto-pull &mdash; the figures are rough estimates for a 2026 EcoBoost Premium at 3,500 mi. <b>Punch in your real numbers</b> from <a href="https://www.kbb.com/whats-my-car-worth/" target="_blank" rel="noopener" style="color:var(--amber);text-decoration:underline">KBB&rsquo;s valuation tool &#8599;</a> and the equity updates live. Owed is set to <b>$24,380</b>.</div>
+    <div class="callout" data-dk="kbb">KBB has no free data feed, so this can&rsquo;t auto-pull &mdash; the figures are rough estimates for a 2026 EcoBoost Premium at 3,500 mi. <b>Punch in your real numbers</b> from <a href="https://www.kbb.com/whats-my-car-worth/" target="_blank" rel="noopener" style="color:var(--amber);text-decoration:underline">KBB&rsquo;s valuation tool &#8599;</a> and the equity updates live. Owed is set to <b>$24,380</b>.</div>
     </div>
     <div class="g-col">
     <h4 class="dash-h">Mod List</h4>
@@ -1322,7 +1327,7 @@
         <button type="submit" class="modadd-btn">+ Add mod</button>
       </div>
     </form>
-    <div class="callout">All appearance &amp; sound so far &mdash; louvers, rear diffuser, chin spoiler, smoked tails, and the Roush axle-back. The quarter-window louvers are already bought; the rest are the running list. <b>Add a mod above</b> &mdash; the Spent / Still-to-buy / All-in totals update automatically.</div>
+    <div class="callout" data-dk="mods">All appearance &amp; sound so far &mdash; louvers, rear diffuser, chin spoiler, smoked tails, and the Roush axle-back. The quarter-window louvers are already bought; the rest are the running list. <b>Add a mod above</b> &mdash; the Spent / Still-to-buy / All-in totals update automatically.</div>
     </div>
     </div>
   </section>
@@ -2461,14 +2466,21 @@
       <a href="#car">Car</a>
       <a href="#settings">Settings</a>
     </nav>
-    <span aria-hidden="true"></span>
+    <span class="foot-copy">&copy; <span id="copyYear">2026</span> JH Studio</span>
   </div>
-  <div class="foot-bottom">
-    <p class="foot-meta" id="footerMeta">One daily, two builds, one bench &middot; prices reflect mid-2026 &middot; saved on this device only.<button type="button" class="fnote-x" id="footerDismiss" aria-label="Dismiss this note">&times;</button></p>
-    <span class="foot-copy">&copy; <span id="copyYear">2026</span> Motorpool</span>
-  </div>
+  <p class="foot-meta" id="footerMeta">One daily, two builds, one bench &middot; prices reflect mid-2026 &middot; saved on this device only.<button type="button" class="fnote-x" id="footerDismiss" aria-label="Dismiss this note">&times;</button></p>
 </footer>
 <script>
+// Dismissible insight callouts — each remembers its own dismissal by key.
+(function(){var cs=document.querySelectorAll('.callout[data-dk]');
+  Array.prototype.forEach.call(cs,function(c){
+    var key='mp.callout.'+c.getAttribute('data-dk');
+    try{if(localStorage.getItem(key)){c.hidden=true;return;}}catch(e){}
+    var x=document.createElement('button');x.type='button';x.className='callout-x';x.setAttribute('aria-label','Dismiss this note');x.innerHTML='&times;';
+    x.addEventListener('click',function(){c.hidden=true;try{localStorage.setItem(key,'1');}catch(e){}});
+    c.appendChild(x);
+  });
+})();
 // Footer: current copyright year + dismissible meta line (nav row remains).
 (function(){var y=document.getElementById('copyYear');if(y){try{y.textContent=new Date().getFullYear();}catch(e){}}})();
 (function(){var m=document.getElementById('footerMeta');if(!m)return;
