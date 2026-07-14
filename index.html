@@ -522,6 +522,27 @@
     .cardsec > .sec-note{margin-bottom:0;}
     .cardsec > .spec-card,.cardsec > .cand-card{margin-bottom:0;}
   }
+
+  /* ============ Pass 3 polish: figures, hover, focus ============ */
+  .amt,.mkt td,.mkt th.n,.val-in,.money-fig,.pt-stat .v,.spec-cell .v,.cand-fact .v,.bh-sum,
+  .pt-stat .v small,.cand-fact .v small{font-variant-numeric:tabular-nums;}
+
+  @media (hover:hover){
+    .cand-card,.spec-card,.proj-tile,.cross-item{transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;}
+    #view-moto .cardsec .cand-card:hover,#view-car .cardsec .cand-card:hover,
+    .cardsec .spec-card:hover{transform:translateY(-2px);box-shadow:0 15px 32px rgba(0,0,0,.30);}
+    #view-garage .proj-tile:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(0,0,0,.32);}
+    .pt-open{transition:background .15s ease;}
+    .proj-tile:hover .pt-open{background:var(--redline-deep);}
+    table.mkt tbody tr{transition:background .12s ease;}
+    table.mkt tbody tr:hover{background:rgba(255,255,255,.035);}
+    .cross-item{transition:border-color .15s ease;}
+    .cross-item:hover h4{color:var(--redline);}
+  }
+
+  a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visible{
+    outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
+
   @media (prefers-reduced-motion:reduce){
     *{transition:none!important;scroll-behavior:auto!important;}
   }
