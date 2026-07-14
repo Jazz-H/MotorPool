@@ -387,6 +387,11 @@
     color:var(--paper);outline:none;font-family:"Saira Condensed",sans-serif;font-weight:600;}
   .fill:empty::before{content:attr(data-ph);color:#7e838a;font-weight:400;font-size:.82rem;font-family:"IBM Plex Sans",sans-serif;}
   .fill:focus{border-bottom-color:var(--amber);}
+  /* .fill was styled for the dark blank card; on the light rich cards it must take the card's ink color */
+  .cand-card:not(.blank) .cand-name .fill,
+  .cand-card:not(.blank) .cand-fact .fill{color:inherit;font:inherit;min-width:0;
+    border-bottom:1px dashed var(--line-strong);}
+  .cand-card:not(.blank) .cand-fact .fill{padding:0 1px;}
   .blank-hint{padding:14px 16px;font-size:.85rem;color:#a8adb2;font-family:"IBM Plex Mono",monospace;letter-spacing:.02em;}
 
   /* ---------- WEIGH LIST ---------- */
@@ -1415,14 +1420,14 @@
     <!-- CANDIDATE 01 -->
     <article class="cand-card">
       <div class="cand-top">
-        <div><span class="cand-ey">Candidate 01 · Facebook Marketplace</span><h3 class="cand-name">2015 Honda CB500F</h3></div>
+        <div><span class="cand-ey">Candidate 01 · Facebook Marketplace</span><h3 class="cand-name"><span class="fill" contenteditable="true">2015 Honda CB500F</span></h3></div>
         <span class="vbadge">Strong buy</span>
       </div>
       <div class="cand-facts">
-        <div class="cand-fact"><span class="k">Price</span><span class="v">$3,900 <small>$4,500</small></span></div>
-        <div class="cand-fact"><span class="k">Miles</span><span class="v">7,500</span></div>
-        <div class="cand-fact"><span class="k">Condition</span><span class="v">Used–Good</span></div>
-        <div class="cand-fact"><span class="k">Title</span><span class="v">Clean ✓</span></div>
+        <div class="cand-fact"><span class="k">Price</span><span class="v"><span class="fill" contenteditable="true">$3,900</span> <small>$4,500</small></span></div>
+        <div class="cand-fact"><span class="k">Miles</span><span class="v"><span class="fill" contenteditable="true">7,500</span></span></div>
+        <div class="cand-fact"><span class="k">Condition</span><span class="v"><span class="fill" contenteditable="true">Used–Good</span></span></div>
+        <div class="cand-fact"><span class="k">Title</span><span class="v"><span class="fill" contenteditable="true">Clean ✓</span></span></div>
       </div>
       <div class="pos">
         <div class="pos-row"><span>CB500F benchmark ask</span><span>$4.0k ←→ $5.0k</span></div>
@@ -1464,7 +1469,7 @@
         </ul>
       </div>
       <div class="cand-offer">
-        <div><span class="ol">Target offer</span><span class="oa">$3,500–3,700</span></div>
+        <div><span class="ol">Target offer</span><span class="oa"><span class="fill" contenteditable="true">$3,500–3,700</span></span></div>
         <p>Already dropped $600. Low miles justify near-ask, but it's a decade old — use the likely <b>tire + fluid refresh</b> as leverage. A clean cash offer around <b>$3,600</b> is fair, and still leaves room for that refresh under $5k.</p>
       </div>
     </article>
@@ -1472,14 +1477,14 @@
     <!-- CANDIDATE 02 — the cheaper, higher-mile CB500F -->
     <article class="cand-card">
       <div class="cand-top">
-        <div><span class="cand-ey">Candidate 02 · Facebook Marketplace</span><h3 class="cand-name">2015 Honda CB500F</h3></div>
+        <div><span class="cand-ey">Candidate 02 · Facebook Marketplace</span><h3 class="cand-name"><span class="fill" contenteditable="true">2015 Honda CB500F</span></h3></div>
         <span class="vbadge">Strong buy</span>
       </div>
       <div class="cand-facts">
-        <div class="cand-fact"><span class="k">Price</span><span class="v">$3,200 <small>$3,500</small></span></div>
-        <div class="cand-fact"><span class="k">Miles</span><span class="v">27,000</span></div>
-        <div class="cand-fact"><span class="k">Title</span><span class="v">Clean ✓</span></div>
-        <div class="cand-fact"><span class="k">Location</span><span class="v">Mars Hill, NC</span></div>
+        <div class="cand-fact"><span class="k">Price</span><span class="v"><span class="fill" contenteditable="true">$3,200</span> <small>$3,500</small></span></div>
+        <div class="cand-fact"><span class="k">Miles</span><span class="v"><span class="fill" contenteditable="true">27,000</span></span></div>
+        <div class="cand-fact"><span class="k">Title</span><span class="v"><span class="fill" contenteditable="true">Clean ✓</span></span></div>
+        <div class="cand-fact"><span class="k">Location</span><span class="v"><span class="fill" contenteditable="true">Mars Hill, NC</span></span></div>
       </div>
       <div class="pos">
         <div class="pos-row"><span>CB500F benchmark ask</span><span>$4.0k ←→ $5.0k</span></div>
@@ -1521,7 +1526,7 @@
         </ul>
       </div>
       <div class="cand-offer">
-        <div><span class="ol">Target offer</span><span class="oa">$2,900&ndash;3,100</span></div>
+        <div><span class="ol">Target offer</span><span class="oa"><span class="fill" contenteditable="true">$2,900&ndash;3,100</span></span></div>
         <p>Already OBO at $3,200. Higher miles + an aftermarket pipe (not every buyer wants one) are your leverage &mdash; a clean <b>cash offer near $3,000</b> is fair and keeps <b>~$900 under the $4k cap</b> for a valve/chain service cushion. It&rsquo;s a ~2-hr drive from Charlotte, so confirm condition before you make the trip.</p>
       </div>
     </article>
@@ -1529,14 +1534,14 @@
     <!-- CANDIDATE 03 — cheapest CB500F, drop + odometer history -->
     <article class="cand-card">
       <div class="cand-top">
-        <div><span class="cand-ey">Candidate 03 · Facebook Marketplace</span><h3 class="cand-name">2014 Honda CB500F</h3></div>
+        <div><span class="cand-ey">Candidate 03 · Facebook Marketplace</span><h3 class="cand-name"><span class="fill" contenteditable="true">2014 Honda CB500F</span></h3></div>
         <span class="vbadge">Strong buy*</span>
       </div>
       <div class="cand-facts">
-        <div class="cand-fact"><span class="k">Price</span><span class="v">$3,000</span></div>
-        <div class="cand-fact"><span class="k">Miles</span><span class="v">13,546<small>true</small></span></div>
-        <div class="cand-fact"><span class="k">Title</span><span class="v">Clean ✓</span></div>
-        <div class="cand-fact"><span class="k">Location</span><span class="v">NC</span></div>
+        <div class="cand-fact"><span class="k">Price</span><span class="v"><span class="fill" contenteditable="true">$3,000</span></span></div>
+        <div class="cand-fact"><span class="k">Miles</span><span class="v"><span class="fill" contenteditable="true">13,546</span><small>true</small></span></div>
+        <div class="cand-fact"><span class="k">Title</span><span class="v"><span class="fill" contenteditable="true">Clean ✓</span></span></div>
+        <div class="cand-fact"><span class="k">Location</span><span class="v"><span class="fill" contenteditable="true">NC</span></span></div>
       </div>
       <div class="pos">
         <div class="pos-row"><span>CB500F benchmark ask</span><span>$4.0k ←→ $5.0k</span></div>
@@ -1576,7 +1581,7 @@
         </ul>
       </div>
       <div class="cand-offer">
-        <div><span class="ol">Target offer</span><span class="oa">$2,600&ndash;2,800</span></div>
+        <div><span class="ol">Target offer</span><span class="oa"><span class="fill" contenteditable="true">$2,600&ndash;2,800</span></span></div>
         <p>The <b>laid-down history + odometer swap are real value-killers on paper</b> &mdash; use them. If the frame/forks check out straight, this is a low-mile, freshly-shod CB500F for the least money on the board. If they don&rsquo;t, walk. A cash offer <b>$2,600&ndash;2,800</b> is fair given the damage risk.</p>
       </div>
     </article>
@@ -1584,14 +1589,14 @@
     <!-- CANDIDATE 04 -->
     <article class="cand-card">
       <div class="cand-top">
-        <div><span class="cand-ey">Candidate 04 · Dealer (Marketplace)</span><h3 class="cand-name">2025 Triumph Speed 400</h3></div>
+        <div><span class="cand-ey">Candidate 04 · Dealer (Marketplace)</span><h3 class="cand-name"><span class="fill" contenteditable="true">2025 Triumph Speed 400</span></h3></div>
         <span class="vbadge">Strong buy*</span>
       </div>
       <div class="cand-facts">
-        <div class="cand-fact"><span class="k">Price</span><span class="v">$4,899</span></div>
-        <div class="cand-fact"><span class="k">Miles</span><span class="v">New?</span></div>
-        <div class="cand-fact"><span class="k">Listed</span><span class="v">28 days</span></div>
-        <div class="cand-fact"><span class="k">Location</span><span class="v">Concord, NC</span></div>
+        <div class="cand-fact"><span class="k">Price</span><span class="v"><span class="fill" contenteditable="true">$4,899</span></span></div>
+        <div class="cand-fact"><span class="k">Miles</span><span class="v"><span class="fill" contenteditable="true">New?</span></span></div>
+        <div class="cand-fact"><span class="k">Listed</span><span class="v"><span class="fill" contenteditable="true">28 days</span></span></div>
+        <div class="cand-fact"><span class="k">Location</span><span class="v"><span class="fill" contenteditable="true">Concord, NC</span></span></div>
       </div>
       <div class="pos">
         <div class="pos-row"><span>new bike · under sticker</span><span>MSRP ~$5,195</span></div>
@@ -1631,7 +1636,7 @@
         </ul>
       </div>
       <div class="cand-offer">
-        <div><span class="ol">Play</span><span class="oa">OTD ≤ $5k</span></div>
+        <div><span class="ol">Play</span><span class="oa"><span class="fill" contenteditable="true">OTD ≤ $5k</span></span></div>
         <p>Less haggle room than private, but it's a leftover 2025 sitting 28 days. Push to get it <b>out-the-door at/under $5k</b> — or have them eat freight and throw in the first service. A new, warrantied bike for used money is the upside, <b>if the OTD number holds.</b></p>
       </div>
     </article>
@@ -2017,14 +2022,14 @@
 
         <article class="cand-card carpick">
       <div class="cand-top">
-        <div><span class="cand-ey">Candidate 01 &middot; The complement</span><h3 class="cand-name">Jeep Wrangler Unlimited</h3></div>
+        <div><span class="cand-ey">Candidate 01 &middot; The complement</span><h3 class="cand-name"><span class="fill" contenteditable="true">Jeep Wrangler Unlimited</span></h3></div>
         <span class="vbadge ">Loved</span>
       </div>
       <div class="cand-facts">
-        <div class="cand-fact"><span class="k">Engine</span><span class="v">3.6<small>L V6</small></span></div>
-        <div class="cand-fact"><span class="k">Power</span><span class="v">~285<small>hp</small></span></div>
-        <div class="cand-fact"><span class="k">Drive</span><span class="v">4x4</span></div>
-        <div class="cand-fact"><span class="k">Price</span><span class="v">$16&ndash;26<small>k</small></span></div>
+        <div class="cand-fact"><span class="k">Engine</span><span class="v"><span class="fill" contenteditable="true">3.6</span><small>L V6</small></span></div>
+        <div class="cand-fact"><span class="k">Power</span><span class="v"><span class="fill" contenteditable="true">~285</span><small>hp</small></span></div>
+        <div class="cand-fact"><span class="k">Drive</span><span class="v"><span class="fill" contenteditable="true">4x4</span></span></div>
+        <div class="cand-fact"><span class="k">Price</span><span class="v"><span class="fill" contenteditable="true">$16&ndash;26</span><small>k</small></span></div>
       </div>
       <div class="cand-cols">
         <div class="cand-col">
@@ -2050,14 +2055,14 @@
 
     <article class="cand-card carpick">
       <div class="cand-top">
-        <div><span class="cand-ey">Candidate 02 &middot; Reliable do-it-all</span><h3 class="cand-name">Toyota 4Runner</h3></div>
+        <div><span class="cand-ey">Candidate 02 &middot; Reliable do-it-all</span><h3 class="cand-name"><span class="fill" contenteditable="true">Toyota 4Runner</span></h3></div>
         <span class="vbadge pass">Suggested</span>
       </div>
       <div class="cand-facts">
-        <div class="cand-fact"><span class="k">Engine</span><span class="v">4.0<small>L V6</small></span></div>
-        <div class="cand-fact"><span class="k">Power</span><span class="v">~236<small>hp</small></span></div>
-        <div class="cand-fact"><span class="k">Drive</span><span class="v">4WD</span></div>
-        <div class="cand-fact"><span class="k">Price</span><span class="v">$9&ndash;20<small>k</small></span></div>
+        <div class="cand-fact"><span class="k">Engine</span><span class="v"><span class="fill" contenteditable="true">4.0</span><small>L V6</small></span></div>
+        <div class="cand-fact"><span class="k">Power</span><span class="v"><span class="fill" contenteditable="true">~236</span><small>hp</small></span></div>
+        <div class="cand-fact"><span class="k">Drive</span><span class="v"><span class="fill" contenteditable="true">4WD</span></span></div>
+        <div class="cand-fact"><span class="k">Price</span><span class="v"><span class="fill" contenteditable="true">$9&ndash;20</span><small>k</small></span></div>
       </div>
       <div class="cand-cols">
         <div class="cand-col">
@@ -2083,14 +2088,14 @@
 
     <article class="cand-card carpick">
       <div class="cand-top">
-        <div><span class="cand-ey">Candidate 03 &middot; &rsquo;13&ndash;&rsquo;15 TRD Off-Road (budget-fit)</span><h3 class="cand-name">Toyota Tacoma</h3></div>
+        <div><span class="cand-ey">Candidate 03 &middot; &rsquo;13&ndash;&rsquo;15 TRD Off-Road (budget-fit)</span><h3 class="cand-name"><span class="fill" contenteditable="true">Toyota Tacoma</span></h3></div>
         <span class="vbadge pass">Suggested</span>
       </div>
       <div class="cand-facts">
-        <div class="cand-fact"><span class="k">Engine</span><span class="v">4.0<small>L V6</small></span></div>
-        <div class="cand-fact"><span class="k">Power</span><span class="v">~236<small>hp</small></span></div>
-        <div class="cand-fact"><span class="k">Drive</span><span class="v">4WD<small>+ locker</small></span></div>
-        <div class="cand-fact"><span class="k">Price</span><span class="v">$18&ndash;22<small>k</small></span></div>
+        <div class="cand-fact"><span class="k">Engine</span><span class="v"><span class="fill" contenteditable="true">4.0</span><small>L V6</small></span></div>
+        <div class="cand-fact"><span class="k">Power</span><span class="v"><span class="fill" contenteditable="true">~236</span><small>hp</small></span></div>
+        <div class="cand-fact"><span class="k">Drive</span><span class="v"><span class="fill" contenteditable="true">4WD</span><small>+ locker</small></span></div>
+        <div class="cand-fact"><span class="k">Price</span><span class="v"><span class="fill" contenteditable="true">$18&ndash;22</span><small>k</small></span></div>
       </div>
       <div class="cand-cols">
         <div class="cand-col">
@@ -2447,6 +2452,10 @@ if ('serviceWorker' in navigator) {
 // Persist editable candidate fields (year/make/model, price, miles…) across reloads.
 (function () {
   function slug(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 72); }
+  // One-time snapshot: on first load, capture the authored default of each field into your
+  // saved data so the whole candidate log travels in your backup (not just fields you edit).
+  var SNAP = false;
+  try { SNAP = localStorage.getItem('mp.fld.snapshotted') === '1'; } catch (e) {}
   var fields = document.querySelectorAll('.fill[contenteditable]');
   fields.forEach(function (f) {
     var view = f.closest('.view');
@@ -2464,19 +2473,21 @@ if ('serviceWorker' in navigator) {
     }
     var k = 'mp.fld.' + slug(vid + '|' + ey + '|' + label);
     f.dataset.persistKey = k;
-    try {
-      var v = localStorage.getItem(k);
-      if (v != null && v !== '') f.textContent = v;
-    } catch (e) {}
     function save() {
       try {
         var t = (f.textContent || '').trim();
         if (t) localStorage.setItem(k, t); else localStorage.removeItem(k);
       } catch (e) {}
     }
+    try {
+      var v = localStorage.getItem(k);
+      if (v != null && v !== '') f.textContent = v;
+      else if (!SNAP) save(); // first load only: snapshot the authored default into backup
+    } catch (e) {}
     f.addEventListener('input', save);
     f.addEventListener('blur', save);
   });
+  try { localStorage.setItem('mp.fld.snapshotted', '1'); } catch (e) {}
 })();
 </script>
 
