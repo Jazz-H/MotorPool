@@ -441,7 +441,7 @@
   /* Base styles above target the phone. These queries add columns and
      side-by-side layout as the viewport grows. */
   @media (min-width:601px){
-    .proj-grid{grid-template-columns:1fr 1fr;}
+    #view-garage .proj-grid{grid-template-columns:1fr 1fr;}
     .topnav-inner{padding:11px 18px;}
     .tab{padding:7px 13px;font-size:.7rem;}
     .wordmark{font-size:1.02rem;letter-spacing:.14em;}
@@ -465,6 +465,32 @@
     table.mkt th,table.mkt td{padding-left:16px;padding-right:16px;}
     table.mkt td{font-size:.92rem;}
     table.mkt td.yr{font-size:1.08rem;}
+  }
+  /* ============ DESKTOP LAYER — Pass 1: Hub + Garage (mobile untouched) ============ */
+  @media (min-width:960px){
+    .topnav-inner,.whatsnew-inner{max-width:1180px;}
+    #view-garage .wrap,#view-daily .wrap{max-width:1180px;}
+    /* keep reading lines from stretching on wide screens */
+    .hero-sub{max-width:54ch;}
+    .callout{max-width:76ch;}
+
+    /* HUB — pair Combined Program with the Decision Queue */
+    .hub-cols{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;}
+    .hub-cols .dash-h{margin-top:0;}
+    .hub-cols .panel{margin-bottom:0 !important;}
+
+    /* GARAGE — hero: big photo left, identity + specs right */
+    #view-daily .proj-tile{display:grid;grid-template-columns:1.25fr 1fr;
+      grid-template-areas:"photo top" "photo spec";}
+    #view-daily .proj-tile > .daily-photo{grid-area:photo;aspect-ratio:auto;height:100%;min-height:0;
+      border-bottom:none;border-right:1px solid var(--paper-edge);}
+    #view-daily .proj-tile > .pt-top{grid-area:top;}
+    #view-daily .proj-tile > .spec-grid{grid-area:spec;align-self:end;}
+
+    /* GARAGE — value/equity beside the mod list */
+    .garage-cols{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;}
+    .garage-cols .g-col{min-width:0;}
+    .garage-cols .dash-h{margin-top:0;}
   }
   @media (prefers-reduced-motion:reduce){
     *{transition:none!important;scroll-behavior:auto!important;}
@@ -842,6 +868,8 @@
 
       </div>
 
+      <div class="hub-cols">
+      <div class="hub-col">
       <h4 class="dash-h">Combined Program</h4>
       <div class="panel" style="margin-bottom:24px;">
         <div class="ledger">
@@ -850,7 +878,8 @@
           <div class="ledger-row total"><span class="item">Garage Total</span><span class="amt">$14,000</span></div>
         </div>
       </div>
-
+      </div>
+      <div class="hub-col">
       <h4 class="dash-h">Decision Queue</h4>
       <ul class="check-list">
         <li><label><input type="checkbox"><span><span class="queue-tag moto">Moto</span>Confirm CB500F service history + book the test ride</span></label></li>
@@ -859,6 +888,8 @@
         <li><label><input type="checkbox"><span><span class="queue-tag car">Car</span>Shortlist 1&ndash;2 platforms + learn their weak points</span></label></li>
         <li><label><input type="checkbox"><span><span class="queue-tag car">Car</span>Set the car-vs-build budget split</span></label></li>
       </ul>
+      </div>
+      </div>
     </section>
   </div>
 </section>
@@ -911,6 +942,8 @@
       </div>
     </div>
 
+    <div class="garage-cols">
+    <div class="g-col">
     <h4 class="dash-h">Value &amp; Equity</h4>
     <div class="panel" style="margin-bottom:16px;">
       <div class="ledger">
@@ -923,7 +956,8 @@
       </div>
     </div>
     <div class="callout">KBB has no free data feed, so this can&rsquo;t auto-pull &mdash; the figures are rough estimates for a 2026 EcoBoost Premium at 3,500 mi. <b>Punch in your real numbers</b> from <a href="https://www.kbb.com/whats-my-car-worth/" target="_blank" rel="noopener" style="color:var(--amber);text-decoration:underline">KBB&rsquo;s valuation tool &#8599;</a> and the equity updates live. Owed is set to <b>$24,380</b>.</div>
-
+    </div>
+    <div class="g-col">
     <h4 class="dash-h">Mod List</h4>
     <div class="panel" style="margin-bottom:16px;">
       <div class="ledger" id="modLedger">
@@ -956,6 +990,8 @@
       </div>
     </form>
     <div class="callout">All appearance &amp; sound so far &mdash; louvers, rear diffuser, chin spoiler, smoked tails, and the Roush axle-back. The quarter-window louvers are already bought; the rest are the running list. <b>Add a mod above</b> &mdash; the Spent / Still-to-buy / All-in totals update automatically.</div>
+    </div>
+    </div>
   </section>
 </div>
 </section>
