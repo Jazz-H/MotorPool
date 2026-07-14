@@ -107,6 +107,12 @@
   .chip.hot{border-color:rgba(216,58,41,.55);color:#f0d9d4;}
   .chip.hot b{color:#ffb3a6;}
 
+  /* Hero: gauge removed; description shown once for new users (kept for first-run onboarding) */
+  .hero .gauge,.hero .gauge-row{display:none;}
+  body.intro-seen .hero-sub{display:none;}
+  /* Instrument readout — the tightened Option B strip. Desktop only; chips carry mobile. */
+  .hero-readout{display:none;}
+
   /* ---------- SECTION FRAME ---------- */
   section{padding:34px 0;border-bottom:1px solid var(--line-steel);}
   .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:24px;flex-wrap:wrap;}
@@ -554,6 +560,25 @@
     .hero-sub{max-width:54ch;}
     .callout{max-width:76ch;}
 
+    /* ---- Tightened, gauge-less hero (Option B) ---- */
+    .hero{padding:44px 40px 0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 43px,rgba(255,255,255,.022) 43px,rgba(255,255,255,.022) 44px),
+        repeating-linear-gradient(90deg,transparent,transparent 43px,rgba(255,255,255,.022) 43px,rgba(255,255,255,.022) 44px);}
+    .hero .gauge-cap{margin:0 0 12px;}
+    .hero h1{font-size:clamp(2.9rem,5.4vw,4.4rem);}
+    .hero-sub{margin:16px auto 0;}
+    .hero .chips{display:none;}                 /* readout replaces the chips on desktop */
+    .hero-readout{display:flex;justify-content:center;margin:30px auto 0;
+      border-top:1px solid var(--line-steel);max-width:900px;}
+    .hero-readout .ro{flex:1 1 0;padding:16px 22px;border-right:1px solid var(--line-steel);text-align:left;min-width:0;}
+    .hero-readout .ro:last-child{border-right:none;}
+    .hero-readout .ro .k{font-family:"IBM Plex Mono",monospace;font-size:.56rem;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:5px;}
+    .hero-readout .ro .v{font-family:"Saira Condensed",sans-serif;font-weight:700;font-size:1.5rem;
+      color:var(--paper);line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .hero-readout .ro .v em{color:var(--redline);font-style:normal;}
+    .hero-readout .ro .v small{font-family:"IBM Plex Mono",monospace;font-size:.62rem;font-weight:400;color:var(--ink-faint);}
+
     /* HUB — pair Combined Program with the Decision Queue */
     .hub-cols{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;}
     .hub-cols .dash-h{margin-top:0;}
@@ -612,7 +637,10 @@
     backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line-steel);}
   .topnav-inner{max-width:880px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
   .wordmark{font-family:"Saira Condensed",sans-serif;font-weight:800;text-transform:uppercase;
-    letter-spacing:.1em;font-size:.9rem;color:var(--paper);display:flex;align-items:center;gap:9px;}
+    letter-spacing:.1em;font-size:.9rem;color:var(--paper);display:flex;align-items:center;gap:9px;
+    text-decoration:none;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  a.wordmark:hover{color:#fff;}
+  a.wordmark:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:3px;}
   .wordmark::before{content:"";width:14px;height:15px;background:var(--redline);
     clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);flex:0 0 auto;}
   .topnav-tabs{display:flex;align-items:center;gap:14px;}
@@ -1032,10 +1060,14 @@
 </style>
 </head>
 <body>
+<script>
+// Show the hero descriptions only for new users; hide them once the intro has been seen.
+(function(){try{if(localStorage.getItem('mp.hero.introseen'))document.body.classList.add('intro-seen');else localStorage.setItem('mp.hero.introseen','1');}catch(e){}})();
+</script>
 
 <nav class="topnav">
   <div class="topnav-inner">
-    <span class="wordmark">Motorpool</span>
+    <a class="wordmark" href="#garage" aria-label="Motorpool — home">Motorpool</a>
     <div class="topnav-tabs">
       <div class="tabs">
         <a id="tab-garage" class="tab active" href="#garage">Hub</a>
@@ -1044,7 +1076,7 @@
         <a id="tab-car" class="tab" href="#car">Car</a>
       </div>
       <a id="tab-settings" class="tab settings-tab" href="#settings" aria-label="Settings" title="Settings">
-        <svg class="settings-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.4v3.1M12 18.5v3.1M4.2 4.2l2.2 2.2M17.6 17.6l2.2 2.2M2.4 12h3.1M18.5 12h3.1M4.2 19.8l2.2-2.2M17.6 6.4l2.2-2.2"/></svg>
+        <svg class="settings-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </a>
     </div>
   </div>
@@ -1085,6 +1117,11 @@
       <div class="gauge-cap">Two Builds &middot; One Bench</div>
       <h1>Motor<span class="rev">pool</span></h1>
       <p class="hero-sub">Command center for the whole garage &mdash; your daily, both builds, and the next moves.</p>
+      <div class="hero-readout">
+        <div class="ro"><span class="k">Program</span><span class="v"><em>$14,000</em></span></div>
+        <div class="ro"><span class="k">Projects</span><span class="v">2 <small>&middot; moto + car</small></span></div>
+        <div class="ro"><span class="k">Garage</span><span class="v">One bench</span></div>
+      </div>
     </header>
 
     <section style="border-bottom:none;">
@@ -1176,6 +1213,11 @@
     <span class="chip" data-dd-echo="title2">EcoBoost Premium</span>
     <span class="chip" data-dd-echo="engine">2.3L turbo</span>
     <span class="chip"><b data-dd-echo="miles">3,500</b> mi</span>
+  </div>
+  <div class="hero-readout">
+    <div class="ro"><span class="k">Equity</span><span class="v" id="roGarEquity">&mdash;</span></div>
+    <div class="ro"><span class="k">Mods logged</span><span class="v" id="roGarMods">&mdash;</span></div>
+    <div class="ro"><span class="k">In hand</span><span class="v" id="roGarSpent">&mdash;</span></div>
   </div>
 </header>
 
@@ -1280,6 +1322,11 @@
     <span class="chip"><b>M</b> endorsement</span>
     <span class="chip">ex-<b>CB300F</b> + Kymco Spade</span>
     <span class="chip">under <b>600cc</b>, light</span>
+  </div>
+  <div class="hero-readout">
+    <div class="ro"><span class="k">Cash cap</span><span class="v"><em>$4,000</em></span></div>
+    <div class="ro"><span class="k">License</span><span class="v">Class M</span></div>
+    <div class="ro"><span class="k">Displacement</span><span class="v">&lt; 600cc</span></div>
   </div>
 </header>
 
@@ -1878,7 +1925,7 @@
     <circle cx="160" cy="150" r="3" fill="#1b1f24"/>
   </svg>
   <div class="gauge-cap">Under $10K &middot; Build Sheet</div>
-  <h1>Project Car<br><span class="rev">Hunt</span></h1>
+  <h1>Project <span class="rev">Car</span></h1>
   <p class="hero-sub">How to find a project worth building &mdash; the platforms, the money, and the checks that separate a good one from someone else&rsquo;s headache.</p>
   <div class="chips">
     <span class="chip hot">complements the <b>&rsquo;Stang</b></span>
@@ -1886,6 +1933,11 @@
     <span class="chip"><b>4x4 / AWD</b></span>
     <span class="chip">trails &middot; weather &middot; gear</span>
     <span class="chip">condition &gt; miles</span>
+  </div>
+  <div class="hero-readout">
+    <div class="ro"><span class="k">Budget</span><span class="v"><em>$10,000</em></span></div>
+    <div class="ro"><span class="k">Drivetrain</span><span class="v">4x4 &middot; AWD</span></div>
+    <div class="ro"><span class="k">Body</span><span class="v">4-door</span></div>
   </div>
 </header>
 
@@ -2396,7 +2448,7 @@
     <span>Car</span><span class="dot"></span>
   </a>
   <a id="btab-settings" class="tabbar-item" href="#settings" aria-label="Settings">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.4v3.1M12 18.5v3.1M4.2 4.2l2.2 2.2M17.6 17.6l2.2 2.2M2.4 12h3.1M18.5 12h3.1M4.2 19.8l2.2-2.2M17.6 6.4l2.2-2.2"/></svg>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     <span>Settings</span><span class="dot"></span>
   </a>
 </nav>
@@ -2745,6 +2797,8 @@ if ('serviceWorker' in navigator) {
     });
     var hs = document.getElementById('hubModSpent'); if (hs) hs.textContent = '$' + Math.round(spent).toLocaleString('en-US');
     var hc = document.getElementById('hubModCount'); if (hc) hc.textContent = (spentN + buyN);
+    var rgm = document.getElementById('roGarMods'); if (rgm) rgm.textContent = (spentN + buyN);
+    var rgs = document.getElementById('roGarSpent'); if (rgs) rgs.textContent = '$' + Math.round(spent).toLocaleString('en-US');
   }
 
   // ----- drag-to-reorder (pointer-based, works on touch + mouse) -----
@@ -3113,6 +3167,8 @@ if ('serviceWorker' in navigator) {
     if (ltvEl) ltvEl.textContent = priv > 0 ? Math.round(owed / priv * 100) + '%' : '—';
     var hubEq = document.getElementById('hubEquity');
     if (hubEq) { hubEq.textContent = (eq < 0 ? '−' : '') + money(Math.abs(eq)); hubEq.style.color = eq >= 0 ? '#4f9e6a' : 'var(--redline-deep)'; }
+    var rge = document.getElementById('roGarEquity');
+    if (rge) { rge.textContent = (eq < 0 ? '−' : '') + money(Math.abs(eq)); rge.style.color = eq >= 0 ? '#4f9e6a' : 'var(--redline-deep)'; }
   }
   // "Last updated" freshness stamp — set when the user edits a figure, shown relative + absolute.
   var UKEY = P + 'updated';
