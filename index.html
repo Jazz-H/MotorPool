@@ -491,6 +491,13 @@
     .garage-cols{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;}
     .garage-cols .g-col{min-width:0;}
     .garage-cols .dash-h{margin-top:0;}
+
+    /* MOTO + CAR — wider frame; contenders & candidates onto a comparison grid */
+    #view-moto .wrap,#view-car .wrap{max-width:1180px;}
+    .cardsec{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start;}
+    .cardsec > :not(.spec-card):not(.cand-card){grid-column:1 / -1;}
+    .cardsec > .sec-note{margin-bottom:0;}
+    .cardsec > .spec-card,.cardsec > .cand-card{margin-bottom:0;}
   }
   @media (prefers-reduced-motion:reduce){
     *{transition:none!important;scroll-behavior:auto!important;}
@@ -1081,7 +1088,7 @@
   </section>
 
   <!-- CONTENDERS -->
-  <section>
+  <section class="cardsec">
     <div class="sec-head"><span class="sec-num">02</span><h2>The Contenders</h2></div>
     <p class="sec-note">All under 600cc and A2-legal. Since you've already lived with the CB300F, the real question is <b style="color:#e6e2d8">familiar vs. step up</b>. The bar marks where your old 300F sits (~30 hp) — watch which bikes actually move past it.</p>
 
@@ -1198,7 +1205,7 @@
   </details>
 
   <!-- CANDIDATES -->
-  <section>
+  <section class="cardsec">
     <div class="sec-head"><span class="sec-num">04</span><h2>Candidate Log</h2></div>
     <p class="sec-note">Bikes you're actually looking at, scored against the benchmarks above. Tap the blank fields to fill in the next ones.</p>
 
@@ -1648,7 +1655,7 @@
   </section>
 
   <!-- CONTENDERS -->
-  <section>
+  <section class="cardsec">
     <div class="sec-head"><span class="sec-num">02</span><h2>The Contenders</h2></div>
     <p class="sec-note">The <b style="color:#e6e2d8">complement</b> to your Mustang &mdash; a coupe already covers RWD on-road fun, so these do what it <em>can&rsquo;t</em>: 4 doors, 4x4 / AWD, weather, trails, and gear. Ideally four doors, though the Wrangler works either way.</p>
 
@@ -1801,7 +1808,7 @@
   </details>
 
   <!-- CANDIDATE LOG -->
-  <section>
+  <section class="cardsec">
     <div class="sec-head"><span class="sec-num">04</span><h2>Candidate Log</h2></div>
     <p class="sec-note">Goal: a <b style="color:#e6e2d8">fun secondary car</b> &mdash; no track or drift, maybe some light off-road. Your two loves pull in opposite directions (open-road V8 vs. go-anywhere 4x4); here they are side by side, plus a do-it-all wildcard. Add more with the button below.</p>
 
