@@ -2,6 +2,9 @@
 
 Working list, roughly in priority order. Knock 'em down top to bottom.
 
+## ⭐ NEXT SESSION — read me first
+- [ ] **Reframe as a shareable tool, not just a personal site** — right now Motorpool reads as one person's build hub. Reposition it as a *tool others could use* (a generic "vehicle-buying decision hub" anyone can fork/fill in), and figure out the story that makes it **portfolio-worthy**: how to highlight it on the portfolio site, **LinkedIn**, and **jazzharrisstudio.com**. Decide what the public-facing framing, demo, and write-up look like. _(Jazz asked to be reminded of this.)_
+
 ## Usability (make it a real tool)
 - [ ] **Persist checklist state** — save/restore every checkbox (inspection lists on Moto & Car, the Hub decision queue, per-candidate verify lists) to `localStorage` so they don't reset on reload.
 - [ ] **Persist editable candidate fields** — the blank-candidate `contenteditable` fields (year/make/model, price, miles…) currently lose their content on reload; persist to `localStorage`.

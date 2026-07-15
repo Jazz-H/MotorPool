@@ -504,11 +504,11 @@
   .fnote-x:hover{color:var(--paper);opacity:1;}
   .fnote-x:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
   @media (max-width:680px){
-    /* mobile already has the bottom tab bar — drop the redundant footer nav, keep wordmark + meta */
-    .foot-row{grid-template-columns:1fr;justify-items:center;gap:10px;padding:22px 20px 12px;}
+    /* mobile already has the bottom tab bar — drop the redundant footer nav; wordmark left, copy right on one row */
+    .foot-row{grid-template-columns:1fr auto;align-items:center;gap:12px;padding:22px 20px 12px;}
     .foot-nav{display:none;}
-    .foot-row .wordmark{grid-column:1;}
-    .foot-copy{grid-column:1;justify-self:center;}
+    .foot-row .wordmark{grid-column:1;justify-self:start;}
+    .foot-copy{grid-column:2;justify-self:end;}
     .foot-meta{text-align:center;padding:14px 20px 16px;}
   }
 
@@ -1555,7 +1555,21 @@
       </table>
     </div>
 
-    <div class="sweet">At <b>$4k cash</b>, your sweet spot is a <b>2–4 year-old</b> example of any of these in the 3,000–8,000-mile range — new enough to skip valve-check worries, cheap enough to leave room for gear. The CB300R is the only one where $4k could land you a near-new or leftover bike outright.</div>
+    <div class="mkt-quick">
+      <div class="qh">Year Targets @ $3k Cash <span style="font-family:'IBM Plex Mono',monospace;font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--redline);padding:2px 5px;border-radius:2px;vertical-align:middle;">re-entry</span></div>
+      <table class="mkt">
+        <thead><tr><th>Model</th><th class="n">Target Years</th><th>Watch-Item</th></tr></thead>
+        <tbody>
+          <tr><td class="yr" style="font-size:.98rem">Honda CB500F / CBR500R <span style="font-family:'IBM Plex Mono',monospace;font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--redline);padding:2px 5px;border-radius:2px;vertical-align:middle;">best value</span></td><td class="ask n">'14–'16</td><td>Bulletproof every year — buy on <b>service history</b>, not year</td></tr>
+          <tr><td class="yr" style="font-size:.98rem">Kawasaki Ninja 400 / Z400</td><td class="ask n">'18–'19</td><td>Unchanged since launch; expect <b>higher miles</b> at $3k</td></tr>
+          <tr><td class="yr" style="font-size:.98rem">KTM 390 Duke / RC390</td><td class="ask n">'15–'17</td><td>Valve checks matter on the single; early electrical niggles</td></tr>
+          <tr><td class="yr" style="font-size:.98rem">Yamaha R3 / MT-03</td><td class="ask n">'15–'17</td><td>Confirm '15 recall work (trans/frame) was done</td></tr>
+          <tr><td class="yr" style="font-size:.98rem">BMW G310R</td><td class="ask n">'17–'19</td><td>Verify early fuel-pump / stalling recall completed</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sweet">At <b>$3k cash</b> — the goal now being to just get back on two wheels — a <b>2014–2016 CB500F</b> is the smart-money pick: same easy Honda manners you know from the 300F, a genuine step up, and it lands in budget on private-party (Facebook) even though dealer sites floor higher. The <b>rule that beats any model year:</b> a well-kept older bike with records + a done valve check beats a neglected newer one every time. At <b>$4k</b>, widen to a 2–4-year-old example of any bike above in the 3,000–8,000-mile range.</div>
     <p class="cross-note">// Values reflect mid-2026 U.S. listings (Autotrader / CycleTrader) and KBB motorcycle trade-in data. Many of these bikes are lightly ridden — low-mile examples are common and worth holding out for.</p>
   </details>
 
@@ -2961,17 +2975,15 @@ if ('serviceWorker' in navigator) {
     if (!head) {
       head = document.createElement('div');
       head.className = 'ledger-row boughthead';
-      head.innerHTML = '<span class="item"><span class="chev">&#9656;</span>Bought <small class="bh-count"></small></span><span class="amt bh-sum"></span>';
+      head.innerHTML = '<span class="item"><span class="chev">&#9656;</span>Bought <small class="bh-count"></small></span>';
       head.addEventListener('click', function () {
         var c = !boughtCollapsed(); setBoughtCollapsed(c);
         ledger.classList.toggle('bought-collapsed', c); head.classList.toggle('open', !c);
       });
     }
     ledger.insertBefore(head, firstSub);
-    var sum = 0;
-    done.forEach(function (r) { sum += parseAmt(r.querySelector('.amt').textContent); ledger.insertBefore(r, firstSub); });
+    done.forEach(function (r) { ledger.insertBefore(r, firstSub); });
     var cnt = head.querySelector('.bh-count'); if (cnt) cnt.textContent = '· ' + done.length + ' installed';
-    var sm = head.querySelector('.bh-sum'); if (sm) sm.textContent = money(sum);
     var collapsed = boughtCollapsed();
     ledger.classList.toggle('bought-collapsed', collapsed);
     head.classList.toggle('open', !collapsed);
