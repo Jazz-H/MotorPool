@@ -2975,17 +2975,15 @@ if ('serviceWorker' in navigator) {
     if (!head) {
       head = document.createElement('div');
       head.className = 'ledger-row boughthead';
-      head.innerHTML = '<span class="item"><span class="chev">&#9656;</span>Bought <small class="bh-count"></small></span><span class="amt bh-sum"></span>';
+      head.innerHTML = '<span class="item"><span class="chev">&#9656;</span>Bought <small class="bh-count"></small></span>';
       head.addEventListener('click', function () {
         var c = !boughtCollapsed(); setBoughtCollapsed(c);
         ledger.classList.toggle('bought-collapsed', c); head.classList.toggle('open', !c);
       });
     }
     ledger.insertBefore(head, firstSub);
-    var sum = 0;
-    done.forEach(function (r) { sum += parseAmt(r.querySelector('.amt').textContent); ledger.insertBefore(r, firstSub); });
+    done.forEach(function (r) { ledger.insertBefore(r, firstSub); });
     var cnt = head.querySelector('.bh-count'); if (cnt) cnt.textContent = '· ' + done.length + ' installed';
-    var sm = head.querySelector('.bh-sum'); if (sm) sm.textContent = money(sum);
     var collapsed = boughtCollapsed();
     ledger.classList.toggle('bought-collapsed', collapsed);
     head.classList.toggle('open', !collapsed);
