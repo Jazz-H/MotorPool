@@ -504,11 +504,11 @@
   .fnote-x:hover{color:var(--paper);opacity:1;}
   .fnote-x:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
   @media (max-width:680px){
-    /* mobile already has the bottom tab bar — drop the redundant footer nav, keep wordmark + meta */
-    .foot-row{grid-template-columns:1fr;justify-items:center;gap:10px;padding:22px 20px 12px;}
+    /* mobile already has the bottom tab bar — drop the redundant footer nav; wordmark left, copy right on one row */
+    .foot-row{grid-template-columns:1fr auto;align-items:center;gap:12px;padding:22px 20px 12px;}
     .foot-nav{display:none;}
-    .foot-row .wordmark{grid-column:1;}
-    .foot-copy{grid-column:1;justify-self:center;}
+    .foot-row .wordmark{grid-column:1;justify-self:start;}
+    .foot-copy{grid-column:2;justify-self:end;}
     .foot-meta{text-align:center;padding:14px 20px 16px;}
   }
 
