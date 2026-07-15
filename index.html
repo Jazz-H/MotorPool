@@ -755,6 +755,16 @@
   .gear-pick .item{min-width:0;}
   .gear-cost{width:58px;}
   .gear-row.is-bought .gear-pick .item{color:#4f9e6a;}
+  .gear-x{margin-left:8px;border:none;background:transparent;color:var(--ink-faint);cursor:pointer;
+    font-size:1.05rem;line-height:1;padding:0 2px;-webkit-tap-highlight-color:transparent;transition:color .12s;}
+  .gear-x:hover{color:var(--redline);}
+  .gear-x:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
+  .gear-row .gear-pick .item[contenteditable]{border-bottom:1px dashed var(--line-strong);cursor:text;}
+  .gear-addrow{margin-top:12px;}
+  .num-edit{border-bottom:1px dashed rgba(216,58,41,.55);cursor:text;outline:none;padding:0 1px;}
+  .num-edit:focus{border-bottom-style:solid;}
+  .fill-amt{cursor:text;border-bottom:1px dashed var(--line-strong);outline:none;}
+  .fill-amt:focus{border-bottom-color:var(--redline);border-bottom-style:solid;}
   .amt .modrm{margin-left:9px;border:none;background:transparent;color:var(--ink-faint);cursor:pointer;
     font-size:1.05rem;line-height:1;padding:0 2px;vertical-align:middle;-webkit-tap-highlight-color:transparent;}
   .amt .modrm:hover{color:var(--redline-deep);}
@@ -1294,8 +1304,11 @@
     </div>
 
     <div class="garage-cols">
-    <div class="g-col">
+    <details class="sec-block g-col" id="garage-value" style="padding-top:8px;">
+    <summary>
     <h4 class="dash-h">Value &amp; Equity</h4>
+    <span class="insight"><em>Equity</em> <b data-mirror="eqVal">&mdash;</b> &middot; loan-to-value <b data-mirror="ltvVal">&mdash;</b> &middot; tap to update your KBB figures.</span>
+    </summary>
     <div class="panel" style="margin-bottom:16px;">
       <div class="ledger">
         <div class="ledger-row"><span class="item">KBB Trade-In <small>rough &mdash; update from KBB</small></span><span class="amt">$<input class="val-in" type="text" data-v="trade" inputmode="numeric" value="30500" aria-label="KBB trade-in value"></span></div>
@@ -1308,10 +1321,13 @@
       <div class="val-stamp" id="valStamp" aria-live="polite"></div>
     </div>
     <div class="callout" data-dk="kbb">KBB has no free data feed, so this can&rsquo;t auto-pull &mdash; the figures are rough estimates for a 2026 EcoBoost Premium at 3,500 mi. <b>Punch in your real numbers</b> from <a href="https://www.kbb.com/whats-my-car-worth/" target="_blank" rel="noopener" style="color:var(--amber);text-decoration:underline">KBB&rsquo;s valuation tool &#8599;</a> and the equity updates live. Owed is set to <b>$24,380</b>.</div>
-    </div>
-    <div class="g-col">
-    <div class="modlist-head">
-      <h4 class="dash-h">Mod List</h4>
+    </details>
+    <details class="sec-block g-col" id="garage-mods" style="padding-top:8px;">
+    <summary>
+    <h4 class="dash-h">Mod List</h4>
+    <span class="insight"><em>Mods</em> Spent <b data-mirror="hubModSpent">&mdash;</b> &middot; <b data-mirror="roGarMods">&mdash;</b> logged &middot; tap to edit prices or add a mod.</span>
+    </summary>
+    <div class="modlist-head" style="justify-content:flex-end;">
       <button type="button" class="ml-add-btn" id="modAddToggle" aria-expanded="false" aria-controls="modAddForm">
         <span class="ml-add-ico" aria-hidden="true">+</span> Add a mod
       </button>
@@ -1347,7 +1363,7 @@
       </div>
     </div>
     <div class="callout" data-dk="mods">All appearance &amp; sound so far &mdash; louvers, rear diffuser, chin spoiler, smoked tails, and the Roush axle-back. The quarter-window louvers are already bought; the rest are the running list. <b>Add a mod above</b> &mdash; the Spent / Still-to-buy / All-in totals update automatically.</div>
-    </div>
+    </details>
     </div>
   </section>
 </div>
@@ -1383,10 +1399,13 @@
 <div class="wrap">
 
   <!-- MONEY -->
-  <section>
+  <details class="sec-block" id="moto-money">
+    <summary>
     <div class="sec-head"><span class="sec-num">01</span><h2>The Money</h2></div>
+    <span class="insight"><em>All-in</em> Bike + gear target: <b data-mirror="allIn">&mdash;</b> &middot; keep it under the <b>$4k</b> cash cap.</span>
+    </summary>
     <div class="money-lead">
-      <div class="money-fig">$4,000<small>cash · bike only</small></div>
+      <div class="money-fig">$<span id="motoCap" class="num-edit" contenteditable="true" role="textbox" aria-label="Edit cash cap">4,000</span><small>cash · bike only</small></div>
       <p>Enough for a clean used CB500 or most of this list &mdash; and cash keeps lower-mile examples in reach. Gear rides on top of this, so aim the bike a bit under $4k. Lead with cash on a private sale.</p>
     </div>
     <p class="sec-note">Gear, service &amp; security ride on top. Tick each as you buy it and tweak the price &mdash; the running total feeds your all-in below.</p>
@@ -1434,17 +1453,20 @@
     <div class="panel" style="margin-bottom:16px;">
       <div class="ledger">
         <div class="ledger-row"><span class="item">Bike <small>your target / offer</small></span><span class="amt">$<input class="val-in" type="text" data-b="bike" inputmode="numeric" value="3600" aria-label="Bike price"></span></div>
-        <div class="ledger-row"><span class="item">vs $4,000 cap <small id="capNote">headroom</small></span><span class="amt" id="capLeft">&mdash;</span></div>
+        <div class="ledger-row"><span class="item">vs $<span data-mirror="motoCap">4,000</span> cap <small id="capNote">headroom</small></span><span class="amt" id="capLeft">&mdash;</span></div>
         <div class="ledger-row"><span class="item">Gear + setup <small>full kit from the checklist above</small></span><span class="amt" id="gearAllIn">&mdash;</span></div>
         <div class="ledger-row total"><span class="item">All-in cash <small>bike + gear</small></span><span class="amt" id="allIn">&mdash;</span></div>
       </div>
     </div>
     <div class="callout">Also budget separately: <b>title / registration / tax</b> and <b>insurance</b> (varies a lot by state and age — quote it before you buy). Plus gloves and a jacket if you don't already have them.</div>
-  </section>
+  </details>
 
   <!-- CONTENDERS -->
-  <section class="cardsec">
+  <details class="sec-block" id="moto-contenders">
+    <summary>
     <div class="sec-head"><span class="sec-num">02</span><h2>The Contenders</h2></div>
+    <span class="insight"><em>Familiar vs. step up</em> <b>CB300R</b> (~31 hp, the bike you knew) vs the <b>CB500F</b> twin (~47 hp, the real upgrade).</span>
+    </summary>
     <p class="sec-note">All under 600cc and A2-legal. Since you've already lived with the CB300F, the real question is <b style="color:#e6e2d8">familiar vs. step up</b>. The bar marks where your old 300F sits (~30 hp) — watch which bikes actually move past it.</p>
 
     <!-- CB300R -->
@@ -1500,7 +1522,7 @@
       <p>Since you've owned the CB300F, a CB300R is the safe-but-uninspiring choice — you'd likely want more before long. The <b>CB500 twin</b> is the genuine upgrade: same Honda ease, meaningfully more bike, and it's the sensible move over re-buying what you already had. For something with more style and character, that's where the candidates below come in.</p>
     </div>
     <p class="naming">// NAMING — Honda's "F" bikes (CB300R, CB500F) are naked/upright. The "R"/CBR bikes (CBR300R, CBR500R) are faired sportbikes with a slight lean. Same engines, different ergonomics + weather protection.</p>
-  </section>
+  </details>
 
   <!-- MARKET VALUES -->
   <details class="sec-block">
@@ -1574,8 +1596,11 @@
   </details>
 
   <!-- CANDIDATES -->
-  <section class="cardsec">
+  <details class="sec-block" id="moto-candidates">
+    <summary>
     <div class="sec-head"><span class="sec-num">04</span><h2>Candidate Log</h2></div>
+    <span class="insight"><em>Front-runner</em> 5 bikes scored vs the CB500F benchmark &mdash; lead pick a clean <b>2015 CB500F ~$3.6k</b>, plus a Triumph Speed 400 wildcard.</span>
+    </summary>
     <p class="sec-note">Bikes you're actually looking at, scored against the benchmarks above. Tap the blank fields to fill in the next ones.</p>
 
     <!-- CANDIDATE 01 -->
@@ -1816,7 +1841,7 @@
       </div>
       <div class="blank-hint">// Check it against the Market Values table, then note mods, condition, and your target offer.</div>
     </article>
-  </section>
+  </details>
 
   <!-- CROSS SHOP -->
   <details class="sec-block">
@@ -1963,8 +1988,11 @@
   </details>
 
   <!-- NEXT STEPS -->
-  <section style="border-bottom:none;">
+  <details class="sec-block" id="moto-next" style="border-bottom:none;">
+    <summary>
     <div class="sec-head"><span class="sec-num">09</span><h2>Next Steps</h2></div>
+    <span class="insight"><em>The path</em> Confirm history &rarr; test ride &rarr; <b>~$3.3k cash</b> offer &rarr; insure &rarr; ride. Keep <b>~$600&ndash;1,400</b> for gear.</span>
+    </summary>
     <div class="steps">
       <div class="step"><p>Cap the bike at <b>$4k cash</b> and bring it as leverage on private sales — sellers move on a clean cash offer.</p></div>
       <div class="step"><p>Get <b>insurance quotes</b> for your shortlist — comprehensive, not just liability. It may settle the decision.</p></div>
@@ -1972,7 +2000,7 @@
       <div class="step"><p>Line up a <b>pre-purchase inspection</b> before committing.</p></div>
       <div class="step"><p>Keep <b>~$600–1,400</b> aside for gear + setup — non-negotiable, even on a tight day.</p></div>
     </div>
-  </section>
+  </details>
 
 </div>
 </section>
@@ -2008,29 +2036,35 @@
 <div class="wrap">
 
   <!-- MONEY -->
-  <section>
+  <details class="sec-block" id="car-money">
+    <summary>
     <div class="sec-head"><span class="sec-num">01</span><h2>The Money</h2></div>
+    <span class="insight"><em>Program, not price</em> <b data-mirror="carProgram">$10,000</b> total &mdash; ~<b>$6&ndash;8k</b> on the car, the rest on fixes, tools, setup &amp; reserve. Don't blow it all on the car.</span>
+    </summary>
     <div class="money-lead">
-      <div class="money-fig">$10,000<small>program &middot; not car price</small></div>
+      <div class="money-fig"><span class="fill-amt" id="carProgram" contenteditable="true" role="textbox" data-cm="program" aria-label="Edit program budget">$10,000</span><small>program &middot; not car price</small></div>
       <p>The golden rule: <b>don&rsquo;t spend it all on the car.</b> A clean $8k car beats a $4k &ldquo;project&rdquo; that needs everything &mdash; because fixes always cost about 2&times; the estimate. Your $10k is a <b>program</b>, not a purchase price.</p>
     </div>
     <p class="sec-note">Roughly where a smart $10k goes (the car slice shrinks the more you plan to build):</p>
     <div class="panel">
       <div class="ledger">
-        <div class="ledger-row"><span class="item">The car itself <small>buy the best example you can find</small></span><span class="amt">$6,000&ndash;8,000</span></div>
-        <div class="ledger-row"><span class="item">Immediate needs <small>tires, brakes, fluids, deferred maintenance, PPI</small></span><span class="amt">$800&ndash;1,500</span></div>
-        <div class="ledger-row"><span class="item">Tools + starter kit <small>jack, stands, sockets, OBD2 scanner</small></span><span class="amt">$300&ndash;800</span></div>
-        <div class="ledger-row"><span class="item">Round-one setup <small>tires + wheels, exhaust, or a mild lift for the 4x4</small></span><span class="amt">$1,000&ndash;2,000</span></div>
-        <div class="ledger-row"><span class="item">&ldquo;Oh no&rdquo; reserve <small>keep it liquid</small></span><span class="amt">$500+</span></div>
+        <div class="ledger-row"><span class="item">The car itself <small>buy the best example you can find</small></span><span class="amt fill-amt" contenteditable="true" data-cm="car">$6,000&ndash;8,000</span></div>
+        <div class="ledger-row"><span class="item">Immediate needs <small>tires, brakes, fluids, deferred maintenance, PPI</small></span><span class="amt fill-amt" contenteditable="true" data-cm="immediate">$800&ndash;1,500</span></div>
+        <div class="ledger-row"><span class="item">Tools + starter kit <small>jack, stands, sockets, OBD2 scanner</small></span><span class="amt fill-amt" contenteditable="true" data-cm="tools">$300&ndash;800</span></div>
+        <div class="ledger-row"><span class="item">Round-one setup <small>tires + wheels, exhaust, or a mild lift for the 4x4</small></span><span class="amt fill-amt" contenteditable="true" data-cm="setup">$1,000&ndash;2,000</span></div>
+        <div class="ledger-row"><span class="item">&ldquo;Oh no&rdquo; reserve <small>keep it liquid</small></span><span class="amt fill-amt" contenteditable="true" data-cm="reserve">$500+</span></div>
         <div class="ledger-row total"><span class="item">$10K Program</span><span class="amt">buy quality first</span></div>
       </div>
     </div>
     <div class="callout">Budget separately: <b>title / registration / tax</b> and <b>insurance</b> (quote it first &mdash; a newer Grand Cherokee costs more to insure than an Xterra). And a <b>$150&ndash;250 pre-purchase inspection</b> is the cheapest insurance you&rsquo;ll ever buy.</div>
-  </section>
+  </details>
 
   <!-- CONTENDERS -->
-  <section class="cardsec">
+  <details class="sec-block" id="car-contenders">
+    <summary>
     <div class="sec-head"><span class="sec-num">02</span><h2>The Contenders</h2></div>
+    <span class="insight"><em>Complement the &rsquo;Stang</em> 6 rigs &mdash; Wrangler, 4Runner, Tacoma, Xterra, Grand Cherokee, Subaru &mdash; weighed on 4x4 capability vs. running cost.</span>
+    </summary>
     <p class="sec-note">The <b style="color:#e6e2d8">complement</b> to your Mustang &mdash; a coupe already covers RWD on-road fun, so these do what it <em>can&rsquo;t</em>: 4 doors, 4x4 / AWD, weather, trails, and gear. Ideally four doors, though the Wrangler works either way.</p>
 
     <article class="spec-card">
@@ -2152,7 +2186,7 @@
       <p>Your Mustang already nails RWD on-road fun, so another coupe (Corvette, 350Z, Miata) would just <b>duplicate</b> it. The complement is a <b>4-door</b> that does the opposite. Rugged and open-air? The <b>Wrangler Unlimited</b>. Reliable do-it-all? The <b>4Runner</b>. A bed? The <b>Tacoma</b>. Value? The <b>Xterra</b>. Comfort + towing? The <b>Grand Cherokee</b>. Easiest all-weather daily? A <b>Subaru</b>.</p>
     </div>
     <p class="naming">// COMPLEMENT, DON&rsquo;T DUPLICATE &mdash; the &rsquo;Stang is your fun RWD 2-door. Buy the thing it can&rsquo;t be: 4 doors, 4x4/AWD, weather, cargo, a bed. Condition and a rust-free <b>frame</b> beat low price every time.</p>
-  </section>
+  </details>
 
   <!-- MARKET VALUES -->
   <details class="sec-block">
@@ -2182,8 +2216,11 @@
   </details>
 
   <!-- CANDIDATE LOG -->
-  <section class="cardsec">
+  <details class="sec-block" id="car-candidates">
+    <summary>
     <div class="sec-head"><span class="sec-num">04</span><h2>Candidate Log</h2></div>
+    <span class="insight"><em>Picks</em> 3 logged &mdash; <b>Wrangler Unlimited</b> (loved), with the <b>4Runner</b> &amp; <b>Tacoma</b> as the sensible do-it-all suggestions.</span>
+    </summary>
     <p class="sec-note">Goal: a <b style="color:#e6e2d8">fun secondary car</b> &mdash; no track or drift, maybe some light off-road. Your two loves pull in opposite directions (open-road V8 vs. go-anywhere 4x4); here they are side by side, plus a do-it-all wildcard. Add more with the button below.</p>
 
         <article class="cand-card carpick">
@@ -2284,7 +2321,7 @@
         </div>
       </div>
     </article>
-  </section>
+  </details>
 
   <!-- CROSS SHOP -->
   <details class="sec-block">
@@ -2452,8 +2489,11 @@
   </details>
 
   <!-- NEXT STEPS -->
-  <section style="border-bottom:none;">
+  <details class="sec-block" id="car-next" style="border-bottom:none;">
+    <summary>
     <div class="sec-head"><span class="sec-num">09</span><h2>Next Steps</h2></div>
+    <span class="insight"><em>The path</em> Pick 1&ndash;2 platforms &rarr; learn their weak points &rarr; VIN + <b>frame/4x4 PPI</b> &rarr; buy the cleanest example, <b>$16&ndash;24k</b>.</span>
+    </summary>
     <div class="steps">
       <div class="step"><p><b>Complement the Mustang</b>: pick a 4-door that does what it can&rsquo;t &mdash; Wrangler Unlimited, 4Runner, Tacoma, Xterra, Grand Cherokee, or a Subaru.</p></div>
       <div class="step"><p>Set your ceiling &mdash; a clean Wrangler Unlimited or 4Runner runs <b>$16&ndash;24k</b>; keep a reserve for tires, fixes, and setup.</p></div>
@@ -2462,7 +2502,7 @@
       <div class="step"><p>Run the VIN and get a <b>platform-specific PPI</b> (frame + 4x4 check on the off-roaders) before you commit.</p></div>
       <div class="step"><p>Buy the <b>best example you can afford</b> &mdash; condition over everything.</p></div>
     </div>
-  </section>
+  </details>
 
 </div>
 </section>
@@ -3321,26 +3361,30 @@ if ('serviceWorker' in navigator) {
 </script>
 
 <script>
-// Moto budget — bike (vs $4k cap) + a tickable gear checklist -> all-in cash. Persisted.
+// Moto budget — editable cash cap + bike + add/remove/edit gear -> all-in cash. Persisted.
 (function () {
   var bike = document.querySelector('.val-in[data-b="bike"]');
   if (!bike) return;
-  var CAP = 4000;
-  var costs = Array.prototype.slice.call(document.querySelectorAll('.gear-cost'));
-  var checks = Array.prototype.slice.call(document.querySelectorAll('.gear-chk'));
-  function n(el) { var v = parseFloat((el.value || '').replace(/[^0-9.]/g, '')); return isFinite(v) ? v : 0; }
+  var list = document.querySelector('.gear-list');
+  var totalRow = list ? list.querySelector('.ledger-row.total') : null;
+  var capEl = document.getElementById('motoCap');
+  var USERKEY = 'mp.gear.user', RMKEY = 'mp.gear.rmseed';
+  function n(v) { var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.]/g, '')); return isFinite(x) ? x : 0; }
   function money(x) { return '$' + Math.round(x).toLocaleString('en-US'); }
-  function boughtFor(key) { var el = document.querySelector('.gear-chk[data-g="' + key + '"]'); return !!(el && el.checked); }
+  function loadArr(k) { try { return JSON.parse(localStorage.getItem(k) || '[]'); } catch (e) { return []; } }
+  function saveArr(k, a) { try { localStorage.setItem(k, JSON.stringify(a)); } catch (e) {} }
+  function boughtFor(key) { var el = list.querySelector('.gear-chk[data-g="' + key + '"]'); return !!(el && el.checked); }
+
   function compute() {
-    // Bike vs cap.
-    var b = n(bike), head = CAP - b;
+    var CAP = capEl ? (n(capEl.textContent) || 4000) : 4000;
+    var b = n(bike.value), head = CAP - b;
     var cl = document.getElementById('capLeft'), cn = document.getElementById('capNote');
     if (cl) { cl.textContent = (head < 0 ? '−' : '') + money(Math.abs(head)) + (head < 0 ? ' over' : ' under'); cl.style.color = head >= 0 ? '#4f9e6a' : 'var(--redline-deep)'; }
     if (cn) cn.textContent = head >= 0 ? 'under the cap' : 'over the cap';
-    // Gear checklist totals.
+    var costs = Array.prototype.slice.call(list.querySelectorAll('.gear-cost'));
     var planned = 0, bought = 0, boughtCount = 0;
     costs.forEach(function (el) {
-      var key = el.getAttribute('data-g'), c = n(el), row = el.closest('.gear-row');
+      var key = el.getAttribute('data-g'), c = n(el.value), row = el.closest('.gear-row');
       planned += c;
       if (boughtFor(key)) { bought += c; boughtCount++; if (row) row.classList.add('is-bought'); }
       else if (row) row.classList.remove('is-bought');
@@ -3349,26 +3393,93 @@ if ('serviceWorker' in navigator) {
     if (gp) gp.textContent = money(planned);
     if (gb) gb.textContent = money(bought);
     if (gnote) gnote.textContent = boughtCount ? boughtCount + ' of ' + costs.length + ' bought' : 'tick as you go';
-    // Feed the all-in: bike + full planned kit.
     var ga = document.getElementById('gearAllIn'), ai = document.getElementById('allIn');
     if (ga) ga.textContent = money(planned);
     if (ai) ai.textContent = money(b + planned);
   }
-  // Bike price persistence (+ snapshot default into backup on first load).
+
+  function addX(row, onClick) {
+    var amt = row.querySelector('.amt'); if (!amt || amt.querySelector('.gear-x')) return;
+    var x = document.createElement('button');
+    x.type = 'button'; x.className = 'gear-x'; x.setAttribute('aria-label', 'Remove gear item'); x.innerHTML = '&times;';
+    x.addEventListener('click', onClick); amt.appendChild(x);
+  }
+
+  function wireSeed(row) {
+    var cost = row.querySelector('.gear-cost'), chk = row.querySelector('.gear-chk');
+    if (!cost) return;
+    var key = cost.getAttribute('data-g');
+    try { var sv = localStorage.getItem('mp.gear.cost.' + key); if (sv !== null) cost.value = sv; else localStorage.setItem('mp.gear.cost.' + key, cost.value); } catch (e) {}
+    cost.addEventListener('input', function () { try { localStorage.setItem('mp.gear.cost.' + key, cost.value); } catch (e) {} compute(); });
+    if (chk) {
+      try { if (localStorage.getItem('mp.gear.chk.' + key) === '1') chk.checked = true; } catch (e) {}
+      chk.addEventListener('change', function () { try { localStorage.setItem('mp.gear.chk.' + key, chk.checked ? '1' : '0'); } catch (e) {} compute(); });
+    }
+    addX(row, function () {
+      var rm = loadArr(RMKEY); if (rm.indexOf(key) < 0) rm.push(key); saveArr(RMKEY, rm);
+      row.remove(); compute();
+    });
+  }
+
+  function makeUserRow(item) {
+    var key = 'u_' + item.id;
+    var row = document.createElement('div'); row.className = 'ledger-row gear-row';
+    var l = document.createElement('label'); l.className = 'gear-pick';
+    var chk = document.createElement('input'); chk.type = 'checkbox'; chk.className = 'gear-chk'; chk.setAttribute('data-g', key); chk.checked = !!item.bought;
+    var it = document.createElement('span'); it.className = 'item'; it.textContent = item.name || 'Gear item';
+    it.setAttribute('contenteditable', 'true'); it.setAttribute('role', 'textbox'); it.setAttribute('aria-label', 'Gear name');
+    l.appendChild(chk); l.appendChild(it);
+    var amt = document.createElement('span'); amt.className = 'amt'; amt.appendChild(document.createTextNode('$'));
+    var cost = document.createElement('input'); cost.className = 'val-in gear-cost'; cost.type = 'text'; cost.setAttribute('data-g', key); cost.setAttribute('inputmode', 'numeric'); cost.value = item.cost || 0; cost.setAttribute('aria-label', 'Gear cost');
+    amt.appendChild(cost);
+    row.appendChild(l); row.appendChild(amt);
+    function persist() {
+      var arr = loadArr(USERKEY);
+      for (var i = 0; i < arr.length; i++) { if (arr[i].id === item.id) { arr[i].name = it.textContent.trim(); arr[i].cost = n(cost.value); arr[i].bought = chk.checked; } }
+      saveArr(USERKEY, arr);
+    }
+    it.addEventListener('input', persist);
+    cost.addEventListener('input', function () { persist(); compute(); });
+    chk.addEventListener('change', function () { persist(); compute(); });
+    addX(row, function () {
+      saveArr(USERKEY, loadArr(USERKEY).filter(function (g) { return g.id !== item.id; }));
+      row.remove(); compute();
+    });
+    return row;
+  }
+
+  // cap persistence (+ snapshot default on first load)
+  try { var cps = localStorage.getItem('mp.mbud.cap'); if (cps !== null && capEl) capEl.textContent = cps; else if (capEl) localStorage.setItem('mp.mbud.cap', (capEl.textContent || '').trim()); } catch (e) {}
+  if (capEl) capEl.addEventListener('input', function () { try { localStorage.setItem('mp.mbud.cap', (capEl.textContent || '').trim()); } catch (e) {} compute(); });
+  // bike persistence
   try { var bs = localStorage.getItem('mp.mbud.bike'); if (bs !== null) bike.value = bs; else localStorage.setItem('mp.mbud.bike', bike.value); } catch (e) {}
   bike.addEventListener('input', function () { try { localStorage.setItem('mp.mbud.bike', bike.value); } catch (e) {} compute(); });
-  // Gear cost persistence (+ snapshot default into backup on first load).
-  costs.forEach(function (el) {
-    var k = 'mp.gear.cost.' + el.getAttribute('data-g');
-    try { var sv = localStorage.getItem(k); if (sv !== null) el.value = sv; else localStorage.setItem(k, el.value); } catch (e) {}
-    el.addEventListener('input', function () { try { localStorage.setItem(k, el.value); } catch (e) {} compute(); });
-  });
-  // Gear bought-state persistence.
-  checks.forEach(function (el) {
-    var k = 'mp.gear.chk.' + el.getAttribute('data-g');
-    try { if (localStorage.getItem(k) === '1') el.checked = true; } catch (e) {}
-    el.addEventListener('change', function () { try { localStorage.setItem(k, el.checked ? '1' : '0'); } catch (e) {} compute(); });
-  });
+  // seed gear rows: drop user-deleted ones, wire the rest
+  if (list) {
+    var rm = loadArr(RMKEY);
+    Array.prototype.slice.call(list.querySelectorAll('.gear-row')).forEach(function (row) {
+      var cost = row.querySelector('.gear-cost'); if (!cost) return;
+      if (rm.indexOf(cost.getAttribute('data-g')) >= 0) { row.remove(); return; }
+      wireSeed(row);
+    });
+    // restore user-added gear
+    var seq = 0;
+    loadArr(USERKEY).forEach(function (item) {
+      list.insertBefore(makeUserRow(item), totalRow);
+      var m = /(\d+)$/.exec(String(item.id)); if (m) seq = Math.max(seq, parseInt(m[1], 10));
+    });
+    // add-gear control
+    var addWrap = document.createElement('div'); addWrap.className = 'gear-addrow';
+    var addBtn = document.createElement('button'); addBtn.type = 'button'; addBtn.className = 'ml-add-btn'; addBtn.innerHTML = '<span class="ml-add-ico" aria-hidden="true">+</span> Add gear';
+    addWrap.appendChild(addBtn);
+    if (list.parentNode) list.parentNode.insertBefore(addWrap, list.nextSibling);
+    addBtn.addEventListener('click', function () {
+      seq++; var item = { id: 't' + seq, name: 'New gear', cost: 0, bought: false };
+      saveArr(USERKEY, loadArr(USERKEY).concat([item]));
+      var row = makeUserRow(item); list.insertBefore(row, totalRow); compute();
+      var it = row.querySelector('.item'); if (it) it.focus();
+    });
+  }
   compute();
 })();
 </script>
@@ -3675,6 +3786,55 @@ if ('serviceWorker' in navigator) {
   document.addEventListener('keydown', function (e) { if (!modal.hidden && e.key === 'Escape') hide(); });
 
   window.mpCrop = open;
+})();
+</script>
+
+<script>
+// Car "Money" program — editable amounts (ranges), persisted.
+(function () {
+  var fields = document.querySelectorAll('#car-money [data-cm]');
+  if (!fields.length) return;
+  fields.forEach(function (el) {
+    var k = 'mp.carmoney.' + el.getAttribute('data-cm');
+    try { var sv = localStorage.getItem(k); if (sv !== null) el.textContent = sv; else localStorage.setItem(k, (el.textContent || '').trim()); } catch (e) {}
+    var save = function () { try { localStorage.setItem(k, (el.textContent || '').trim()); } catch (e) {} };
+    el.addEventListener('input', save);
+    el.addEventListener('blur', save);
+  });
+})();
+</script>
+
+<script>
+/* ---- Collapsible sections: default-collapsed, remembered per section ---- */
+(function () {
+  function keyFor(vid, det) {
+    if (det.id) return 'mp.sec.' + det.id;
+    var h = det.querySelector('summary .sec-head h2, summary .dash-h, summary h2, summary h4');
+    var label = vid + '-' + (h ? h.textContent : det.textContent.slice(0, 24));
+    return 'mp.sec.' + label.replace(/[^a-z0-9]+/gi, '-').toLowerCase().replace(/^-+|-+$/g, '');
+  }
+  ['view-daily', 'view-moto', 'view-car'].forEach(function (vid) {
+    var view = document.getElementById(vid);
+    if (!view) return;
+    view.querySelectorAll('details.sec-block').forEach(function (det) {
+      var k = keyFor(vid, det);
+      var stored = null;
+      try { stored = localStorage.getItem(k); } catch (e) {}
+      det.open = (stored === '1'); // default collapsed unless explicitly opened before
+      det.addEventListener('toggle', function () {
+        try { localStorage.setItem(k, det.open ? '1' : '0'); } catch (e) {}
+      });
+    });
+  });
+
+  /* live summary mirrors: <span data-mirror="elemId"> copies that element's text, kept in sync */
+  document.querySelectorAll('[data-mirror]').forEach(function (sp) {
+    var src = document.getElementById(sp.getAttribute('data-mirror'));
+    if (!src) return;
+    var sync = function () { sp.textContent = (src.textContent || '').trim(); };
+    sync();
+    try { new MutationObserver(sync).observe(src, { childList: true, characterData: true, subtree: true }); } catch (e) {}
+  });
 })();
 </script>
 
