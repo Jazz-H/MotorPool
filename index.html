@@ -791,8 +791,16 @@
   .modadd{background:var(--steel-850);border:1px solid var(--line-steel-strong);border-radius:8px;
     padding:14px;margin-bottom:16px;display:flex;flex-direction:column;gap:10px;}
   .modadd-head{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .modadd-toggle{display:inline-flex;align-items:center;gap:9px;background:none;border:none;padding:2px 0;
+    cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .modadd-toggle:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:3px;}
+  .modadd-chev{display:inline-block;color:var(--ink-faint);font-size:.8rem;line-height:1;transition:transform .15s ease;}
+  .modadd:not(.collapsed) .modadd-chev{transform:rotate(90deg);}
   .modadd-title{font-family:"Saira Condensed",sans-serif;font-weight:700;text-transform:uppercase;
     letter-spacing:.04em;font-size:1.05rem;color:var(--paper);}
+  .modadd-body{display:flex;flex-direction:column;gap:10px;}
+  .modadd.collapsed .modadd-body{display:none;}
+  .modadd.collapsed .modadd-btn{display:none;}
   .modadd-row{display:flex;gap:10px;}
   .modadd input[type="text"]{flex:1;min-width:0;background:var(--steel-900);border:1px solid var(--line-steel-strong);
     border-radius:6px;color:var(--paper);padding:10px 12px;font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:.92rem;}
@@ -1300,17 +1308,21 @@
     </div>
     <div class="g-col">
     <h4 class="dash-h">Mod List</h4>
-    <form id="modAddForm" class="modadd" autocomplete="off">
+    <form id="modAddForm" class="modadd collapsed" autocomplete="off">
       <div class="modadd-head">
-        <span class="modadd-title">Add a mod</span>
+        <button type="button" class="modadd-toggle" id="modAddToggle" aria-expanded="false" aria-controls="modAddBody">
+          <span class="modadd-chev" aria-hidden="true">&#9656;</span><span class="modadd-title">Add a mod</span>
+        </button>
         <button type="submit" class="modadd-btn">+ Add mod</button>
       </div>
-      <div class="modadd-row">
-        <input class="modadd-name" type="text" placeholder="Mod name" aria-label="Mod name" maxlength="80" required>
-        <input class="modadd-price" type="text" inputmode="decimal" placeholder="$ price" aria-label="Price" maxlength="12" required>
+      <div class="modadd-body" id="modAddBody">
+        <div class="modadd-row">
+          <input class="modadd-name" type="text" placeholder="Mod name" aria-label="Mod name" maxlength="80" required>
+          <input class="modadd-price" type="text" inputmode="decimal" placeholder="$ price" aria-label="Price" maxlength="12" required>
+        </div>
+        <input class="modadd-note" type="text" placeholder="Note (optional)" aria-label="Note" maxlength="120">
+        <label class="modadd-bought"><input type="checkbox" class="modadd-boughtcb"> Already bought</label>
       </div>
-      <input class="modadd-note" type="text" placeholder="Note (optional)" aria-label="Note" maxlength="120">
-      <label class="modadd-bought"><input type="checkbox" class="modadd-boughtcb"> Already bought</label>
     </form>
     <div class="panel" style="margin-bottom:16px;">
       <div class="ledger" id="modLedger">
@@ -2475,6 +2487,20 @@
   <p class="foot-meta" id="footerMeta">One daily, two builds, one bench &middot; prices reflect mid-2026 &middot; saved on this device only.<button type="button" class="fnote-x" id="footerDismiss" aria-label="Dismiss this note">&times;</button></p>
 </footer>
 <script>
+// Collapsible "Add a mod" form — toggle the fields, remember the state.
+(function(){var form=document.getElementById('modAddForm');if(!form)return;
+  var toggle=document.getElementById('modAddToggle');var KEY='mp.mods.addcollapsed';
+  function set(collapsed,focusName){
+    form.classList.toggle('collapsed',collapsed);
+    if(toggle)toggle.setAttribute('aria-expanded',collapsed?'false':'true');
+    try{localStorage.setItem(KEY,collapsed?'1':'0');}catch(e){}
+    if(!collapsed&&focusName){var n=form.querySelector('.modadd-name');if(n)n.focus();}
+  }
+  var start=true; // default collapsed
+  try{var s=localStorage.getItem(KEY);if(s!==null)start=(s==='1');}catch(e){}
+  set(start,false);
+  if(toggle)toggle.addEventListener('click',function(){var willCollapse=!form.classList.contains('collapsed');set(willCollapse,!willCollapse);});
+})();
 // Dismissible insight callouts — each remembers its own dismissal by key.
 (function(){var cs=document.querySelectorAll('.callout[data-dk]');
   Array.prototype.forEach.call(cs,function(c){
