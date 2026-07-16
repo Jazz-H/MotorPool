@@ -3303,10 +3303,12 @@ if ('serviceWorker' in navigator) {
     fileIn.accept = 'image/*';
     fileIn.style.display = 'none';
     var targetIdx = -1;
-    sec.appendChild(head);
-    sec.appendChild(cform);
-    sec.appendChild(container);
-    sec.appendChild(fileIn);
+    // Put the add affordance at the TOP of the log (right under the note, above every
+    // seed card) so adding is the first action — mirrors Add-a-mod atop the mod list.
+    var firstCard = sec.querySelector('.cand-card');
+    [head, cform, container, fileIn].forEach(function (el) {
+      if (firstCard) sec.insertBefore(el, firstCard); else sec.appendChild(el);
+    });
     render(container, scope);
 
     fileIn.addEventListener('change', function () {
