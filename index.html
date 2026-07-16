@@ -214,6 +214,18 @@
     padding:18px 20px 14px;border-bottom:1px solid var(--line);
     background:linear-gradient(180deg,#f1eee6,var(--paper));
   }
+  /* removable cards (contenders / candidates / cross-shop) */
+  .spec-card,.cand-card,.cross-item{position:relative;}
+  .card-rm{position:absolute;top:9px;right:9px;z-index:4;border:none;background:rgba(26,29,33,.06);
+    color:var(--ink-faint);cursor:pointer;height:24px;min-width:24px;padding:0;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;font-size:1.1rem;line-height:1;
+    -webkit-tap-highlight-color:transparent;transition:background .12s,color .12s;}
+  .card-rm:hover{background:var(--redline);color:#fff;}
+  .card-rm.armed{background:var(--redline);color:#fff;border-radius:13px;min-width:0;height:22px;padding:0 11px;
+    font-size:.56rem;font-family:"IBM Plex Mono",monospace;letter-spacing:.09em;text-transform:uppercase;}
+  .card-rm:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+  .spec-card.has-rm .spec-top,.cand-card.has-rm .cand-top{padding-right:40px;}
+  .cross-item.has-rm{padding-right:42px;}
   .spec-name{font-family:"Saira Condensed",sans-serif;font-weight:700;text-transform:uppercase;
     font-size:1.5rem;line-height:1;letter-spacing:.01em;margin:0;}
   .spec-name span{display:block;font-family:"IBM Plex Mono",monospace;font-weight:400;
@@ -460,16 +472,30 @@
     color:var(--ink);font-size:.94rem;-webkit-tap-highlight-color:transparent;transition:background .12s;
   }
   .check-list label:hover{background:#f1eee6;}
-  .check-list input{
-    appearance:none;-webkit-appearance:none;margin:1px 0 0;flex:0 0 auto;
-    width:20px;height:20px;border:2px solid var(--line-strong);border-radius:3px;
-    background:#fff;cursor:pointer;position:relative;transition:.15s;
-  }
-  .check-list input:checked{background:var(--redline);border-color:var(--redline);}
-  .check-list input:checked::after{content:"";position:absolute;left:5px;top:1px;
-    width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);}
-  .check-list input:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
-  .check-list input:checked + span{color:var(--ink-faint);text-decoration:line-through;}
+  /* ---- unified checkbox — identical across gear, checklists, and the add-mod form ---- */
+  .check-list input[type="checkbox"],
+  .gear-pick input[type="checkbox"],
+  .modadd-bought input[type="checkbox"]{
+    appearance:none;-webkit-appearance:none;flex:0 0 auto;margin:0;cursor:pointer;position:relative;
+    width:20px;height:20px;border:2px solid var(--line-strong);border-radius:6px;background:#fff;
+    box-shadow:inset 0 1px 2px rgba(0,0,0,.05);transition:background .12s,border-color .12s,box-shadow .12s;}
+  .check-list input[type="checkbox"]:hover,
+  .gear-pick input[type="checkbox"]:hover,
+  .modadd-bought input[type="checkbox"]:hover{border-color:var(--ink-faint);}
+  .check-list input[type="checkbox"]:checked,
+  .gear-pick input[type="checkbox"]:checked,
+  .modadd-bought input[type="checkbox"]:checked{background:var(--redline);border-color:var(--redline);box-shadow:none;}
+  .check-list input[type="checkbox"]:checked::after,
+  .gear-pick input[type="checkbox"]:checked::after,
+  .modadd-bought input[type="checkbox"]:checked::after{
+    content:"";position:absolute;left:6px;top:2px;width:5px;height:9px;
+    border:solid #fff;border-width:0 2.5px 2.5px 0;border-radius:1px;transform:rotate(45deg);}
+  .check-list input[type="checkbox"]:focus-visible,
+  .gear-pick input[type="checkbox"]:focus-visible,
+  .modadd-bought input[type="checkbox"]:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+  .check-list input[type="checkbox"]{margin-top:1px;}
+  .check-list input:checked + span,
+  .gear-pick input[type="checkbox"]:checked + .item{color:var(--ink-faint);text-decoration:line-through;}
   .redflags{margin-top:14px;padding:14px 18px;border-radius:4px;
     background:rgba(216,58,41,.10);border:1px solid rgba(216,58,41,.4);
     font-size:.9rem;color:#f0d9d4;}
@@ -789,16 +815,9 @@
   .val-in:focus{outline:none;border-bottom-color:var(--amber);}
   .gear-row{align-items:center;}
   .gear-pick{display:flex;align-items:center;gap:11px;flex:1;min-width:0;cursor:pointer;margin:0;}
-  .gear-pick input[type="checkbox"]{flex:0 0 auto;width:19px;height:19px;margin:0;cursor:pointer;
-    appearance:none;-webkit-appearance:none;border:2px solid var(--line-strong);border-radius:5px;
-    background:var(--paper);position:relative;transition:background .12s,border-color .12s;}
-  .gear-pick input[type="checkbox"]:checked{background:var(--redline);border-color:var(--redline);}
-  .gear-pick input[type="checkbox"]:checked::after{content:"";position:absolute;left:5px;top:1px;
-    width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);}
-  .gear-pick input[type="checkbox"]:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
   .gear-pick .item{min-width:0;}
   .gear-cost{width:58px;}
-  .gear-row.is-bought .gear-pick .item{color:#4f9e6a;}
+  .gear-row.is-bought .gear-pick .item{color:var(--ink-faint);text-decoration:line-through;}
   .gear-x{margin-left:8px;border:none;background:transparent;color:var(--ink-faint);cursor:pointer;
     font-size:1.05rem;line-height:1;padding:0 2px;-webkit-tap-highlight-color:transparent;transition:color .12s;}
   .gear-x:hover{color:var(--redline);}
@@ -867,7 +886,6 @@
   .modadd-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
   .modadd-bought{display:flex;align-items:center;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:.74rem;
     letter-spacing:.04em;text-transform:uppercase;color:#c8c4ba;cursor:pointer;-webkit-tap-highlight-color:transparent;}
-  .modadd-bought input{width:18px;height:18px;accent-color:var(--redline);cursor:pointer;}
   .modadd-btn{font-family:"Saira Condensed",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
     font-size:.92rem;color:#fff;background:var(--redline);border:none;border-radius:6px;padding:10px 18px;cursor:pointer;
     -webkit-tap-highlight-color:transparent;transition:filter .15s, transform .1s;}
@@ -3263,18 +3281,31 @@ if ('serviceWorker' in navigator) {
 
     var container = document.createElement('div');
     container.className = 'usercands';
+    var head = document.createElement('div'); head.className = 'modlist-head';
+    head.innerHTML = '<span class="dash-h" style="font-size:.9rem;">Your candidates</span>';
     var btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'addcand';
-    btn.innerHTML = '<span class="plus">+</span> Add candidate';
+    btn.className = 'ml-add-btn';
+    btn.setAttribute('aria-expanded', 'false');
+    btn.innerHTML = '<span class="ml-add-ico" aria-hidden="true">+</span> Add candidate';
+    head.appendChild(btn);
+    var cform = document.createElement('form'); cform.className = 'modadd collapsed'; cform.setAttribute('autocomplete', 'off');
+    cform.innerHTML =
+      '<div class="modadd-row">' +
+        '<input class="modadd-name cadd-name" type="text" placeholder="Year / make / model" aria-label="Year make model" maxlength="60" required>' +
+        '<input class="modadd-price cadd-price" type="text" placeholder="$ price" aria-label="Price" maxlength="12">' +
+      '</div>' +
+      '<input class="modadd-note cadd-miles" type="text" placeholder="Miles (optional)" aria-label="Miles" maxlength="12">' +
+      '<div class="modadd-foot"><span></span><button type="submit" class="modadd-btn">+ Add candidate</button></div>';
     // Hidden file input shared by every card in this section; targetIdx tracks which card asked.
     var fileIn = document.createElement('input');
     fileIn.type = 'file';
     fileIn.accept = 'image/*';
     fileIn.style.display = 'none';
     var targetIdx = -1;
+    sec.appendChild(head);
+    sec.appendChild(cform);
     sec.appendChild(container);
-    sec.appendChild(btn);
     sec.appendChild(fileIn);
     render(container, scope);
 
@@ -3297,12 +3328,20 @@ if ('serviceWorker' in navigator) {
     });
 
     btn.addEventListener('click', function () {
+      var willOpen = cform.classList.contains('collapsed');
+      cform.classList.toggle('collapsed', !willOpen);
+      btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      if (willOpen) { var nm = cform.querySelector('.cadd-name'); if (nm) nm.focus(); }
+    });
+    cform.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var nm = cform.querySelector('.cadd-name').value.trim(); if (!nm) return;
+      var price = cform.querySelector('.cadd-price').value.trim(), miles = cform.querySelector('.cadd-miles').value.trim();
       var arr = load(scope);
-      arr.push({ name: '', price: '', miles: '', title: '', loc: '', note: '' });
+      arr.push({ name: nm, price: price, miles: miles, title: '', loc: '', note: '' });
       save(scope, arr);
       render(container, scope);
-      var last = container.querySelector('.cand-card.usercand:last-child .uc-name');
-      if (last) last.focus();
+      cform.reset(); cform.classList.add('collapsed'); btn.setAttribute('aria-expanded', 'false');
     });
     container.addEventListener('input', function (e) {
       var inp = e.target.closest('input[data-f]');
@@ -3586,6 +3625,14 @@ if ('serviceWorker' in navigator) {
     x.addEventListener('click', onClick); amt.appendChild(x);
   }
 
+  function reorderGear() {
+    if (!list || !totalRow) return;
+    var rows = Array.prototype.slice.call(list.querySelectorAll('.gear-row'));
+    var bought = [], unbought = [];
+    rows.forEach(function (r) { var c = r.querySelector('.gear-chk'); (c && c.checked ? bought : unbought).push(r); });
+    unbought.concat(bought).forEach(function (r) { list.insertBefore(r, totalRow); }); // bought sink to the bottom, above the total
+  }
+
   function wireSeed(row) {
     var cost = row.querySelector('.gear-cost'), chk = row.querySelector('.gear-chk');
     if (!cost) return;
@@ -3594,7 +3641,7 @@ if ('serviceWorker' in navigator) {
     cost.addEventListener('input', function () { try { localStorage.setItem('mp.gear.cost.' + key, cost.value); } catch (e) {} compute(); });
     if (chk) {
       try { if (localStorage.getItem('mp.gear.chk.' + key) === '1') chk.checked = true; } catch (e) {}
-      chk.addEventListener('change', function () { try { localStorage.setItem('mp.gear.chk.' + key, chk.checked ? '1' : '0'); } catch (e) {} compute(); });
+      chk.addEventListener('change', function () { try { localStorage.setItem('mp.gear.chk.' + key, chk.checked ? '1' : '0'); } catch (e) {} compute(); reorderGear(); });
     }
     addX(row, function () {
       var rm = loadArr(RMKEY); if (rm.indexOf(key) < 0) rm.push(key); saveArr(RMKEY, rm);
@@ -3621,7 +3668,7 @@ if ('serviceWorker' in navigator) {
     }
     it.addEventListener('input', persist);
     cost.addEventListener('input', function () { persist(); compute(); });
-    chk.addEventListener('change', function () { persist(); compute(); });
+    chk.addEventListener('change', function () { persist(); compute(); reorderGear(); });
     addX(row, function () {
       saveArr(USERKEY, loadArr(USERKEY).filter(function (g) { return g.id !== item.id; }));
       row.remove(); compute();
@@ -3653,19 +3700,42 @@ if ('serviceWorker' in navigator) {
       list.insertBefore(makeUserRow(item), totalRow);
       var m = /(\d+)$/.exec(String(item.id)); if (m) seq = Math.max(seq, parseInt(m[1], 10));
     });
-    // add-gear control
-    var addWrap = document.createElement('div'); addWrap.className = 'gear-addrow';
-    var addBtn = document.createElement('button'); addBtn.type = 'button'; addBtn.className = 'ml-add-btn'; addBtn.innerHTML = '<span class="ml-add-ico" aria-hidden="true">+</span> Add gear';
-    addWrap.appendChild(addBtn);
-    if (list.parentNode) list.parentNode.insertBefore(addWrap, list.nextSibling);
+    // add-gear: button toggle + collapsible form (same pattern as Add-a-mod)
+    var gpanel = list.closest('.panel') || list.parentNode;
+    var ghead = document.createElement('div'); ghead.className = 'modlist-head';
+    ghead.innerHTML = '<span class="dash-h" style="font-size:.9rem;">Gear &amp; setup</span>';
+    var addBtn = document.createElement('button'); addBtn.type = 'button'; addBtn.className = 'ml-add-btn';
+    addBtn.setAttribute('aria-expanded', 'false'); addBtn.innerHTML = '<span class="ml-add-ico" aria-hidden="true">+</span> Add gear';
+    ghead.appendChild(addBtn);
+    var gform = document.createElement('form'); gform.className = 'modadd collapsed'; gform.setAttribute('autocomplete', 'off');
+    gform.innerHTML =
+      '<div class="modadd-row">' +
+        '<input class="modadd-name gadd-name" type="text" placeholder="Gear / item" aria-label="Gear name" maxlength="60" required>' +
+        '<input class="modadd-price gadd-cost" type="text" inputmode="decimal" placeholder="$ cost" aria-label="Cost" maxlength="10">' +
+      '</div>' +
+      '<div class="modadd-foot">' +
+        '<label class="modadd-bought"><input type="checkbox" class="gadd-bought"> Already bought</label>' +
+        '<button type="submit" class="modadd-btn">+ Add gear</button>' +
+      '</div>';
+    if (gpanel && gpanel.parentNode) { gpanel.parentNode.insertBefore(ghead, gpanel); gpanel.parentNode.insertBefore(gform, gpanel); }
     addBtn.addEventListener('click', function () {
-      seq++; var item = { id: 't' + seq, name: 'New gear', cost: 0, bought: false };
+      var willOpen = gform.classList.contains('collapsed');
+      gform.classList.toggle('collapsed', !willOpen);
+      addBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      if (willOpen) { var nm = gform.querySelector('.gadd-name'); if (nm) nm.focus(); }
+    });
+    gform.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var nm = gform.querySelector('.gadd-name').value.trim(); if (!nm) return;
+      var cost = n(gform.querySelector('.gadd-cost').value), bought = gform.querySelector('.gadd-bought').checked;
+      seq++; var item = { id: 't' + seq, name: nm, cost: cost, bought: bought };
       saveArr(USERKEY, loadArr(USERKEY).concat([item]));
-      var row = makeUserRow(item); list.insertBefore(row, totalRow); compute();
-      var it = row.querySelector('.item'); if (it) it.focus();
+      list.insertBefore(makeUserRow(item), totalRow); compute(); reorderGear();
+      gform.reset(); gform.classList.add('collapsed'); addBtn.setAttribute('aria-expanded', 'false');
     });
   }
   compute();
+  reorderGear();
 })();
 </script>
 
@@ -4080,6 +4150,50 @@ if ('serviceWorker' in navigator) {
       });
     }
   } catch (e) {}
+})();
+</script>
+
+<script>
+// Removable cards — delete cards from Contenders / Candidate Log / Cross-Shop (persisted per profile).
+(function () {
+  function loadSet(k) { try { return JSON.parse(localStorage.getItem(k) || '[]'); } catch (e) { return []; } }
+  function saveSet(k, a) { try { localStorage.setItem(k, JSON.stringify(a)); } catch (e) {} }
+
+  function makeRemovable(section, selector, storeKey) {
+    if (!section) return;
+    var removed = loadSet(storeKey);
+    Array.prototype.slice.call(section.querySelectorAll(selector)).forEach(function (card, idx) {
+      if (removed.indexOf(idx) >= 0) { card.remove(); return; }
+      if (card.querySelector('.card-rm')) return;
+      card.classList.add('has-rm');
+      var btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'card-rm'; btn.setAttribute('aria-label', 'Remove this card'); btn.innerHTML = '&times;';
+      var armed = false, t = null;
+      btn.addEventListener('click', function (e) {
+        e.preventDefault(); e.stopPropagation();
+        if (!armed) { armed = true; btn.classList.add('armed'); btn.textContent = 'Remove?'; t = setTimeout(function () { armed = false; btn.classList.remove('armed'); btn.innerHTML = '&times;'; }, 3000); return; }
+        if (t) clearTimeout(t);
+        var set = loadSet(storeKey); if (set.indexOf(idx) < 0) set.push(idx); saveSet(storeKey, set);
+        card.remove();
+      });
+      card.appendChild(btn);
+    });
+  }
+
+  var targets = [
+    ['moto-contenders', '.spec-card', 'mp.rm.moto-contenders'],
+    ['car-contenders', '.spec-card', 'mp.rm.car-contenders'],
+    ['moto-candidates', '.cand-card:not(.blank):not(.usercand)', 'mp.rm.moto-candidates'],
+    ['car-candidates', '.cand-card:not(.blank):not(.usercand)', 'mp.rm.car-candidates']
+  ];
+  targets.forEach(function (t) { makeRemovable(document.getElementById(t[0]), t[1], t[2]); });
+  // cross-shop lives in the details whose heading is "Cross-Shop"
+  ['view-moto', 'view-car'].forEach(function (vid) {
+    var v = document.getElementById(vid); if (!v) return;
+    var cross = null;
+    v.querySelectorAll('details.sec-block').forEach(function (d) { var h = d.querySelector('summary h2'); if (h && /Cross-Shop/i.test(h.textContent)) cross = d; });
+    makeRemovable(cross, '.cross-item', 'mp.rm.' + vid + '-cross');
+  });
 })();
 </script>
 
