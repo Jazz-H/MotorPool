@@ -3,6 +3,7 @@
 Working list, roughly in priority order. Knock 'em down top to bottom.
 
 ## ⭐ Queued features
+- [ ] **"Add candidate" at the top** — the Add-candidate header + form currently sits at the bottom of the Candidate Log (below every seed card). Move it to the top of the section so adding is the first action (like Add-a-mod sits atop the mod list). Same for any other "Your …" add blocks placed at the bottom.
 - [ ] **Dismissible insights / callouts** — the amber "side-quote" blocks (`.callout`, `.insight`, `.port-note` — the ones with the yellow left border) should be dismissible, and once a user has seen/dismissed one it should stay gone (persist per profile, like the NEW banner and tap-to-expand nudge already do). Add a subtle × and remember dismissal.
 - [ ] **Rate a vehicle from photos** — no way today for a user to submit photos of a vehicle they're considering and have the app score/rate it. (Ties into the split-off `jazz-h/vehicle-match` tool — integrate its scoring, or add a photo-in → rating flow inside a candidate card.)
 - [ ] **Add owned vehicles to the Garage** — the Garage tab only holds the one daily driver. Let users add multiple vehicles they already own (each with its own identity, photo, specs, and mod list), not just candidates they're shopping.
