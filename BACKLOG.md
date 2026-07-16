@@ -3,9 +3,8 @@
 Working list, roughly in priority order. Knock 'em down top to bottom.
 
 ## ⭐ Queued features
-- [ ] **Rate a vehicle from photos** — no way today for a user to submit photos of a vehicle they're considering and have the app score/rate it. (Ties into the split-off `jazz-h/vehicle-match` tool — integrate its scoring, or add a photo-in → rating flow inside a candidate card.)
 - [ ] **Add owned vehicles to the Garage** — the Garage tab only holds the one daily driver. Let users add multiple vehicles they already own (each with its own identity, photo, specs, and mod list), not just candidates they're shopping.
-- [ ] **Gear as its own Moto section** — pull the gear/setup list out of "01 The Money" and give it a standalone collapsible section on the Moto tab (with its own summary), so money and gear aren't conflated.
+- [ ] **Rate a vehicle from photos** — no way today for a user to submit photos of a vehicle they're considering and have the app score/rate it. (Ties into the split-off `jazz-h/vehicle-match` tool — integrate its scoring, or add a photo-in → rating flow inside a candidate card.)
 
 ## Reframe as a shareable, portfolio-worthy tool
 - [ ] **Accounts Phase 2–3** — real login + cloud sync via Supabase. Scoped in `docs/accounts-scope.md`; needs a Supabase project + the 4 open decisions. (Phase 1 — local profiles — is shipped.)
@@ -34,6 +33,7 @@ Working list, roughly in priority order. Knock 'em down top to bottom.
 ### Recent UI polish
 - [x] **"Add candidate" at the top** of the Candidate Log (moto + car) — adding is now the first action, above every seed card
 - [x] **Dismissible amber side-quotes** — every `.insight` yellow-bordered note in a section summary gets a subtle ×; dismissal is remembered globally (`mp.hint.insight.*`, seen-once like the NEW banner)
+- [x] **Gear as its own Moto section** — pulled the gear/setup list out of "01 The Money" into a standalone collapsible **02 Gear & Setup** section with its own live summary; remaining sections renumbered
 - [x] **Daily-photo render fix** (fallback overlay was covering saved photos) + cropper hardening (downscale + size fallback)
 - [x] **Unified high-quality checkboxes** + **strikethrough on checked items**
 - [x] **Bought gear sinks to the bottom** of the list
