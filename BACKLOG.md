@@ -3,7 +3,6 @@
 Working list, roughly in priority order. Knock 'em down top to bottom.
 
 ## ⭐ Queued features
-- [ ] **Dismissible insights / callouts** — the amber "side-quote" blocks (`.callout`, `.insight`, `.port-note` — the ones with the yellow left border) should be dismissible, and once a user has seen/dismissed one it should stay gone (persist per profile, like the NEW banner and tap-to-expand nudge already do). Add a subtle × and remember dismissal.
 - [ ] **Rate a vehicle from photos** — no way today for a user to submit photos of a vehicle they're considering and have the app score/rate it. (Ties into the split-off `jazz-h/vehicle-match` tool — integrate its scoring, or add a photo-in → rating flow inside a candidate card.)
 - [ ] **Add owned vehicles to the Garage** — the Garage tab only holds the one daily driver. Let users add multiple vehicles they already own (each with its own identity, photo, specs, and mod list), not just candidates they're shopping.
 - [ ] **Gear as its own Moto section** — pull the gear/setup list out of "01 The Money" and give it a standalone collapsible section on the Moto tab (with its own summary), so money and gear aren't conflated.
@@ -34,6 +33,7 @@ Working list, roughly in priority order. Knock 'em down top to bottom.
 
 ### Recent UI polish
 - [x] **"Add candidate" at the top** of the Candidate Log (moto + car) — adding is now the first action, above every seed card
+- [x] **Dismissible amber side-quotes** — every `.insight` yellow-bordered note in a section summary gets a subtle ×; dismissal is remembered globally (`mp.hint.insight.*`, seen-once like the NEW banner)
 - [x] **Daily-photo render fix** (fallback overlay was covering saved photos) + cropper hardening (downscale + size fallback)
 - [x] **Unified high-quality checkboxes** + **strikethrough on checked items**
 - [x] **Bought gear sinks to the bottom** of the list

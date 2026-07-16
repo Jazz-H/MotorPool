@@ -1009,6 +1009,15 @@
   .insight em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.14em;
     text-transform:uppercase;color:var(--redline);display:block;margin-bottom:5px;}
   .insight b{color:var(--paper);font-weight:600;}
+  /* Dismissible amber side-quotes: subtle × top-right; stays gone once seen. */
+  .insight{position:relative;}
+  .insight[hidden]{display:none;}
+  .insight-x{position:absolute;top:5px;right:5px;border:none;background:transparent;color:var(--ink-faint);
+    cursor:pointer;font-size:1.05rem;line-height:1;padding:2px 6px;opacity:.5;-webkit-tap-highlight-color:transparent;
+    transition:opacity .15s,color .15s;z-index:2;}
+  .insight-x:hover{color:var(--paper);opacity:1;}
+  .insight-x:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
+  .insight.has-x{padding-right:30px;}
 
   /* ---------- SCAFFOLD STUBS ---------- */
   .stub{background:var(--steel-850);border:1px dashed var(--line-steel-strong);border-radius:5px;padding:18px 20px;
@@ -2660,6 +2669,30 @@
     var x=document.createElement('button');x.type='button';x.className='callout-x';x.setAttribute('aria-label','Dismiss this note');x.innerHTML='&times;';
     x.addEventListener('click',function(){c.hidden=true;try{localStorage.setItem(key,'1');}catch(e){}});
     c.appendChild(x);
+  });
+})();
+// Dismissible amber "side-quote" insights (the yellow-bordered notes in each summary).
+// Stored under mp.hint.* so they're global + excluded from per-profile snapshots —
+// seen once, gone for good, like the NEW banner and tap-to-expand nudge.
+(function(){
+  function keyFor(el){
+    var host = el.closest('[id]'); var base = host ? host.id : 'doc';
+    var sibs = (host || document).getElementsByClassName('insight');
+    var idx = Array.prototype.indexOf.call(sibs, el);
+    return 'mp.hint.insight.' + base + (idx > 0 ? ('-' + idx) : '');
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.insight'), function(el){
+    var key = keyFor(el);
+    try{ if(localStorage.getItem(key)){ el.hidden = true; return; } }catch(e){}
+    var x = document.createElement('button');
+    x.type = 'button'; x.className = 'insight-x'; x.setAttribute('aria-label','Dismiss this note'); x.innerHTML = '&times;';
+    x.addEventListener('click', function(ev){
+      // Live inside a <summary>; keep the click from toggling the section open/closed.
+      ev.preventDefault(); ev.stopPropagation();
+      el.hidden = true; try{ localStorage.setItem(key,'1'); }catch(e){}
+    });
+    el.classList.add('has-x');
+    el.appendChild(x);
   });
 })();
 // Footer: current copyright year + dismissible meta line (nav row remains).
