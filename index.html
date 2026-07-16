@@ -472,26 +472,31 @@
     color:var(--ink);font-size:.94rem;-webkit-tap-highlight-color:transparent;transition:background .12s;
   }
   .check-list label:hover{background:#f1eee6;}
-  /* ---- unified checkbox — identical across gear, checklists, and the add-mod form ---- */
+  /* ---- unified checkbox — identical across gear, checklists, owned-vehicle mods, and the add-mod form ---- */
   .check-list input[type="checkbox"],
   .gear-pick input[type="checkbox"],
+  .owned-mods input[type="checkbox"],
   .modadd-bought input[type="checkbox"]{
     appearance:none;-webkit-appearance:none;flex:0 0 auto;margin:0;cursor:pointer;position:relative;
     width:20px;height:20px;border:2px solid var(--line-strong);border-radius:6px;background:#fff;
     box-shadow:inset 0 1px 2px rgba(0,0,0,.05);transition:background .12s,border-color .12s,box-shadow .12s;}
   .check-list input[type="checkbox"]:hover,
   .gear-pick input[type="checkbox"]:hover,
+  .owned-mods input[type="checkbox"]:hover,
   .modadd-bought input[type="checkbox"]:hover{border-color:var(--ink-faint);}
   .check-list input[type="checkbox"]:checked,
   .gear-pick input[type="checkbox"]:checked,
+  .owned-mods input[type="checkbox"]:checked,
   .modadd-bought input[type="checkbox"]:checked{background:var(--redline);border-color:var(--redline);box-shadow:none;}
   .check-list input[type="checkbox"]:checked::after,
   .gear-pick input[type="checkbox"]:checked::after,
+  .owned-mods input[type="checkbox"]:checked::after,
   .modadd-bought input[type="checkbox"]:checked::after{
     content:"";position:absolute;left:6px;top:2px;width:5px;height:9px;
     border:solid #fff;border-width:0 2.5px 2.5px 0;border-radius:1px;transform:rotate(45deg);}
   .check-list input[type="checkbox"]:focus-visible,
   .gear-pick input[type="checkbox"]:focus-visible,
+  .owned-mods input[type="checkbox"]:focus-visible,
   .modadd-bought input[type="checkbox"]:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
   .check-list input[type="checkbox"]{margin-top:1px;}
   .check-list input:checked + span,
@@ -960,6 +965,73 @@
   .addcand:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
   .addcand .plus{color:var(--redline);margin-right:8px;font-size:1.1rem;}
 
+  /* ---------- OWNED VEHICLES (Garage) ---------- */
+  .owned-card{margin-bottom:20px;}
+  .owned-card .uc-trim{display:block;width:100%;appearance:none;-webkit-appearance:none;border:none;background:transparent;
+    font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);
+    padding:0 0 2px;margin-top:2px;border-bottom:1px dashed transparent;}
+  .owned-card .uc-trim:focus{outline:none;border-bottom-color:var(--amber);}
+  .owned-card .uc-trim::placeholder{color:var(--ink-faint);}
+  .owned-mods{padding:13px 16px;border-top:1px solid var(--line);}
+  .owned-mods .om-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:2px;}
+  .owned-mods .om-title{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);}
+  .owned-mods .om-empty{color:var(--ink-faint);font-size:.86rem;padding:6px 0 2px;}
+  .om-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);}
+  .om-row:last-of-type{border-bottom:none;}
+  .om-pick{display:flex;align-items:center;gap:10px;flex:1;min-width:0;cursor:pointer;margin:0;}
+  .om-name{flex:1;min-width:0;appearance:none;-webkit-appearance:none;border:none;background:transparent;color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:.92rem;padding:2px 1px;border-bottom:1px dashed transparent;}
+  .om-name:focus{outline:none;border-bottom-color:var(--amber);}
+  .om-row.is-done .om-name{color:var(--ink-faint);text-decoration:line-through;}
+  .om-cost{width:64px;text-align:right;appearance:none;-webkit-appearance:none;border:none;background:transparent;color:var(--ink);
+    font-family:"IBM Plex Mono",monospace;font-size:.84rem;padding:2px 1px;border-bottom:1px dashed transparent;}
+  .om-cost:focus{outline:none;border-bottom-color:var(--amber);}
+  .om-x{border:none;background:transparent;color:var(--ink-faint);cursor:pointer;font-size:1.2rem;line-height:1;
+    padding:0 4px;-webkit-tap-highlight-color:transparent;transition:color .15s;}
+  .om-x:hover{color:var(--redline-deep);}
+  .om-x:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
+
+  /* ---------- AI LISTING RATER ---------- */
+  .ai-row{display:flex;flex-direction:column;gap:7px;margin:0 0 14px;}
+  .ai-row label{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+  .ai-in{width:100%;background:var(--steel-900);border:1px solid var(--line-steel-strong);border-radius:6px;color:var(--paper);
+    font-family:"IBM Plex Mono",monospace;font-size:.9rem;padding:11px 12px;-webkit-appearance:none;appearance:none;}
+  .ai-in:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 2px rgba(224,160,18,.35);}
+  select.ai-in{cursor:pointer;background-image:none;}
+  .rater-photos{display:flex;flex-wrap:wrap;gap:8px;}
+  .rater-thumb{position:relative;width:76px;height:58px;border-radius:5px;overflow:hidden;border:1px solid var(--line-steel-strong);background:var(--steel-900);}
+  .rater-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .rater-thumb button{position:absolute;top:2px;right:2px;width:18px;height:18px;border:none;border-radius:50%;
+    background:rgba(20,22,24,.72);color:#fff;font-size:.8rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .rater-addphoto{width:76px;height:58px;border-radius:5px;border:1px dashed var(--line-steel-strong);background:var(--steel-900);
+    color:var(--ink-soft);cursor:pointer;font-size:1.4rem;line-height:1;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;}
+  .rater-addphoto:hover{color:var(--redline);border-color:var(--redline);}
+  .rater-status{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.02em;color:var(--ink-soft);}
+  .rater-status.err{color:#f0a094;}
+  .rater-status.busy::after{content:"";display:inline-block;width:9px;height:9px;margin-left:7px;border-radius:50%;
+    border:2px solid var(--ink-faint);border-top-color:var(--amber);vertical-align:-1px;animation:rt-spin .7s linear infinite;}
+  @keyframes rt-spin{to{transform:rotate(360deg);}}
+  .rater-result{margin:14px 0 6px;padding:16px;border-radius:8px;background:var(--steel-850);border:1px solid var(--line-steel-strong);border-left:3px solid var(--amber);}
+  .rater-result[hidden]{display:none;}
+  .rr-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+  .rr-verdict{font-family:"Saira Condensed",sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.03em;font-size:1rem;padding:4px 12px;border-radius:5px;}
+  .rr-verdict.strong{background:#1f4a30;color:#8fe0ab;}
+  .rr-verdict.fair{background:#4a401f;color:#e6c86a;}
+  .rr-verdict.pass{background:#4a2420;color:#f0a094;}
+  .rr-score{font-family:"Saira Condensed",sans-serif;font-weight:800;font-size:1.5rem;color:var(--paper);line-height:1;}
+  .rr-score small{font-size:.66rem;color:var(--ink-soft);font-family:"IBM Plex Mono",monospace;font-weight:400;}
+  .rr-title{flex-basis:100%;font-family:"Saira Condensed",sans-serif;font-weight:700;text-transform:uppercase;font-size:1.05rem;color:var(--paper);margin:0;}
+  .rr-meta{flex-basis:100%;font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.04em;color:var(--ink-soft);margin-top:-4px;}
+  .rr-summary{color:#cfcbc1;font-size:.94rem;line-height:1.55;margin:0 0 8px;}
+  .rr-group{margin-top:11px;}
+  .rr-group h6{font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 5px;}
+  .rr-group ul{margin:0;padding-left:17px;color:#cfcbc1;font-size:.9rem;line-height:1.55;}
+  .rr-group.flags h6{color:#f0a094;}
+  .rr-offer{margin-top:12px;font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--paper);}
+  .rr-offer b{color:var(--amber);}
+  .rater-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+  .rr-disc{margin-top:10px;font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.03em;color:var(--ink-faint);}
+
   /* ---------- WHAT'S-NEW BANNER ---------- */
   .whatsnew{background:linear-gradient(90deg,rgba(216,58,41,.16),var(--steel-850));border-bottom:1px solid var(--line-steel);}
   .whatsnew[hidden]{display:none;}
@@ -1009,6 +1081,15 @@
   .insight em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.14em;
     text-transform:uppercase;color:var(--redline);display:block;margin-bottom:5px;}
   .insight b{color:var(--paper);font-weight:600;}
+  /* Dismissible amber side-quotes: subtle × top-right; stays gone once seen. */
+  .insight{position:relative;}
+  .insight[hidden]{display:none;}
+  .insight-x{position:absolute;top:5px;right:5px;border:none;background:transparent;color:var(--ink-faint);
+    cursor:pointer;font-size:1.05rem;line-height:1;padding:2px 6px;opacity:.5;-webkit-tap-highlight-color:transparent;
+    transition:opacity .15s,color .15s;z-index:2;}
+  .insight-x:hover{color:var(--paper);opacity:1;}
+  .insight-x:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
+  .insight.has-x{padding-right:30px;}
 
   /* ---------- SCAFFOLD STUBS ---------- */
   .stub{background:var(--steel-850);border:1px dashed var(--line-steel-strong);border-radius:5px;padding:18px 20px;
@@ -1207,7 +1288,7 @@
 <div id="whatsnew" class="whatsnew" role="status" hidden>
   <div class="whatsnew-inner">
     <span class="wn-tag">Template</span>
-    <span class="wn-text">This is a <b>live template</b> &mdash; every price, spec, gear item, and card is <b>editable</b> and saves to your device. Make it yours, then <b>export</b> or <b>reset</b> anytime in Settings.</span>
+    <span class="wn-text"><b>New:</b> rate a listing from photos with <b>AI</b> (add your key in Settings), add <b>vehicles you already own</b> to the Garage, and a dedicated <b>Gear &amp; Setup</b> section. Everything&rsquo;s still editable and saved to your device.</span>
     <button class="wn-x" type="button" aria-label="Dismiss">&times;</button>
   </div>
 </div>
@@ -1433,6 +1514,12 @@
     </details>
     </div>
   </section>
+
+  <section id="garage-owned" style="border-bottom:none;">
+    <div class="sec-head"><span class="sec-num">&#9670;</span><h2>Also Owned</h2></div>
+    <p class="sec-note">Everything else in your garage beyond the daily driver &mdash; add each vehicle with its photo, specs, and mod list. <span class="dd-hint">Tap any field to edit.</span></p>
+    <!-- JS injects the Add-vehicle button + form + the owned-vehicle cards here -->
+  </section>
 </div>
 </section>
 
@@ -1478,7 +1565,25 @@
       </div>
       <p>Enough for a clean used CB500 or most of this list &mdash; and cash keeps lower-mile examples in reach. Gear rides on top of this, so aim the bike a bit under $4k. Lead with cash on a private sale.</p>
     </div>
-    <p class="sec-note">Gear, service &amp; security ride on top. Tick each as you buy it and tweak the price &mdash; the running total feeds your all-in below.</p>
+    <p class="sec-note">Bike is capped at $4k; gear rides on top &mdash; tick it off in the <b>Gear &amp; Setup</b> section below. Punch in a price to see your all-in:</p>
+    <div class="panel" style="margin-bottom:16px;">
+      <div class="ledger">
+        <div class="ledger-row"><span class="item">Bike <small>your target / offer</small></span><span class="amt">$<input class="val-in" type="text" data-b="bike" inputmode="numeric" value="3600" aria-label="Bike price"></span></div>
+        <div class="ledger-row"><span class="item">vs $<span data-mirror="motoCap">4,000</span> cap <small id="capNote">headroom</small></span><span class="amt" id="capLeft">&mdash;</span></div>
+        <div class="ledger-row"><span class="item">Gear + setup <small>full kit from the Gear &amp; Setup list</small></span><span class="amt" id="gearAllIn">&mdash;</span></div>
+        <div class="ledger-row total"><span class="item">All-in cash <small>bike + gear</small></span><span class="amt" id="allIn">&mdash;</span></div>
+      </div>
+    </div>
+    <div class="callout">Also budget separately: <b>title / registration / tax</b> and <b>insurance</b> (varies a lot by state and age — quote it before you buy). Plus gloves and a jacket if you don't already have them.</div>
+  </details>
+
+  <!-- GEAR & SETUP -->
+  <details class="sec-block" id="moto-gear">
+    <summary>
+    <div class="sec-head"><span class="sec-num">02</span><h2>Gear &amp; Setup</h2></div>
+    <span class="insight"><em>Gear</em> <b data-mirror="gearBought">&mdash;</b> bought of <b data-mirror="gearPlanned">&mdash;</b> planned &middot; tick each as you buy it &mdash; the total feeds your all-in.</span>
+    </summary>
+    <p class="sec-note">Gear, service &amp; security ride on top of the bike. Tick each as you buy it and tweak the price &mdash; the running total feeds your all-in above.</p>
     <div class="panel">
       <div class="ledger gear-list">
         <div class="ledger-row gear-row">
@@ -1519,22 +1624,12 @@
         </div>
       </div>
     </div>
-    <p class="sec-note">Bike is capped at $4k; gear rides on top. Punch in a price to see your all-in:</p>
-    <div class="panel" style="margin-bottom:16px;">
-      <div class="ledger">
-        <div class="ledger-row"><span class="item">Bike <small>your target / offer</small></span><span class="amt">$<input class="val-in" type="text" data-b="bike" inputmode="numeric" value="3600" aria-label="Bike price"></span></div>
-        <div class="ledger-row"><span class="item">vs $<span data-mirror="motoCap">4,000</span> cap <small id="capNote">headroom</small></span><span class="amt" id="capLeft">&mdash;</span></div>
-        <div class="ledger-row"><span class="item">Gear + setup <small>full kit from the checklist above</small></span><span class="amt" id="gearAllIn">&mdash;</span></div>
-        <div class="ledger-row total"><span class="item">All-in cash <small>bike + gear</small></span><span class="amt" id="allIn">&mdash;</span></div>
-      </div>
-    </div>
-    <div class="callout">Also budget separately: <b>title / registration / tax</b> and <b>insurance</b> (varies a lot by state and age — quote it before you buy). Plus gloves and a jacket if you don't already have them.</div>
   </details>
 
   <!-- CONTENDERS -->
   <details class="sec-block" id="moto-contenders">
     <summary>
-    <div class="sec-head"><span class="sec-num">02</span><h2>The Contenders</h2></div>
+    <div class="sec-head"><span class="sec-num">03</span><h2>The Contenders</h2></div>
     <span class="insight"><em>Familiar vs. step up</em> <b>CB300R</b> (~31 hp, the bike you knew) vs the <b>CB500F</b> twin (~47 hp, the real upgrade).</span>
     </summary>
     <p class="sec-note">All under 600cc and A2-legal. Since you've already lived with the CB300F, the real question is <b style="color:#e6e2d8">familiar vs. step up</b>. The bar marks where your old 300F sits (~30 hp) — watch which bikes actually move past it.</p>
@@ -1597,7 +1692,7 @@
   <!-- MARKET VALUES -->
   <details class="sec-block">
     <summary>
-    <div class="sec-head"><span class="sec-num">03</span><h2>Market Values</h2></div>
+    <div class="sec-head"><span class="sec-num">04</span><h2>Market Values</h2></div>
     <span class="insight"><em>Insight</em> Use the KBB trade-in as your floor &mdash; a clean CB500F sits around <b>$3&ndash;4.6k</b>; private sellers ask well above it.</span>
     </summary>
     <div class="mkt-intro">
@@ -1668,7 +1763,7 @@
   <!-- CANDIDATES -->
   <details class="sec-block" id="moto-candidates">
     <summary>
-    <div class="sec-head"><span class="sec-num">04</span><h2>Candidate Log</h2></div>
+    <div class="sec-head"><span class="sec-num">05</span><h2>Candidate Log</h2></div>
     <span class="insight"><em>Front-runner</em> 5 bikes scored vs the CB500F benchmark &mdash; lead pick a clean <b>2015 CB500F ~$3.6k</b>, plus a Triumph Speed 400 wildcard.</span>
     </summary>
     <p class="sec-note">Bikes you're actually looking at, scored against the benchmarks above. Tap the blank fields to fill in the next ones.</p>
@@ -1916,7 +2011,7 @@
   <!-- CROSS SHOP -->
   <details class="sec-block">
     <summary>
-    <div class="sec-head"><span class="sec-num">05</span><h2>Cross-Shop</h2></div>
+    <div class="sec-head"><span class="sec-num">06</span><h2>Cross-Shop</h2></div>
     <span class="insight"><em>Insight</em> The <b>Ninja 400 / Z400</b> is the value benchmark &mdash; a real step up from your 300F and cheaper to run than the KTM.</span>
     </summary>
     <p class="sec-note">Mostly A2-legal, under 600cc, and in reach at $4k cash used — with one over-budget exception, flagged below. Worth a test ride against your shortlist.</p>
@@ -1951,7 +2046,7 @@
   <!-- THINGS TO WEIGH -->
   <details class="sec-block">
     <summary>
-    <div class="sec-head"><span class="sec-num">06</span><h2>Before You Commit</h2></div>
+    <div class="sec-head"><span class="sec-num">07</span><h2>Before You Commit</h2></div>
     <span class="insight"><em>Insight</em> Rust-bust first, ride a <b>twin vs. a single</b> back-to-back, and quote comprehensive insurance before you buy.</span>
     </summary>
     <div class="weigh">
@@ -1969,7 +2064,7 @@
   <!-- CHECKLIST -->
   <details class="sec-block">
     <summary>
-    <div class="sec-head"><span class="sec-num">07</span><h2>Inspection Checklist</h2></div>
+    <div class="sec-head"><span class="sec-num">08</span><h2>Inspection Checklist</h2></div>
     <span class="insight"><em>Insight</em> Insist on a <b>cold start</b>, check valve/tire/fluid age, and walk from any no-title &ldquo;ran when parked&rdquo; deal.</span>
     </summary>
     <p class="sec-note">Buying used is the right call — run this yourself, or get a pre-purchase inspection, before money moves. Tap to check off as you go.</p>
@@ -2025,7 +2120,7 @@
   <!-- SHOPPING -->
   <details class="sec-block">
     <summary>
-    <div class="sec-head"><span class="sec-num">08</span><h2>First-Day List</h2></div>
+    <div class="sec-head"><span class="sec-num">09</span><h2>First-Day List</h2></div>
     <span class="insight"><em>Insight</em> Keep <b>~$600&ndash;1,400</b> aside on top of the bike for gear, security, and the first service.</span>
     </summary>
     <div class="shop-grid">
@@ -2060,7 +2155,7 @@
   <!-- NEXT STEPS -->
   <details class="sec-block" id="moto-next" style="border-bottom:none;">
     <summary>
-    <div class="sec-head"><span class="sec-num">09</span><h2>Next Steps</h2></div>
+    <div class="sec-head"><span class="sec-num">10</span><h2>Next Steps</h2></div>
     <span class="insight"><em>The path</em> Confirm history &rarr; test ride &rarr; <b>~$3.3k cash</b> offer &rarr; insure &rarr; ride. Keep <b>~$600&ndash;1,400</b> for gear.</span>
     </summary>
     <div class="steps">
@@ -2612,6 +2707,28 @@
   </section>
 
   <section style="border-top:1px solid var(--line-steel);border-bottom:none;padding-top:26px;">
+    <div class="sec-head"><span class="sec-num">&#9670;</span><h2>AI Listing Rater</h2></div>
+    <p class="sec-note">Add your <b style="color:#e6e2d8">Anthropic API key</b> to unlock photo ratings &mdash; then, in either Candidate Log, drop in listing photos and let the app score the deal like a sharp-eyed buyer. Your key is stored <b style="color:#e6e2d8">only on this device</b> and sent straight to Anthropic when you rate a listing (nothing runs through any server of ours).</p>
+    <div class="ai-row">
+      <label for="aiKey">Anthropic API key</label>
+      <input class="ai-in" id="aiKey" type="password" placeholder="sk-ant-…" autocomplete="off" spellcheck="false" aria-label="Anthropic API key">
+    </div>
+    <div class="ai-row">
+      <label for="aiModel">Model</label>
+      <select class="ai-in" id="aiModel" aria-label="AI model">
+        <option value="claude-sonnet-5">Sonnet — balanced (recommended)</option>
+        <option value="claude-opus-4-8">Opus — most capable</option>
+        <option value="claude-haiku-4-5-20251001">Haiku — fastest &amp; cheapest</option>
+      </select>
+    </div>
+    <div class="data-actions">
+      <button type="button" class="data-btn" id="aiKeyClear">Clear key</button>
+      <span class="data-status" id="aiStatus" role="status" aria-live="polite"></span>
+    </div>
+    <div class="callout">Get a key at <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener" style="color:var(--amber);text-decoration:underline">console.anthropic.com &#8599;</a>. Ratings use your Anthropic credits (a few cents each). The key never leaves this device except in the direct call to Anthropic; it&rsquo;s not in your backup export.</div>
+  </section>
+
+  <section style="border-top:1px solid var(--line-steel);border-bottom:none;padding-top:26px;">
     <div class="sec-head"><span class="sec-num">&#9670;</span><h2>Make It Yours</h2></div>
     <p class="sec-note">Motorpool is a <b style="color:#e6e2d8">template</b>. Every price, spec, gear item, checklist, and candidate card is editable &mdash; tap to change it and it saves to this device. The builds shown are a <b style="color:#e6e2d8">sample</b> so you can see how it works; edit them into your own, or reset to the sample anytime.</p>
     <div class="data-actions">
@@ -2660,6 +2777,30 @@
     var x=document.createElement('button');x.type='button';x.className='callout-x';x.setAttribute('aria-label','Dismiss this note');x.innerHTML='&times;';
     x.addEventListener('click',function(){c.hidden=true;try{localStorage.setItem(key,'1');}catch(e){}});
     c.appendChild(x);
+  });
+})();
+// Dismissible amber "side-quote" insights (the yellow-bordered notes in each summary).
+// Stored under mp.hint.* so they're global + excluded from per-profile snapshots —
+// seen once, gone for good, like the NEW banner and tap-to-expand nudge.
+(function(){
+  function keyFor(el){
+    var host = el.closest('[id]'); var base = host ? host.id : 'doc';
+    var sibs = (host || document).getElementsByClassName('insight');
+    var idx = Array.prototype.indexOf.call(sibs, el);
+    return 'mp.hint.insight.' + base + (idx > 0 ? ('-' + idx) : '');
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.insight'), function(el){
+    var key = keyFor(el);
+    try{ if(localStorage.getItem(key)){ el.hidden = true; return; } }catch(e){}
+    var x = document.createElement('button');
+    x.type = 'button'; x.className = 'insight-x'; x.setAttribute('aria-label','Dismiss this note'); x.innerHTML = '&times;';
+    x.addEventListener('click', function(ev){
+      // Live inside a <summary>; keep the click from toggling the section open/closed.
+      ev.preventDefault(); ev.stopPropagation();
+      el.hidden = true; try{ localStorage.setItem(key,'1'); }catch(e){}
+    });
+    el.classList.add('has-x');
+    el.appendChild(x);
   });
 })();
 // Footer: current copyright year + dismissible meta line (nav row remains).
@@ -3303,11 +3444,15 @@ if ('serviceWorker' in navigator) {
     fileIn.accept = 'image/*';
     fileIn.style.display = 'none';
     var targetIdx = -1;
-    sec.appendChild(head);
-    sec.appendChild(cform);
-    sec.appendChild(container);
-    sec.appendChild(fileIn);
+    // Put the add affordance at the TOP of the log (right under the note, above every
+    // seed card) so adding is the first action — mirrors Add-a-mod atop the mod list.
+    var firstCard = sec.querySelector('.cand-card');
+    [head, cform, container, fileIn].forEach(function (el) {
+      if (firstCard) sec.insertBefore(el, firstCard); else sec.appendChild(el);
+    });
     render(container, scope);
+    // Expose a re-render hook so the AI listing-rater can drop a saved candidate straight in.
+    (window.mpCands = window.mpCands || {})[scope] = function () { render(container, scope); };
 
     fileIn.addEventListener('change', function () {
       var file = fileIn.files && fileIn.files[0];
@@ -3387,9 +3532,440 @@ if ('serviceWorker' in navigator) {
 </script>
 
 <script>
+// Owned vehicles — the Garage "Also Owned" section: add/edit/remove vehicles you already own,
+// each with a photo, four spec cells, and its own mod list. Persisted to mp.garage.owned.
+(function () {
+  var sec = document.getElementById('garage-owned');
+  if (!sec) return;
+  var KEY = 'mp.garage.owned';
+  function load() { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { return []; } }
+  function save(a) { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {} }
+  function attr(s) { return (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function n(v) { var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.]/g, '')); return isFinite(x) ? x : 0; }
+  function money(x) { return '$' + Math.round(x).toLocaleString('en-US'); }
+
+  var SPECS = [
+    { f: 'engine', label: 'Engine', ph: '—' },
+    { f: 'output', label: 'Output', ph: '—' },
+    { f: 'drive', label: 'Drive', ph: '—' },
+    { f: 'miles', label: 'Miles', ph: '—' }
+  ];
+
+  function photoHtml(v) {
+    if (v.photo) return '<div class="uc-photo"><img src="' + attr(v.photo) + '" alt="Vehicle photo">' +
+      '<button class="ov-photo-rm uc-photo-rm" type="button" aria-label="Remove photo">&times;</button></div>';
+    return '<button class="ov-photo-add uc-photo-add" type="button"><span class="cam">&#9723;</span>Add photo</button>';
+  }
+  function specCell(v, s) {
+    return '<div class="cand-fact"><span class="k">' + s.label + '</span>' +
+      '<input class="uc-f" data-f="' + s.f + '" maxlength="24" placeholder="' + s.ph + '" value="' + attr(v[s.f]) + '"></div>';
+  }
+  function sumText(mods) {
+    if (!mods.length) return '';
+    var spent = 0, planned = 0;
+    mods.forEach(function (m) { var c = n(m.cost); planned += c; if (m.done) spent += c; });
+    return money(spent) + ' in · ' + money(planned) + ' total';
+  }
+  function modRow(m, mi) {
+    return '<div class="om-row' + (m.done ? ' is-done' : '') + '" data-mi="' + mi + '">' +
+      '<label class="om-pick"><input type="checkbox" class="om-done"' + (m.done ? ' checked' : '') + ' aria-label="Installed / owned">' +
+      '<input class="om-name" data-mf="name" maxlength="60" placeholder="Mod / part" value="' + attr(m.name) + '"></label>' +
+      '<span class="amt">$<input class="om-cost" data-mf="cost" inputmode="decimal" maxlength="10" placeholder="0" value="' + attr(m.cost) + '"></span>' +
+      '<button class="om-x" type="button" aria-label="Remove mod">&times;</button></div>';
+  }
+  function modsHtml(v) {
+    var mods = v.mods || [];
+    return '<div class="owned-mods">' +
+      '<div class="om-head"><span class="om-title">Mod list</span>' +
+      '<button type="button" class="ml-add-btn ov-mod-add" aria-expanded="false"><span class="ml-add-ico" aria-hidden="true">+</span> Add mod</button></div>' +
+      '<form class="modadd collapsed ov-mod-form" autocomplete="off">' +
+        '<div class="modadd-row">' +
+          '<input class="modadd-name ovm-name" type="text" placeholder="Mod / part" aria-label="Mod name" maxlength="60" required>' +
+          '<input class="modadd-price ovm-cost" type="text" inputmode="decimal" placeholder="$ cost" aria-label="Cost" maxlength="10">' +
+        '</div>' +
+        '<div class="modadd-foot"><label class="modadd-bought"><input type="checkbox" class="ovm-done"> Already installed</label>' +
+        '<button type="submit" class="modadd-btn">+ Add mod</button></div>' +
+      '</form>' +
+      (mods.length ? mods.map(modRow).join('') : '<div class="om-empty">No mods logged yet.</div>') +
+      '<div class="om-sum">' + sumText(mods) + '</div>' +
+      '</div>';
+  }
+  function cardHtml(v, i) {
+    return '<article class="cand-card usercand owned-card" data-idx="' + i + '">' +
+      photoHtml(v) +
+      '<div class="cand-top"><div>' +
+        '<span class="cand-ey">Owned &middot; &ldquo;<span class="ov-nick" contenteditable="true" role="textbox" aria-label="Nickname">' + attr(v.nick || '') + '</span>&rdquo;</span>' +
+        '<input class="uc-name" data-f="name" maxlength="60" placeholder="Year / make / model" value="' + attr(v.name) + '">' +
+        '<input class="uc-trim" data-f="trim" maxlength="40" placeholder="Trim / notes" value="' + attr(v.trim) + '">' +
+      '</div>' +
+      '<div class="uc-head-actions"><button class="ov-rm uc-rm" type="button" aria-label="Remove vehicle">&times;</button></div></div>' +
+      '<div class="cand-facts">' + SPECS.map(function (s) { return specCell(v, s); }).join('') + '</div>' +
+      modsHtml(v) +
+      '</article>';
+  }
+  function render() { container.innerHTML = load().map(cardHtml).join(''); }
+  function idxOf(el) { var c = el.closest('.owned-card'); return c ? parseInt(c.getAttribute('data-idx'), 10) : -1; }
+
+  // Inject the Add-vehicle affordance at the top (same pattern as Add-a-mod / Add-candidate).
+  var head = document.createElement('div'); head.className = 'modlist-head';
+  head.innerHTML = '<span class="dash-h" style="font-size:.9rem;">Your vehicles</span>';
+  var addBtn = document.createElement('button'); addBtn.type = 'button'; addBtn.className = 'ml-add-btn';
+  addBtn.setAttribute('aria-expanded', 'false'); addBtn.innerHTML = '<span class="ml-add-ico" aria-hidden="true">+</span> Add vehicle';
+  head.appendChild(addBtn);
+  var form = document.createElement('form'); form.className = 'modadd collapsed'; form.setAttribute('autocomplete', 'off');
+  form.innerHTML =
+    '<div class="modadd-row">' +
+      '<input class="modadd-name ov-add-name" type="text" placeholder="Year / make / model" aria-label="Year make model" maxlength="60" required>' +
+      '<input class="modadd-price ov-add-nick" type="text" placeholder="Nickname (optional)" aria-label="Nickname" maxlength="40">' +
+    '</div>' +
+    '<div class="modadd-foot"><span></span><button type="submit" class="modadd-btn">+ Add vehicle</button></div>';
+  var container = document.createElement('div'); container.className = 'owned-list';
+  var fileIn = document.createElement('input'); fileIn.type = 'file'; fileIn.accept = 'image/*'; fileIn.style.display = 'none';
+  var targetIdx = -1;
+  sec.appendChild(head); sec.appendChild(form); sec.appendChild(container); sec.appendChild(fileIn);
+  render();
+
+  addBtn.addEventListener('click', function () {
+    var willOpen = form.classList.contains('collapsed');
+    form.classList.toggle('collapsed', !willOpen);
+    addBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    if (willOpen) { var nm = form.querySelector('.ov-add-name'); if (nm) nm.focus(); }
+  });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var nm = form.querySelector('.ov-add-name').value.trim(); if (!nm) return;
+    var nick = form.querySelector('.ov-add-nick').value.trim();
+    var arr = load();
+    arr.push({ name: nm, nick: nick, trim: '', engine: '', output: '', drive: '', miles: '', mods: [] });
+    save(arr); render();
+    form.reset(); form.classList.add('collapsed'); addBtn.setAttribute('aria-expanded', 'false');
+  });
+
+  fileIn.addEventListener('change', function () {
+    var file = fileIn.files && fileIn.files[0]; var idx = targetIdx;
+    fileIn.value = '';
+    if (!file || idx < 0) return;
+    window.mpCrop(file, { aspect: 16 / 10, outW: 640, onSave: function (uri) {
+      var arr = load(); if (!arr[idx]) return true;
+      arr[idx].photo = uri; try { save(arr); } catch (e) {}
+      var check = load(); if (!check[idx] || check[idx].photo !== uri) return false;
+      render(); return true;
+    } });
+  });
+
+  // In-place text edits (no re-render, so focus survives typing).
+  container.addEventListener('input', function (e) {
+    var t = e.target, idx = idxOf(t); if (idx < 0) return;
+    var arr = load(); var v = arr[idx]; if (!v) return;
+    if (t.classList.contains('ov-nick')) { v.nick = (t.textContent || '').trim(); save(arr); return; }
+    var mrow = t.closest('.om-row');
+    if (mrow && t.getAttribute('data-mf')) {
+      var mi = parseInt(mrow.getAttribute('data-mi'), 10);
+      if (v.mods && v.mods[mi]) {
+        v.mods[mi][t.getAttribute('data-mf')] = t.value; save(arr);
+        if (t.getAttribute('data-mf') === 'cost') {
+          var sumEl = t.closest('.owned-mods').querySelector('.om-sum');
+          if (sumEl) sumEl.textContent = sumText(v.mods);
+        }
+      }
+      return;
+    }
+    if (t.getAttribute('data-f')) { v[t.getAttribute('data-f')] = t.value; save(arr); }
+  });
+
+  // Toggle a mod's installed state (re-render to restrike + refresh the total).
+  container.addEventListener('change', function (e) {
+    if (!e.target.classList.contains('om-done')) return;
+    var idx = idxOf(e.target); var mrow = e.target.closest('.om-row'); if (idx < 0 || !mrow) return;
+    var mi = parseInt(mrow.getAttribute('data-mi'), 10);
+    var arr = load(); if (arr[idx] && arr[idx].mods && arr[idx].mods[mi]) { arr[idx].mods[mi].done = e.target.checked; save(arr); render(); }
+  });
+
+  container.addEventListener('click', function (e) {
+    var addP = e.target.closest('.ov-photo-add');
+    if (addP) { targetIdx = idxOf(addP); fileIn.click(); return; }
+    var rmP = e.target.closest('.ov-photo-rm');
+    if (rmP) { var pi = idxOf(rmP); var a = load(); if (a[pi]) { delete a[pi].photo; save(a); render(); } return; }
+    var modAdd = e.target.closest('.ov-mod-add');
+    if (modAdd) {
+      var f = modAdd.closest('.owned-mods').querySelector('.ov-mod-form');
+      var willOpen = f.classList.contains('collapsed');
+      f.classList.toggle('collapsed', !willOpen);
+      modAdd.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      if (willOpen) { var nm = f.querySelector('.ovm-name'); if (nm) nm.focus(); }
+      return;
+    }
+    var modX = e.target.closest('.om-x');
+    if (modX) {
+      var mxIdx = idxOf(modX); var mr = modX.closest('.om-row'); var mmi = parseInt(mr.getAttribute('data-mi'), 10);
+      var ma = load(); if (ma[mxIdx] && ma[mxIdx].mods) { ma[mxIdx].mods.splice(mmi, 1); save(ma); render(); }
+      return;
+    }
+    var rm = e.target.closest('.ov-rm');
+    if (rm) {
+      var ri = idxOf(rm); var ra = load();
+      if (ri >= 0 && ri < ra.length) { ra.splice(ri, 1); save(ra); render(); }
+    }
+  });
+
+  container.addEventListener('submit', function (e) {
+    var f = e.target.closest('.ov-mod-form'); if (!f) return;
+    e.preventDefault();
+    var idx = idxOf(f); if (idx < 0) return;
+    var nm = f.querySelector('.ovm-name').value.trim(); if (!nm) return;
+    var cost = f.querySelector('.ovm-cost').value.trim(), done = f.querySelector('.ovm-done').checked;
+    var arr = load(); if (!arr[idx]) return;
+    if (!arr[idx].mods) arr[idx].mods = [];
+    arr[idx].mods.push({ name: nm, cost: cost, done: done });
+    save(arr); render();
+  });
+})();
+</script>
+
+<script>
+// AI listing rater — bring-your-own Anthropic key (stored on-device), photos analyzed by
+// Claude vision, returns a structured buy-rating. Settings holds the key; a rater tool sits
+// atop each Candidate Log. Nothing runs through our servers; the call goes straight to Anthropic.
+(function () {
+  var KKEY = 'mp.ai.key', MKEY = 'mp.ai.model', DEF_MODEL = 'claude-sonnet-5';
+  function getKey() { try { return localStorage.getItem(KKEY) || ''; } catch (e) { return ''; } }
+  function getModel() { try { return localStorage.getItem(MKEY) || DEF_MODEL; } catch (e) { return DEF_MODEL; } }
+
+  // Downscale an image file to a JPEG data URL so payloads (and saved photos) stay small.
+  function downscale(file, maxDim, q) {
+    return new Promise(function (res, rej) {
+      var url = URL.createObjectURL(file), img = new Image();
+      img.onload = function () {
+        var w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
+        var s = Math.min(1, (maxDim || 1200) / Math.max(w, h));
+        var cw = Math.max(1, Math.round(w * s)), ch = Math.max(1, Math.round(h * s));
+        var c = document.createElement('canvas'); c.width = cw; c.height = ch;
+        c.getContext('2d').drawImage(img, 0, 0, cw, ch);
+        URL.revokeObjectURL(url);
+        try { res(c.toDataURL('image/jpeg', q || 0.82)); } catch (e) { rej(e); }
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); rej(new Error('Could not read that image.')); };
+      img.src = url;
+    });
+  }
+  function splitDataUrl(u) { var m = /^data:([^;]+);base64,(.*)$/.exec(u || ''); return m ? { mediaType: m[1], base64: m[2], dataUrl: u } : null; }
+
+  var SCHEMA = '{"title":"year make model as read from the listing","price":"asking price with $","miles":"odometer",' +
+    '"verdict":"one of: strong | fair | pass","score":0-100 integer buy-confidence,"summary":"2-3 sentence take",' +
+    '"pros":["short bullets"],"cons":["short bullets"],"redFlags":["deal-breakers or things to verify, empty if none"],' +
+    '"questions":["questions to ask the seller"],"suggestedOffer":"a cash number with $"}';
+
+  // Public client used by the rater.
+  window.mpAI = {
+    hasKey: function () { return !!getKey(); },
+    rate: function (images, ctx) {
+      var key = getKey();
+      if (!key) return Promise.reject(new Error('NO_KEY'));
+      var sys = 'You are a sharp, experienced used-vehicle buyer helping someone shop private-party and dealer listings. ' +
+        'Judge condition, value vs. typical market, and risk from the photos and any context. Be honest and specific; ' +
+        'flag rust, damage, mismatched panels, warning lights, worn tires/brakes, salvage/title hints, and price outliers. ' +
+        'Never invent details you cannot see.';
+      var ask = 'Rate this used-vehicle listing from the photo(s)' +
+        ((ctx && (ctx.price || ctx.miles || ctx.model)) ? (' plus this seller-stated context: ' + JSON.stringify(ctx)) : '') +
+        '. Respond with ONLY a single JSON object, no prose, matching exactly this shape: ' + SCHEMA + '.';
+      var content = images.map(function (im) { return { type: 'image', source: { type: 'base64', media_type: im.mediaType, data: im.base64 } }; });
+      content.push({ type: 'text', text: ask });
+      return fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'x-api-key': key,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({ model: getModel(), max_tokens: 1024, system: sys, messages: [{ role: 'user', content: content }] })
+      }).then(function (resp) {
+        return resp.text().then(function (body) {
+          if (!resp.ok) {
+            var msg = 'Anthropic API error ' + resp.status;
+            try { var j = JSON.parse(body); if (j && j.error && j.error.message) msg += ': ' + j.error.message; } catch (e) {}
+            if (resp.status === 401) msg = 'Your API key was rejected (401). Check it in Settings → AI.';
+            throw new Error(msg);
+          }
+          var data = JSON.parse(body);
+          var text = (data.content || []).map(function (b) { return b.text || ''; }).join('').trim();
+          var js = text.replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
+          var m = js.match(/\{[\s\S]*\}/); if (m) js = m[0];
+          return JSON.parse(js);
+        });
+      });
+    }
+  };
+  window.mpDownscale = downscale;
+
+  // ---- Settings wiring ----
+  (function () {
+    var keyIn = document.getElementById('aiKey'), modelIn = document.getElementById('aiModel');
+    var clearBtn = document.getElementById('aiKeyClear'), status = document.getElementById('aiStatus');
+    if (!keyIn) return;
+    function say(m) { if (status) status.textContent = m || ''; }
+    try { keyIn.value = getKey(); } catch (e) {}
+    try { if (modelIn) modelIn.value = getModel(); } catch (e) {}
+    say(getKey() ? 'Key saved on this device.' : '');
+    keyIn.addEventListener('input', function () {
+      var v = keyIn.value.trim();
+      try { if (v) localStorage.setItem(KKEY, v); else localStorage.removeItem(KKEY); } catch (e) {}
+      say(v ? 'Key saved on this device.' : 'Key cleared.');
+    });
+    if (modelIn) modelIn.addEventListener('change', function () { try { localStorage.setItem(MKEY, modelIn.value); } catch (e) {} say('Model set.'); });
+    if (clearBtn) clearBtn.addEventListener('click', function () { keyIn.value = ''; try { localStorage.removeItem(KKEY); } catch (e) {} say('Key cleared.'); });
+  })();
+
+  // ---- Rater tool, mounted atop each Candidate Log ----
+  function esc(s) { return (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function list(arr) { return (arr && arr.length) ? '<ul>' + arr.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : ''; }
+
+  function mountRater(sec, scope) {
+    var photos = []; // {dataUrl, mediaType, base64}
+    var last = null; // last result + the ctx used
+
+    var wrap = document.createElement('div'); wrap.className = 'rater';
+    var head = document.createElement('div'); head.className = 'modlist-head';
+    head.innerHTML = '<span class="dash-h" style="font-size:.9rem;">Rate a listing <span style="color:var(--ink-faint);font-weight:400;letter-spacing:.06em;">· AI</span></span>';
+    var toggle = document.createElement('button'); toggle.type = 'button'; toggle.className = 'ml-add-btn';
+    toggle.setAttribute('aria-expanded', 'false'); toggle.innerHTML = '<span class="ml-add-ico" aria-hidden="true">+</span> Rate a listing';
+    head.appendChild(toggle);
+    var form = document.createElement('form'); form.className = 'modadd collapsed'; form.setAttribute('autocomplete', 'off');
+    form.innerHTML =
+      '<div class="rater-photos"></div>' +
+      '<div class="modadd-row">' +
+        '<input class="modadd-price rt-price" type="text" placeholder="$ asking (optional)" aria-label="Asking price" maxlength="12">' +
+        '<input class="modadd-price rt-miles" type="text" placeholder="Miles (optional)" aria-label="Miles" maxlength="12">' +
+      '</div>' +
+      '<input class="modadd-name rt-model" type="text" placeholder="Year / make / model (optional)" aria-label="Model" maxlength="60">' +
+      '<div class="modadd-foot"><span class="rater-status"></span><button type="submit" class="modadd-btn rt-go">Rate it</button></div>';
+    var result = document.createElement('div'); result.className = 'rater-result'; result.hidden = true;
+    var fileIn = document.createElement('input'); fileIn.type = 'file'; fileIn.accept = 'image/*'; fileIn.multiple = true; fileIn.style.display = 'none';
+    wrap.appendChild(head); wrap.appendChild(form); wrap.appendChild(result); wrap.appendChild(fileIn);
+    // Mount above the existing "Your candidates" add head (found before we insert our own head).
+    var anchor = sec.querySelector('.modlist-head');
+    if (anchor) sec.insertBefore(wrap, anchor); else sec.appendChild(wrap);
+
+    var photoBox = form.querySelector('.rater-photos');
+    var statusEl = form.querySelector('.rater-status');
+    var go = form.querySelector('.rt-go');
+    function say(m, kind) { statusEl.textContent = m || ''; statusEl.className = 'rater-status' + (kind ? ' ' + kind : ''); }
+
+    function renderPhotos() {
+      photoBox.innerHTML = '';
+      photos.forEach(function (ph, i) {
+        var t = document.createElement('div'); t.className = 'rater-thumb';
+        t.innerHTML = '<img src="' + ph.dataUrl + '" alt="listing photo"><button type="button" data-i="' + i + '" aria-label="Remove photo">&times;</button>';
+        photoBox.appendChild(t);
+      });
+      if (photos.length < 4) {
+        var add = document.createElement('button'); add.type = 'button'; add.className = 'rater-addphoto'; add.setAttribute('aria-label', 'Add photo'); add.textContent = '+';
+        add.addEventListener('click', function () { fileIn.click(); });
+        photoBox.appendChild(add);
+      }
+    }
+    renderPhotos();
+
+    photoBox.addEventListener('click', function (e) {
+      var rm = e.target.closest('button[data-i]'); if (!rm) return;
+      photos.splice(parseInt(rm.getAttribute('data-i'), 10), 1); renderPhotos();
+    });
+    fileIn.addEventListener('change', function () {
+      var files = Array.prototype.slice.call(fileIn.files || []); fileIn.value = '';
+      var room = 4 - photos.length;
+      files.slice(0, room).reduce(function (chain, f) {
+        return chain.then(function () { return downscale(f, 1200, 0.82).then(function (u) { var s = splitDataUrl(u); if (s) photos.push(s); }); });
+      }, Promise.resolve()).then(renderPhotos).catch(function () { say('Could not read one of those images.', 'err'); });
+    });
+
+    toggle.addEventListener('click', function () {
+      var willOpen = form.classList.contains('collapsed');
+      form.classList.toggle('collapsed', !willOpen);
+      toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    });
+
+    function renderResult(r, ctx) {
+      var v = (r.verdict || 'fair').toLowerCase(); if (['strong', 'fair', 'pass'].indexOf(v) < 0) v = 'fair';
+      var vlabel = v === 'strong' ? 'Strong buy' : (v === 'pass' ? 'Pass' : 'Fair');
+      var score = (typeof r.score === 'number') ? Math.max(0, Math.min(100, Math.round(r.score))) : null;
+      var meta = [r.price, r.miles ? (String(r.miles).replace(/\s*mi(les)?$/i, '') + ' mi') : ''].filter(Boolean).join(' · ');
+      result.innerHTML =
+        '<div class="rr-top">' +
+          '<span class="rr-verdict ' + v + '">' + esc(vlabel) + '</span>' +
+          (score != null ? '<span class="rr-score">' + score + '<small>/100</small></span>' : '') +
+          (r.title ? '<h5 class="rr-title">' + esc(r.title) + '</h5>' : '') +
+          (meta ? '<div class="rr-meta">' + esc(meta) + '</div>' : '') +
+        '</div>' +
+        (r.summary ? '<p class="rr-summary">' + esc(r.summary) + '</p>' : '') +
+        (r.pros && r.pros.length ? '<div class="rr-group"><h6>Pros</h6>' + list(r.pros) + '</div>' : '') +
+        (r.cons && r.cons.length ? '<div class="rr-group"><h6>Cons</h6>' + list(r.cons) + '</div>' : '') +
+        (r.redFlags && r.redFlags.length ? '<div class="rr-group flags"><h6>Red flags</h6>' + list(r.redFlags) + '</div>' : '') +
+        (r.questions && r.questions.length ? '<div class="rr-group"><h6>Ask the seller</h6>' + list(r.questions) + '</div>' : '') +
+        (r.suggestedOffer ? '<div class="rr-offer">Suggested offer: <b>' + esc(r.suggestedOffer) + '</b></div>' : '') +
+        '<div class="rater-actions">' +
+          '<button type="button" class="data-btn primary rt-save">+ Save to Candidate Log</button>' +
+          '<button type="button" class="data-btn rt-clear">Rate another</button>' +
+        '</div>' +
+        '<p class="rr-disc">AI estimate from photos — verify in person before you buy.</p>';
+      result.hidden = false;
+      last = { r: r, ctx: ctx, verdict: v, vlabel: vlabel, score: score };
+      result.querySelector('.rt-save').addEventListener('click', saveCandidate);
+      result.querySelector('.rt-clear').addEventListener('click', function () {
+        result.hidden = true; result.innerHTML = ''; photos = []; renderPhotos();
+        form.querySelector('.rt-price').value = ''; form.querySelector('.rt-miles').value = ''; form.querySelector('.rt-model').value = '';
+        say('');
+      });
+    }
+
+    function saveCandidate() {
+      if (!last) return;
+      var r = last.r, ctx = last.ctx;
+      var st = last.verdict === 'strong' ? 'front' : (last.verdict === 'pass' ? 'passed' : 'watch');
+      var note = '[AI · ' + last.vlabel + (last.score != null ? ' ' + last.score + '/100' : '') + '] ' + (r.summary || '');
+      var item = {
+        name: r.title || ctx.model || 'Rated listing',
+        price: r.price || ctx.price || '', miles: r.miles || ctx.miles || '',
+        title: '', loc: '', note: note.slice(0, 140), status: st
+      };
+      if (photos[0]) item.photo = photos[0].dataUrl;
+      var CK = 'mp.cands.' + scope, arr;
+      try { arr = JSON.parse(localStorage.getItem(CK) || '[]'); } catch (e) { arr = []; }
+      arr.push(item);
+      try { localStorage.setItem(CK, JSON.stringify(arr)); } catch (e) { say('Saved rating is too large to store with the photo.', 'err'); return; }
+      if (window.mpCands && window.mpCands[scope]) window.mpCands[scope]();
+      var sb = result.querySelector('.rt-save'); if (sb) { sb.textContent = '✓ Saved below'; sb.disabled = true; }
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!photos.length) { say('Add at least one photo of the listing first.', 'err'); return; }
+      if (!window.mpAI.hasKey()) { say('Add your Anthropic key in Settings → AI to enable ratings.', 'err'); return; }
+      var ctx = { price: form.querySelector('.rt-price').value.trim(), miles: form.querySelector('.rt-miles').value.trim(), model: form.querySelector('.rt-model').value.trim() };
+      go.disabled = true; result.hidden = true; say('Analyzing the listing…', 'busy');
+      window.mpAI.rate(photos, ctx).then(function (r) { say(''); renderResult(r, ctx); }).catch(function (err) {
+        var m = err && err.message === 'NO_KEY' ? 'Add your Anthropic key in Settings → AI first.' :
+          (err && err.message ? err.message : 'Something went wrong. Try again.');
+        if (/Unexpected token|JSON/i.test(m)) m = 'The model didn’t return a clean rating — try again or use a different model.';
+        say(m, 'err');
+      }).then(function () { go.disabled = false; });
+    });
+  }
+
+  var seen = {};
+  Array.prototype.forEach.call(document.querySelectorAll('.sec-head h2'), function (h) {
+    if ((h.textContent || '').trim() !== 'Candidate Log') return;
+    var sec = h.closest('section, details'); if (!sec) return;
+    var view = h.closest('.view'); var scope = (view && /car/.test(view.id)) ? 'car' : 'moto';
+    if (seen[scope]) return; seen[scope] = 1;
+    mountRater(sec, scope);
+  });
+})();
+</script>
+
+<script>
 // What's-new banner — shows once, remembers dismissal. Bump the version to re-announce.
 (function () {
-  var KEY = 'mp.whatsnew.v3';
+  var KEY = 'mp.whatsnew.v4';
   var el = document.getElementById('whatsnew');
   if (!el) return;
   var dismissed = false;
@@ -3436,7 +4012,7 @@ if ('serviceWorker' in navigator) {
 // Model: the live working set is plain mp.* ; each profile is a saved snapshot of that build data.
 (function () {
   var PKEY = 'mp.profiles', AKEY = 'mp.activeProfile', SNAP = 'mp.profile.';
-  var GLOBALS = ['mp.profiles', 'mp.activeProfile', 'mp.profile.', 'mp.whatsnew', 'mp.hint', 'mp.prefs'];
+  var GLOBALS = ['mp.profiles', 'mp.activeProfile', 'mp.profile.', 'mp.whatsnew', 'mp.hint', 'mp.prefs', 'mp.ai.'];
   function isGlobal(k) { for (var i = 0; i < GLOBALS.length; i++) { if (k.indexOf(GLOBALS[i]) === 0) return true; } return false; }
   function buildKeys() { var out = []; for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && k.indexOf('mp.') === 0 && !isGlobal(k)) out.push(k); } return out; }
   function jget(k, d) { try { var v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }
@@ -3742,7 +4318,8 @@ if ('serviceWorker' in navigator) {
 <script>
 // Backup & restore — export/import all Motorpool data as portable JSON (moves across devices).
 (function () {
-  function collect() { var o = {}; for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && k.indexOf('mp.') === 0) o[k] = localStorage.getItem(k); } return o; }
+  // Never export the AI secret key; the model preference is fine to travel.
+  function collect() { var o = {}; for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && k.indexOf('mp.') === 0 && k !== 'mp.ai.key') o[k] = localStorage.getItem(k); } return o; }
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   var expBtn = document.getElementById('dataExport');
   var impBtn = document.getElementById('dataImport');
