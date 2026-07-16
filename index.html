@@ -218,6 +218,23 @@
   .callout-x:hover{color:var(--paper);opacity:1;}
   .callout-x:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
 
+  /* ---------- PER-SECTION USER NOTES (amber "Your note" blocks) ---------- */
+  .snotes:empty{display:none;}
+  .snote{position:relative;margin-top:14px;border-left:3px solid var(--amber);border-radius:0 4px 4px 0;
+    background:rgba(224,160,18,.06);border-top:1px dashed rgba(224,160,18,.32);
+    border-right:1px dashed rgba(224,160,18,.20);border-bottom:1px dashed rgba(224,160,18,.20);
+    padding:11px 34px 11px 14px;}
+  .snote-tag{display:block;margin-bottom:4px;font-family:"IBM Plex Mono",monospace;font-size:.56rem;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--amber);}
+  .snote-body{display:block;color:#e3ddcf;font-size:.94rem;line-height:1.5;outline:none;min-height:1.2em;}
+  .snote-body:empty::before{content:"Type your note\2026";color:var(--ink-faint);}
+  .snote-body:focus{color:var(--paper);}
+  .snote-rm{position:absolute;top:7px;right:7px;border:none;background:transparent;color:var(--ink-faint);
+    cursor:pointer;font-size:1.05rem;line-height:1;padding:2px 5px;-webkit-tap-highlight-color:transparent;transition:color .12s;}
+  .snote-rm:hover{color:var(--redline);}
+  .snote-rm:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
+  .snote-foot{margin-top:14px;display:flex;justify-content:flex-end;}
+
   /* ---------- CONTENDER CARDS ---------- */
   .spec-card{
     background:var(--paper);color:var(--ink);
@@ -4829,6 +4846,63 @@ if ('serviceWorker' in navigator) {
     var cross = null;
     v.querySelectorAll('details.sec-block').forEach(function (d) { var h = d.querySelector('summary h2'); if (h && /Cross-Shop/i.test(h.textContent)) cross = d; });
     makeRemovable(cross, '.cross-item', 'mp.rm.' + vid + '-cross');
+  });
+})();
+</script>
+
+<script>
+// Per-section user notes — amber "Your note" blocks a user can add to any collapsible section
+// (money, gear, a candidate…). Stored per profile under mp.snote.<view>.<section-slug>.
+// Runs last so the note block sits at the foot of each section, below its content.
+(function () {
+  function esc(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function slug(s){ return (s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
+  function clean(s){ return (s==null?'':String(s)).replace(/\s+/g,' ').trim(); }
+  function keyFor(det){
+    var h=det.querySelector('.sec-head h2'), view=det.closest('.view');
+    return 'mp.snote.' + ((view&&view.id)||'v') + '.' + slug(h ? h.textContent : (det.id||'sec'));
+  }
+  function load(k){ try{ var a=JSON.parse(localStorage.getItem(k)||'[]'); return Array.isArray(a)?a:[]; }catch(e){ return []; } }
+  function save(k,a){ try{ localStorage.setItem(k, JSON.stringify(a)); }catch(e){} }
+
+  var sel = '#view-moto details.sec-block, #view-car details.sec-block, #view-garage details.sec-block';
+  Array.prototype.forEach.call(document.querySelectorAll(sel), function (det) {
+    var key = keyFor(det);
+    var list = document.createElement('div'); list.className = 'snotes';
+    var foot = document.createElement('div'); foot.className = 'snote-foot';
+    var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'ml-add-btn snote-add';
+    btn.innerHTML = '<span class="ml-add-ico" aria-hidden="true">+</span> Add a note';
+    foot.appendChild(btn);
+    det.appendChild(list); det.appendChild(foot);
+
+    var notes = load(key);
+    function render(){
+      list.innerHTML = notes.map(function (t, i) {
+        return '<div class="snote" data-i="'+i+'"><span class="snote-tag">Your note</span>' +
+          '<span class="snote-body" contenteditable="true" role="textbox" aria-label="Edit note">'+esc(t)+'</span>' +
+          '<button type="button" class="snote-rm" aria-label="Delete note">&times;</button></div>';
+      }).join('');
+    }
+    render();
+    function idxOf(el){ var n=el.closest('.snote'); return n?parseInt(n.getAttribute('data-i'),10):-1; }
+
+    list.addEventListener('input', function (e) {
+      var b=e.target.closest('.snote-body'); if(!b) return;
+      var i=idxOf(b); if(i>=0){ notes[i]=clean(b.textContent); save(key,notes); } // update in place, keep focus
+    });
+    list.addEventListener('blur', function (e) {
+      var b=e.target.closest && e.target.closest('.snote-body'); if(!b) return;
+      var i=idxOf(b); if(i<0) return; var v=clean(b.textContent);
+      if(!v){ notes.splice(i,1); save(key,notes); render(); } else { notes[i]=v; save(key,notes); }
+    }, true); // capture — blur doesn't bubble
+    list.addEventListener('click', function (e) {
+      var x=e.target.closest('.snote-rm'); if(!x) return;
+      var i=idxOf(x); if(i>=0){ notes.splice(i,1); save(key,notes); render(); }
+    });
+    btn.addEventListener('click', function () {
+      notes.push(''); save(key,notes); render();
+      var last=list.querySelector('.snote:last-child .snote-body'); if(last) last.focus();
+    });
   });
 })();
 </script>
