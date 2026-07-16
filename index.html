@@ -16,7 +16,7 @@
 <title>Motorpool &middot; Dual Build Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" crossorigin="anonymous">
 <style>
   :root{
     --steel-900:#1b1f24;
@@ -302,6 +302,23 @@
   table.mkt td.ask{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-weight:500;}
   table.mkt td.kbb{font-family:"IBM Plex Mono",monospace;}
   table.mkt td.mi{font-family:"IBM Plex Mono",monospace;}
+  /* wide tables scroll horizontally inside their card, with edge shadow/fade hint */
+  .mkt-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;
+    background:
+      linear-gradient(90deg,var(--paper),rgba(236,233,224,0)) 0 0/28px 100% no-repeat,
+      linear-gradient(90deg,rgba(236,233,224,0),var(--paper)) 100% 0/28px 100% no-repeat,
+      radial-gradient(farthest-side at 0 50%,rgba(0,0,0,.13),transparent) 0 0/14px 100% no-repeat,
+      radial-gradient(farthest-side at 100% 50%,rgba(0,0,0,.13),transparent) 100% 0/14px 100% no-repeat;
+    background-attachment:local,local,scroll,scroll;}
+  .mkt-scroll table.mkt{min-width:max-content;}
+  /* one-time tap-to-expand nudge */
+  .expand-hint{display:flex;align-items:center;gap:10px;justify-content:space-between;
+    margin:0 0 16px;padding:9px 12px 9px 14px;border-radius:8px;
+    background:var(--steel-850);border:1px solid var(--line-steel-strong);border-left:3px solid var(--amber);
+    font-size:.82rem;line-height:1.4;color:#cfcbc1;}
+  .expand-hint button{flex:0 0 auto;border:none;background:transparent;color:var(--ink-faint);cursor:pointer;
+    font-size:1.15rem;line-height:1;padding:2px 6px;-webkit-tap-highlight-color:transparent;transition:color .12s;}
+  .expand-hint button:hover{color:var(--paper);}
   .mkt-quick{background:var(--paper);color:var(--ink);border-radius:5px;border:1px solid var(--paper-edge);
     box-shadow:var(--shadow);overflow:hidden;}
   .mkt-quick .qh{font-family:"Saira Condensed",sans-serif;font-weight:700;text-transform:uppercase;
@@ -521,7 +538,7 @@
   /* Base styles above target the phone. These queries add columns and
      side-by-side layout as the viewport grows. */
   @media (min-width:601px){
-    #view-garage .proj-grid{grid-template-columns:1fr 1fr;}
+    #view-hub .proj-grid{grid-template-columns:1fr 1fr;}
     .topnav-inner{padding:11px 18px;}
     .tab{padding:7px 13px;font-size:.7rem;}
     .wordmark{font-size:1.02rem;letter-spacing:.14em;}
@@ -593,7 +610,7 @@
   /* ============ DESKTOP LAYER — Pass 1: Hub + Garage (mobile untouched) ============ */
   @media (min-width:960px){
     .topnav-inner,.whatsnew-inner{max-width:1180px;}
-    #view-garage .wrap,#view-daily .wrap{max-width:1180px;}
+    #view-hub .wrap,#view-garage .wrap{max-width:1180px;}
     /* keep reading lines from stretching on wide screens */
     .hero-sub{max-width:54ch;}
     .callout{max-width:76ch;}
@@ -623,12 +640,12 @@
     .hub-cols .panel{margin-bottom:0 !important;}
 
     /* GARAGE — hero: big photo left, identity + specs right */
-    #view-daily .proj-tile{display:grid;grid-template-columns:1.25fr 1fr;
+    #view-garage .proj-tile{display:grid;grid-template-columns:1.25fr 1fr;
       grid-template-areas:"photo top" "photo spec";}
-    #view-daily .proj-tile > .daily-photo{grid-area:photo;aspect-ratio:auto;height:100%;min-height:0;
+    #view-garage .proj-tile > .daily-photo{grid-area:photo;aspect-ratio:auto;height:100%;min-height:0;
       border-bottom:none;border-right:1px solid var(--paper-edge);}
-    #view-daily .proj-tile > .pt-top{grid-area:top;}
-    #view-daily .proj-tile > .spec-grid{grid-area:spec;align-self:end;}
+    #view-garage .proj-tile > .pt-top{grid-area:top;}
+    #view-garage .proj-tile > .spec-grid{grid-area:spec;align-self:end;}
 
     /* GARAGE — value/equity beside the mod list */
     .garage-cols{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;}
@@ -654,7 +671,7 @@
     .cand-card,.spec-card,.proj-tile,.cross-item{transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;}
     #view-moto .cardsec .cand-card:hover,#view-car .cardsec .cand-card:hover,
     .cardsec .spec-card:hover{transform:translateY(-2px);box-shadow:0 15px 32px rgba(0,0,0,.30);}
-    #view-garage .proj-tile:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(0,0,0,.32);}
+    #view-hub .proj-tile:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(0,0,0,.32);}
     .pt-open{transition:background .15s ease;}
     .proj-tile:hover .pt-open{background:var(--redline-deep);}
     table.mkt tbody tr{transition:background .12s ease;}
@@ -1132,11 +1149,11 @@
 
 <nav class="topnav">
   <div class="topnav-inner">
-    <a class="wordmark" href="#garage" aria-label="Motorpool — home">Motorpool</a>
+    <a class="wordmark" href="#hub" aria-label="Motorpool — home">Motorpool</a>
     <div class="topnav-tabs">
       <div class="tabs">
-        <a id="tab-garage" class="tab active" href="#garage">Hub</a>
-        <a id="tab-daily" class="tab" href="#daily">Garage</a>
+        <a id="tab-hub" class="tab active" href="#hub">Hub</a>
+        <a id="tab-garage" class="tab" href="#garage">Garage</a>
         <a id="tab-moto" class="tab" href="#moto">Moto</a>
         <a id="tab-car" class="tab" href="#car">Car</a>
       </div>
@@ -1156,7 +1173,7 @@
 </div>
 
 <!-- =================== HUB =================== -->
-<section id="view-garage" class="view active">
+<section id="view-hub" class="view active">
   <div class="wrap">
     <header class="hero" style="padding-top:38px;">
       <div class="gauge-row">
@@ -1191,7 +1208,7 @@
 
     <section style="border-bottom:none;">
       <div class="sec-head"><span class="sec-num">&#9670;</span><h2>Projects</h2></div>
-      <a class="daily-glance" href="#daily">
+      <a class="daily-glance" href="#garage">
         <div><span class="dg-ey">Daily &middot; owned</span><span class="dg-name"><span data-dd-echo="title1">2026 Mustang</span> <b>&ldquo;<span data-dd-echo="nick">starkv3.0</span>&rdquo;</b></span></div>
         <div class="dg-stats">
           <span class="dg-stat"><b id="hubEquity">&mdash;</b><small>equity</small></span>
@@ -1259,7 +1276,7 @@
 </section>
 
 <!-- =================== GARAGE (DAILY) =================== -->
-<section id="view-daily" class="view">
+<section id="view-garage" class="view">
 <header class="hero">
   <svg class="gauge" viewBox="0 0 320 170" role="img" aria-label="Tachometer">
     <path d="M30 150 A130 130 0 0 1 290 150" fill="none" stroke="#3a4149" stroke-width="14" stroke-linecap="round"/>
@@ -2547,10 +2564,10 @@
 
 <footer id="siteFooter">
   <div class="foot-row">
-    <a class="wordmark" href="#garage" aria-label="Motorpool — home">Motorpool</a>
+    <a class="wordmark" href="#hub" aria-label="Motorpool — home">Motorpool</a>
     <nav class="foot-nav" aria-label="Footer">
-      <a href="#garage">Hub</a>
-      <a href="#daily">Garage</a>
+      <a href="#hub">Hub</a>
+      <a href="#garage">Garage</a>
       <a href="#moto">Moto</a>
       <a href="#car">Car</a>
       <a href="#settings">Settings</a>
@@ -2594,11 +2611,11 @@
 </script>
 
 <nav class="tabbar" aria-label="Primary">
-  <a id="btab-garage" class="tabbar-item active" href="#garage" aria-label="Hub">
+  <a id="btab-hub" class="tabbar-item active" href="#hub" aria-label="Hub">
     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg>
     <span>Hub</span><span class="dot"></span>
   </a>
-  <a id="btab-daily" class="tabbar-item" href="#daily" aria-label="Garage">
+  <a id="btab-garage" class="tabbar-item" href="#garage" aria-label="Garage">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 4l9 6.5"/><path d="M5 10v10h14V10"/><path d="M8.5 20v-6.5h7V20"/><path d="M8.5 16.5h7"/></svg>
     <span>Garage</span><span class="dot"></span>
   </a>
@@ -2635,10 +2652,10 @@
 
 <script>
 (function(){
-  var views = ['garage','daily','moto','car','settings'];
+  var views = ['hub','garage','moto','car','settings'];
   function route(){
-    var h = (location.hash || '#garage').replace('#','');
-    if(views.indexOf(h) === -1) h = 'garage';
+    var h = (location.hash || '#hub').replace('#','');
+    if(views.indexOf(h) === -1) h = 'hub';
     views.forEach(function(v){
       var el = document.getElementById('view-'+v);
       if(el) el.classList.toggle('active', v===h);
@@ -2950,7 +2967,7 @@ if ('serviceWorker' in navigator) {
     if (subs[0]) { subs[0].querySelector('.amt').textContent = money(spent); var s0 = subs[0].querySelector('.item small'); if (s0) s0.textContent = spentN + ' mod' + (spentN !== 1 ? 's' : '') + ', in hand'; }
     if (subs[1]) { subs[1].querySelector('.amt').textContent = money(toBuy); var s1 = subs[1].querySelector('.item small'); if (s1) s1.textContent = buyN + ' mod' + (buyN !== 1 ? 's' : ''); }
     var tot = ledger.querySelector('.ledger-row.total .amt'); if (tot) tot.textContent = money(spent + toBuy);
-    var cells = document.querySelectorAll('#view-daily .spec-grid .spec-cell');
+    var cells = document.querySelectorAll('#view-garage .spec-grid .spec-cell');
     Array.prototype.forEach.call(cells, function (c) {
       var k = c.querySelector('.k');
       if (k && /mods/i.test(k.textContent)) {
@@ -3683,7 +3700,7 @@ if ('serviceWorker' in navigator) {
 <script>
 // Replace the daily-driver photo — downscale to a data URI, persist, captured in your backup.
 (function () {
-  var wrap = document.querySelector('#view-daily .daily-photo');
+  var wrap = document.querySelector('#view-garage .daily-photo');
   var fileIn = document.getElementById('dpFile');
   var editBtn = document.getElementById('dpEdit');
   if (!wrap || !fileIn || !editBtn) return;
@@ -3847,7 +3864,7 @@ if ('serviceWorker' in navigator) {
     var label = vid + '-' + (h ? h.textContent : det.textContent.slice(0, 24));
     return 'mp.sec.' + label.replace(/[^a-z0-9]+/gi, '-').toLowerCase().replace(/^-+|-+$/g, '');
   }
-  ['view-daily', 'view-moto', 'view-car'].forEach(function (vid) {
+  ['view-garage', 'view-moto', 'view-car'].forEach(function (vid) {
     var view = document.getElementById(vid);
     if (!view) return;
     view.querySelectorAll('details.sec-block').forEach(function (det) {
@@ -3869,6 +3886,34 @@ if ('serviceWorker' in navigator) {
     sync();
     try { new MutationObserver(sync).observe(src, { childList: true, characterData: true, subtree: true }); } catch (e) {}
   });
+
+  /* Wide market tables were clipped inside their (overflow:hidden) cards — wrap each so it scrolls. */
+  document.querySelectorAll('table.mkt').forEach(function (tbl) {
+    if (!tbl.parentNode || tbl.parentNode.classList.contains('mkt-scroll')) return;
+    var w = document.createElement('div'); w.className = 'mkt-scroll';
+    tbl.parentNode.insertBefore(w, tbl); w.appendChild(tbl);
+  });
+
+  /* One-time "tap to expand" nudge for first-time users, on the collapsible views. */
+  try {
+    if (!localStorage.getItem('mp.hint.expand')) {
+      var dismiss = function () {
+        try { localStorage.setItem('mp.hint.expand', '1'); } catch (e) {}
+        Array.prototype.forEach.call(document.querySelectorAll('.expand-hint'), function (h) { h.remove(); });
+      };
+      ['view-garage', 'view-moto', 'view-car'].forEach(function (vid) {
+        var view = document.getElementById(vid); if (!view) return;
+        var first = view.querySelector('details.sec-block'); if (!first) return;
+        var hint = document.createElement('div'); hint.className = 'expand-hint'; hint.setAttribute('role', 'note');
+        hint.innerHTML = '<span>&#9662; Tap any section to expand or collapse it &mdash; each shows a summary while closed.</span><button type="button" aria-label="Got it">&times;</button>';
+        hint.querySelector('button').addEventListener('click', dismiss);
+        first.parentNode.insertBefore(hint, first);
+      });
+      Array.prototype.forEach.call(document.querySelectorAll('details.sec-block'), function (d) {
+        d.addEventListener('toggle', function () { dismiss(); }, { once: true });
+      });
+    }
+  } catch (e) {}
 })();
 </script>
 

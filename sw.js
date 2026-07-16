@@ -1,5 +1,6 @@
 /* The Garage — service worker: network-first for HTML, cache-first for assets. */
-var CACHE = 'motorpool-v10';
+var CACHE = 'motorpool-v11';
+var FONT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 var ASSETS = [
   './',
   './index.html',
@@ -36,6 +37,23 @@ self.addEventListener('fetch', function (e) {
   var req = e.request;
   if (req.method !== 'GET') return;
   var url = new URL(req.url);
+
+  // Google Fonts: cache-first so an offline launch keeps the real fonts (not just system fallbacks).
+  if (FONT_HOSTS.indexOf(url.host) !== -1) {
+    e.respondWith(
+      caches.match(req).then(function (cached) {
+        return cached || fetch(req).then(function (resp) {
+          if (resp && (resp.ok || resp.type === 'opaque')) {
+            var copy = resp.clone();
+            caches.open(CACHE).then(function (c) { c.put(req, copy); });
+          }
+          return resp;
+        }).catch(function () { return cached; });
+      })
+    );
+    return;
+  }
+
   var isHTML = req.mode === 'navigate' || (url.origin === location.origin && url.pathname.endsWith('.html'));
 
   if (isHTML) {
