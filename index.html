@@ -3281,18 +3281,31 @@ if ('serviceWorker' in navigator) {
 
     var container = document.createElement('div');
     container.className = 'usercands';
+    var head = document.createElement('div'); head.className = 'modlist-head';
+    head.innerHTML = '<span class="dash-h" style="font-size:.9rem;">Your candidates</span>';
     var btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'addcand';
-    btn.innerHTML = '<span class="plus">+</span> Add candidate';
+    btn.className = 'ml-add-btn';
+    btn.setAttribute('aria-expanded', 'false');
+    btn.innerHTML = '<span class="ml-add-ico" aria-hidden="true">+</span> Add candidate';
+    head.appendChild(btn);
+    var cform = document.createElement('form'); cform.className = 'modadd collapsed'; cform.setAttribute('autocomplete', 'off');
+    cform.innerHTML =
+      '<div class="modadd-row">' +
+        '<input class="modadd-name cadd-name" type="text" placeholder="Year / make / model" aria-label="Year make model" maxlength="60" required>' +
+        '<input class="modadd-price cadd-price" type="text" placeholder="$ price" aria-label="Price" maxlength="12">' +
+      '</div>' +
+      '<input class="modadd-note cadd-miles" type="text" placeholder="Miles (optional)" aria-label="Miles" maxlength="12">' +
+      '<div class="modadd-foot"><span></span><button type="submit" class="modadd-btn">+ Add candidate</button></div>';
     // Hidden file input shared by every card in this section; targetIdx tracks which card asked.
     var fileIn = document.createElement('input');
     fileIn.type = 'file';
     fileIn.accept = 'image/*';
     fileIn.style.display = 'none';
     var targetIdx = -1;
+    sec.appendChild(head);
+    sec.appendChild(cform);
     sec.appendChild(container);
-    sec.appendChild(btn);
     sec.appendChild(fileIn);
     render(container, scope);
 
@@ -3315,12 +3328,20 @@ if ('serviceWorker' in navigator) {
     });
 
     btn.addEventListener('click', function () {
+      var willOpen = cform.classList.contains('collapsed');
+      cform.classList.toggle('collapsed', !willOpen);
+      btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      if (willOpen) { var nm = cform.querySelector('.cadd-name'); if (nm) nm.focus(); }
+    });
+    cform.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var nm = cform.querySelector('.cadd-name').value.trim(); if (!nm) return;
+      var price = cform.querySelector('.cadd-price').value.trim(), miles = cform.querySelector('.cadd-miles').value.trim();
       var arr = load(scope);
-      arr.push({ name: '', price: '', miles: '', title: '', loc: '', note: '' });
+      arr.push({ name: nm, price: price, miles: miles, title: '', loc: '', note: '' });
       save(scope, arr);
       render(container, scope);
-      var last = container.querySelector('.cand-card.usercand:last-child .uc-name');
-      if (last) last.focus();
+      cform.reset(); cform.classList.add('collapsed'); btn.setAttribute('aria-expanded', 'false');
     });
     container.addEventListener('input', function (e) {
       var inp = e.target.closest('input[data-f]');
@@ -3679,16 +3700,38 @@ if ('serviceWorker' in navigator) {
       list.insertBefore(makeUserRow(item), totalRow);
       var m = /(\d+)$/.exec(String(item.id)); if (m) seq = Math.max(seq, parseInt(m[1], 10));
     });
-    // add-gear control
-    var addWrap = document.createElement('div'); addWrap.className = 'gear-addrow';
-    var addBtn = document.createElement('button'); addBtn.type = 'button'; addBtn.className = 'ml-add-btn'; addBtn.innerHTML = '<span class="ml-add-ico" aria-hidden="true">+</span> Add gear';
-    addWrap.appendChild(addBtn);
-    if (list.parentNode) list.parentNode.insertBefore(addWrap, list.nextSibling);
+    // add-gear: button toggle + collapsible form (same pattern as Add-a-mod)
+    var gpanel = list.closest('.panel') || list.parentNode;
+    var ghead = document.createElement('div'); ghead.className = 'modlist-head';
+    ghead.innerHTML = '<span class="dash-h" style="font-size:.9rem;">Gear &amp; setup</span>';
+    var addBtn = document.createElement('button'); addBtn.type = 'button'; addBtn.className = 'ml-add-btn';
+    addBtn.setAttribute('aria-expanded', 'false'); addBtn.innerHTML = '<span class="ml-add-ico" aria-hidden="true">+</span> Add gear';
+    ghead.appendChild(addBtn);
+    var gform = document.createElement('form'); gform.className = 'modadd collapsed'; gform.setAttribute('autocomplete', 'off');
+    gform.innerHTML =
+      '<div class="modadd-row">' +
+        '<input class="modadd-name gadd-name" type="text" placeholder="Gear / item" aria-label="Gear name" maxlength="60" required>' +
+        '<input class="modadd-price gadd-cost" type="text" inputmode="decimal" placeholder="$ cost" aria-label="Cost" maxlength="10">' +
+      '</div>' +
+      '<div class="modadd-foot">' +
+        '<label class="modadd-bought"><input type="checkbox" class="gadd-bought"> Already bought</label>' +
+        '<button type="submit" class="modadd-btn">+ Add gear</button>' +
+      '</div>';
+    if (gpanel && gpanel.parentNode) { gpanel.parentNode.insertBefore(ghead, gpanel); gpanel.parentNode.insertBefore(gform, gpanel); }
     addBtn.addEventListener('click', function () {
-      seq++; var item = { id: 't' + seq, name: 'New gear', cost: 0, bought: false };
+      var willOpen = gform.classList.contains('collapsed');
+      gform.classList.toggle('collapsed', !willOpen);
+      addBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      if (willOpen) { var nm = gform.querySelector('.gadd-name'); if (nm) nm.focus(); }
+    });
+    gform.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var nm = gform.querySelector('.gadd-name').value.trim(); if (!nm) return;
+      var cost = n(gform.querySelector('.gadd-cost').value), bought = gform.querySelector('.gadd-bought').checked;
+      seq++; var item = { id: 't' + seq, name: nm, cost: cost, bought: bought };
       saveArr(USERKEY, loadArr(USERKEY).concat([item]));
-      var row = makeUserRow(item); list.insertBefore(row, totalRow); compute();
-      var it = row.querySelector('.item'); if (it) it.focus();
+      list.insertBefore(makeUserRow(item), totalRow); compute(); reorderGear();
+      gform.reset(); gform.classList.add('collapsed'); addBtn.setAttribute('aria-expanded', 'false');
     });
   }
   compute();
