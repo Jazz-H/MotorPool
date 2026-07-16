@@ -961,6 +961,7 @@
   .daily-photo-img{width:100%;height:100%;object-fit:cover;display:block;}
   .daily-photo-fb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
     background:radial-gradient(120% 100% at 50% 0,#2a3138,#1b1f24);}
+  .daily-photo-fb[hidden]{display:none;} /* the class's display:flex was overriding the hidden attribute, so the fallback covered saved photos */
   .daily-photo-fb span{font-family:"Saira Condensed",sans-serif;font-weight:700;text-transform:uppercase;
     letter-spacing:.05em;color:#8a9098;font-size:1.05rem;}
   .daily-photo-edit{position:absolute;bottom:10px;right:10px;z-index:2;border:none;cursor:pointer;
@@ -3915,7 +3916,7 @@ if ('serviceWorker' in navigator) {
 
   function draw() {
     if (!state) return;
-    var s = state, iw = s.img.naturalWidth, ih = s.img.naturalHeight;
+    var s = state, iw = s.sw, ih = s.sh;
     var sc = s.minSc * s.zoom, dw = iw * sc, dh = ih * sc;
     s.ox = Math.min(0, Math.max(s.outW - dw, s.ox));
     s.oy = Math.min(0, Math.max(s.outH - dh, s.oy));
@@ -3932,11 +3933,20 @@ if ('serviceWorker' in navigator) {
       var img = new Image();
       img.onerror = function () { show(); showErr('That image format isn’t supported — try a JPG or PNG.'); };
       img.onload = function () {
+        // Downscale very large sources first — mobile Safari can draw a blank/partial frame from a
+        // multi-megapixel photo, which is why a crop could silently produce nothing to save.
+        var srcEl = img, sw = img.naturalWidth || img.width, sh = img.naturalHeight || img.height;
+        var MAXSRC = 2048;
+        if (Math.max(sw, sh) > MAXSRC) {
+          var f = MAXSRC / Math.max(sw, sh), tw = Math.round(sw * f), th = Math.round(sh * f);
+          var pre = document.createElement('canvas'); pre.width = tw; pre.height = th;
+          try { pre.getContext('2d').drawImage(img, 0, 0, tw, th); srcEl = pre; sw = tw; sh = th; } catch (e) {}
+        }
         var outW = opts.outW, outH = Math.round(outW / opts.aspect);
         canvas.width = outW; canvas.height = outH;
-        var minSc = Math.max(outW / img.naturalWidth, outH / img.naturalHeight);
-        state = { img: img, outW: outW, outH: outH, onSave: opts.onSave, minSc: minSc, zoom: 1,
-          ox: (outW - img.naturalWidth * minSc) / 2, oy: (outH - img.naturalHeight * minSc) / 2 };
+        var minSc = Math.max(outW / sw, outH / sh);
+        state = { img: srcEl, sw: sw, sh: sh, outW: outW, outH: outH, onSave: opts.onSave, minSc: minSc, zoom: 1,
+          ox: (outW - sw * minSc) / 2, oy: (outH - sh * minSc) / 2 };
         zoom.value = 1;
         show(); draw();
       };
@@ -3966,16 +3976,25 @@ if ('serviceWorker' in navigator) {
   function trySave() {
     if (!state) return;
     clearErr();
-    var qs = [0.82, 0.62, 0.45];
-    for (var i = 0; i < qs.length; i++) {
-      var uri;
-      try { uri = canvas.toDataURL('image/jpeg', qs[i]); }
-      catch (e) { showErr('Could not process that image.'); return; }
-      var ok = false;
-      try { ok = state.onSave(uri); } catch (e) { ok = false; }
-      if (ok !== false) { hide(); return; }
+    // Fall back through smaller dimensions AND quality so it fits even a nearly-full localStorage.
+    var sizes = [1, 0.75, 0.55, 0.4], quals = [0.82, 0.6, 0.45];
+    for (var si = 0; si < sizes.length; si++) {
+      var src = canvas;
+      if (sizes[si] < 1) {
+        var w = Math.round(canvas.width * sizes[si]), h = Math.round(canvas.height * sizes[si]);
+        var tmp = document.createElement('canvas'); tmp.width = w; tmp.height = h;
+        try { tmp.getContext('2d').drawImage(canvas, 0, 0, w, h); src = tmp; } catch (e) { continue; }
+      }
+      for (var qi = 0; qi < quals.length; qi++) {
+        var uri;
+        try { uri = src.toDataURL('image/jpeg', quals[qi]); }
+        catch (e) { showErr('Could not process that image on this device.'); return; }
+        var ok = false;
+        try { ok = state.onSave(uri); } catch (e) { ok = false; }
+        if (ok !== false) { hide(); return; }
+      }
     }
-    showErr('That photo is too large to save, even compressed — try a smaller image.');
+    showErr('Couldn’t save the photo — this device’s storage may be full. Try removing another profile’s photo, or use a smaller image.');
   }
   modal.querySelector('.crop-save').addEventListener('click', trySave);
   modal.querySelector('.crop-cancel').addEventListener('click', hide);
