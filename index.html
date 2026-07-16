@@ -1082,6 +1082,19 @@
     font-family:"IBM Plex Mono",monospace;font-size:.9rem;padding:11px 12px;-webkit-appearance:none;appearance:none;}
   .ai-in:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 2px rgba(224,160,18,.35);}
   select.ai-in{cursor:pointer;background-image:none;}
+  /* ---------- ACCOUNT (Supabase auth) ---------- */
+  .acct-signin{display:flex;flex-direction:column;gap:14px;margin-bottom:14px;}
+  .acct-magic{display:flex;gap:8px;flex-wrap:wrap;}
+  .acct-magic .ai-in{flex:1;min-width:180px;}
+  .acct-oauth{display:flex;flex-wrap:wrap;gap:10px;}
+  .acct-oauth-btn{flex:1;min-width:200px;justify-content:center;}
+  .acct-me{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+  .acct-avatar{width:44px;height:44px;border-radius:50%;background:var(--redline);color:#fff;display:flex;
+    align-items:center;justify-content:center;font-family:"Saira Condensed",sans-serif;font-weight:800;font-size:1.35rem;flex:0 0 auto;}
+  .acct-meta{display:flex;flex-direction:column;flex:1;min-width:0;gap:2px;}
+  .acct-email{color:var(--paper);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .acct-sub{font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);}
+  .data-status.err{color:#f0a094;}
   .rater-photos{display:flex;flex-wrap:wrap;gap:8px;}
   .rater-thumb{position:relative;width:76px;height:58px;border-radius:5px;overflow:hidden;border:1px solid var(--line-steel-strong);background:var(--steel-900);}
   .rater-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
@@ -1345,6 +1358,7 @@
   .crop-save:hover{background:var(--redline-deep);}
   .crop-actions button:focus-visible,.crop-x:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
 </style>
+<script src="config.js"></script>
 </head>
 <body>
 <script>
@@ -2732,6 +2746,36 @@
   <p class="hero-sub">Separate builds as profiles, back them up, and reset &mdash; all on this device (cloud sync coming soon).</p>
 </header>
 <div class="wrap">
+  <section id="acct-section" style="border-bottom:none;" hidden>
+    <div class="sec-head"><span class="sec-num">&#9670;</span><h2>Account</h2></div>
+    <p class="sec-note">Sign in to <b style="color:#e6e2d8">sync your builds across devices</b>. Entirely optional &mdash; MotorPool works fully offline without an account; signing in only adds cloud backup.</p>
+    <div id="acctSignedOut" hidden>
+      <div class="acct-signin">
+        <div class="ai-row" id="acctEmailRow">
+          <label for="acctEmail">Email &mdash; we&rsquo;ll send a one-tap sign-in link</label>
+          <div class="acct-magic">
+            <input class="ai-in" id="acctEmail" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email" spellcheck="false">
+            <button type="button" class="data-btn primary" id="acctMagic">Send link</button>
+          </div>
+        </div>
+        <div class="acct-oauth">
+          <button type="button" class="data-btn acct-oauth-btn" data-provider="google" hidden>Continue with Google</button>
+          <button type="button" class="data-btn acct-oauth-btn" data-provider="github" hidden>Continue with GitHub</button>
+        </div>
+        <span class="data-status" id="acctStatus" role="status" aria-live="polite"></span>
+      </div>
+      <div class="callout">Sign-in is handled by Supabase &mdash; we never see a password. Your build data only leaves this device once you&rsquo;re signed in and sync is on.</div>
+    </div>
+    <div id="acctSignedIn" hidden>
+      <div class="acct-me">
+        <div class="acct-avatar" id="acctAvatar">&mdash;</div>
+        <div class="acct-meta"><span class="acct-email" id="acctEmailLabel">&mdash;</span><span class="acct-sub">Signed in</span></div>
+        <button type="button" class="data-btn" id="acctSignOut">Sign out</button>
+      </div>
+      <div class="callout" id="acctSyncNote">Cloud sync of your profiles arrives in the next update &mdash; for now, sign-in is set up and your session persists.</div>
+    </div>
+  </section>
+
   <section style="border-bottom:none;">
     <div class="sec-head"><span class="sec-num">&#9670;</span><h2>Profiles</h2></div>
     <p class="sec-note">Keep separate builds &mdash; one per person, or one per vehicle. Each profile stores its own data on this device. <b style="color:#e6e2d8">Sign-in &amp; cloud sync are coming;</b> for now profiles live on this device only.</p>
@@ -4998,6 +5042,83 @@ if ('serviceWorker' in navigator) {
       var last=list.querySelector('.snote:last-child .snote-body'); if(last) last.focus();
     });
   });
+})();
+</script>
+
+<script>
+// Account (Phase 2) — optional Supabase auth. Gated on config.js: with no keys the Account
+// section stays hidden and the app is 100% local. The Supabase SDK loads lazily from a CDN
+// only when it's actually needed, so offline / signed-out users never fetch it.
+(function () {
+  var cfg = window.MP_SUPABASE || {};
+  if (!cfg.url || !cfg.anonKey || /^\s*$/.test(cfg.url) || /YOUR_|example\.com/.test(cfg.url)) return; // not configured → stay local
+  var sec = document.getElementById('acct-section'); if (!sec) return;
+  sec.hidden = false;
+  var providers = cfg.providers || ['magiclink'];
+
+  var out = document.getElementById('acctSignedOut'), inn = document.getElementById('acctSignedIn');
+  var statusEl = document.getElementById('acctStatus');
+  function status(m, kind) { if (statusEl) { statusEl.textContent = m || ''; statusEl.className = 'data-status' + (kind ? ' ' + kind : ''); } }
+
+  // Show only the enabled sign-in methods.
+  Array.prototype.forEach.call(document.querySelectorAll('.acct-oauth-btn'), function (b) {
+    if (providers.indexOf(b.getAttribute('data-provider')) >= 0) b.hidden = false;
+  });
+  if (providers.indexOf('magiclink') < 0 && providers.indexOf('email') < 0) {
+    var er = document.getElementById('acctEmailRow'); if (er) er.hidden = true;
+  }
+
+  var client = null, loading = null;
+  function getClient() {
+    if (client) return Promise.resolve(client);
+    if (loading) return loading;
+    loading = import('https://esm.sh/@supabase/supabase-js@2').then(function (m) {
+      client = m.createClient(cfg.url, cfg.anonKey, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
+      return client;
+    });
+    return loading;
+  }
+  var redirect = location.href.split('#')[0];
+
+  function render(session) {
+    if (session && session.user) {
+      out.hidden = true; inn.hidden = false;
+      var email = session.user.email || (session.user.user_metadata && session.user.user_metadata.email) || 'Signed in';
+      document.getElementById('acctEmailLabel').textContent = email;
+      document.getElementById('acctAvatar').textContent = (email[0] || '?').toUpperCase();
+    } else { out.hidden = false; inn.hidden = true; }
+  }
+
+  var mailBtn = document.getElementById('acctMagic');
+  if (mailBtn) mailBtn.addEventListener('click', function () {
+    var email = (document.getElementById('acctEmail').value || '').trim();
+    if (!email) { status('Enter your email first.', 'err'); return; }
+    status('Sending…'); mailBtn.disabled = true;
+    getClient().then(function (c) { return c.auth.signInWithOtp({ email: email, options: { emailRedirectTo: redirect } }); })
+      .then(function (r) { if (r.error) throw r.error; status('Check your email for a one-tap sign-in link.'); })
+      .catch(function (e) { status((e && e.message) || 'Could not send the link — try again.', 'err'); })
+      .then(function () { mailBtn.disabled = false; });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.acct-oauth-btn'), function (b) {
+    b.addEventListener('click', function () {
+      status('Redirecting…');
+      getClient().then(function (c) { return c.auth.signInWithOAuth({ provider: b.getAttribute('data-provider'), options: { redirectTo: redirect } }); })
+        .catch(function (e) { status((e && e.message) || 'Sign-in failed.', 'err'); });
+    });
+  });
+  var soBtn = document.getElementById('acctSignOut');
+  if (soBtn) soBtn.addEventListener('click', function () {
+    soBtn.disabled = true;
+    getClient().then(function (c) { return c.auth.signOut(); }).then(function () { render(null); }).catch(function () {}).then(function () { soBtn.disabled = false; });
+  });
+
+  render(null); // show the signed-out form immediately; flip to signed-in if a session turns up
+
+  // Restore any existing session on load; react to sign-in/out.
+  getClient().then(function (c) {
+    c.auth.getSession().then(function (r) { render(r.data && r.data.session); });
+    c.auth.onAuthStateChange(function (_e, session) { render(session); });
+  }).catch(function () { status('Sign-in is unavailable right now (offline?).', 'err'); });
 })();
 </script>
 

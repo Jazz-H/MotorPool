@@ -3,7 +3,7 @@
 **Direction:** local-first **profiles** (no login required) **+ optional Supabase sign-in for cloud sync**.
 The app keeps working fully offline as a template; signing in is purely additive (syncs a profile across devices).
 
-Status: **scoping / not started.** Phase 1 is buildable + testable today; Phases 2–3 need a Supabase project.
+Status: **Phase 1 shipped** (local profiles). **Phase 2 scaffolded** (auth UI + Supabase client, gated on `config.js` — see §10). Phase 3 (sync) is next; needs the project + the SQL below.
 
 ---
 
@@ -93,3 +93,53 @@ Non-destructive, reversible via the pre-existing backup export.
 2. Sync scope (all profiles vs one).
 3. Conflict UX (auto last-write-wins vs. always prompt).
 4. Where the Supabase keys live (inline in `index.html` vs. a small `config.js`).
+
+---
+
+## 10. Setup — turning on auth (Phase 2, shipped)
+
+Auth is **scaffolded and gated**. With empty keys the Account section stays hidden and the app is 100% local (the Supabase SDK is never even fetched). To enable it:
+
+### a. Create the Supabase project
+1. supabase.com → **New project**. Pick an org (or **New organization** — name it yourself), a project name, a strong DB password, and a region. Free tier is fine.
+2. **If you hit "Unable to retrieve GitHub repos for this account":** that's Supabase's *optional* GitHub integration failing — MotorPool needs **none** of it. Fixes, easiest first:
+   - Just create the project under a plain organization (skip any "connect a repo / deploy from GitHub" step).
+   - If it blocks you: GitHub → **Settings → Applications → Installed GitHub Apps → Supabase → Configure** → grant repository access (All, or the org you want) → **Save**, then retry.
+   - Or sidestep entirely: sign out of Supabase, sign back in **with email** instead of GitHub, then create the project.
+
+### b. Get the keys
+Project → **Settings → API** → copy **Project URL** and the **anon public** key. Both are safe to commit (RLS-protected).
+
+### c. Paste into `config.js`
+```js
+window.MP_SUPABASE = {
+  url: 'https://YOURREF.supabase.co',
+  anonKey: 'eyJ…the anon public key…',
+  providers: ['magiclink', 'google', 'github']  // keep only what you enable below
+};
+```
+
+### d. Enable the sign-in methods (Supabase → Authentication → Providers)
+- **Email** (magic link) works out of the box.
+- **Google / GitHub**: create an OAuth app on that provider, paste its client id/secret into Supabase, and add your site URL + `…/auth/v1/callback` to the redirect allow-list. Add the deployed MotorPool URL under **Auth → URL Configuration → Redirect URLs**. Remove any provider you don't set up from the `providers` array.
+
+Once keys are in, the **Account** section appears in Settings (sign in / sign out; session persists across reloads).
+
+---
+
+## 11. Phase 3 — cloud sync (next; SQL ready)
+
+Table + row-level security (run in Supabase → **SQL editor**):
+```sql
+create table if not exists public.profiles (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  name text not null,
+  data jsonb not null default '{}',
+  updated_at timestamptz not null default now()
+);
+alter table public.profiles enable row level security;
+create policy "own rows" on public.profiles
+  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+```
+Client work (not yet built): on sign-in, pull the user's rows and offer to import any not present locally; debounced write-through of the active profile's `mp.*` blob → `profiles.data` (reuse the Export format); last-write-wins on `updated_at`, prompt only on a true local-vs-cloud clash. Decisions from §9 chosen: **all profiles sync**, **last-write-wins + prompt on conflict**.

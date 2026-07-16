@@ -1,9 +1,10 @@
 /* The Garage — service worker: network-first for HTML, cache-first for assets. */
-var CACHE = 'motorpool-v12';
+var CACHE = 'motorpool-v13';
 var FONT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 var ASSETS = [
   './',
   './index.html',
+  './config.js',
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png',
