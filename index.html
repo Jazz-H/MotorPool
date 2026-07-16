@@ -482,7 +482,8 @@
   .gear-pick input[type="checkbox"]:focus-visible,
   .modadd-bought input[type="checkbox"]:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
   .check-list input[type="checkbox"]{margin-top:1px;}
-  .check-list input:checked + span{color:var(--ink-faint);text-decoration:line-through;}
+  .check-list input:checked + span,
+  .gear-pick input[type="checkbox"]:checked + .item{color:var(--ink-faint);text-decoration:line-through;}
   .redflags{margin-top:14px;padding:14px 18px;border-radius:4px;
     background:rgba(216,58,41,.10);border:1px solid rgba(216,58,41,.4);
     font-size:.9rem;color:#f0d9d4;}
@@ -804,7 +805,7 @@
   .gear-pick{display:flex;align-items:center;gap:11px;flex:1;min-width:0;cursor:pointer;margin:0;}
   .gear-pick .item{min-width:0;}
   .gear-cost{width:58px;}
-  .gear-row.is-bought .gear-pick .item{color:#4f9e6a;}
+  .gear-row.is-bought .gear-pick .item{color:var(--ink-faint);text-decoration:line-through;}
   .gear-x{margin-left:8px;border:none;background:transparent;color:var(--ink-faint);cursor:pointer;
     font-size:1.05rem;line-height:1;padding:0 2px;-webkit-tap-highlight-color:transparent;transition:color .12s;}
   .gear-x:hover{color:var(--redline);}
