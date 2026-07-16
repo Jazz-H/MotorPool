@@ -587,6 +587,9 @@
   .data-btn.primary{background:var(--redline);border-color:var(--redline);color:#fff;}
   .data-btn.primary:hover{background:var(--redline-deep);border-color:var(--redline-deep);}
   .data-btn:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+  .data-btn.danger{border-color:rgba(216,58,41,.5);color:#f0b7ad;}
+  .data-btn.danger:hover{border-color:var(--redline);color:#fff;background:rgba(216,58,41,.14);}
+  .data-btn.danger.armed{background:var(--redline);border-color:var(--redline);color:#fff;}
   .data-status{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--amber);letter-spacing:.02em;min-height:1em;}
   .val-stamp{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;
     color:var(--ink-faint);padding:9px 14px 2px;border-top:1px solid var(--line);margin-top:2px;}
@@ -1167,8 +1170,8 @@
 
 <div id="whatsnew" class="whatsnew" role="status" hidden>
   <div class="whatsnew-inner">
-    <span class="wn-tag">New</span>
-    <span class="wn-text">Now: <b>photos</b> &amp; <b>front-runner / passed</b> status on candidates, <b>tap-to-edit prices</b> in the mod ledger, and <b>export/import</b> to back up everything.</span>
+    <span class="wn-tag">Template</span>
+    <span class="wn-text">This is a <b>live template</b> &mdash; every price, spec, gear item, and card is <b>editable</b> and saves to your device. Make it yours, then <b>export</b> or <b>reset</b> anytime in Settings.</span>
     <button class="wn-x" type="button" aria-label="Dismiss">&times;</button>
   </div>
 </div>
@@ -2560,6 +2563,16 @@
     </div>
     <div class="callout">Import <b>replaces</b> the data on this device with the backup&rsquo;s. The backup is a plain JSON file &mdash; keep it somewhere safe; it&rsquo;s also how you move Motorpool between your phone and desktop.</div>
   </section>
+
+  <section style="border-top:1px solid var(--line-steel);border-bottom:none;padding-top:26px;">
+    <div class="sec-head"><span class="sec-num">&#9670;</span><h2>Make It Yours</h2></div>
+    <p class="sec-note">Motorpool is a <b style="color:#e6e2d8">template</b>. Every price, spec, gear item, checklist, and candidate card is editable &mdash; tap to change it and it saves to this device. The builds shown are a <b style="color:#e6e2d8">sample</b> so you can see how it works; edit them into your own, or reset to the sample anytime.</p>
+    <div class="data-actions">
+      <button type="button" class="data-btn danger" id="dataReset">&#8635;&ensp;Reset to the sample</button>
+      <span class="data-status" id="resetStatus" role="status" aria-live="polite"></span>
+    </div>
+    <div class="callout">Reset <b>clears everything you&rsquo;ve entered on this device</b> and restores the original sample build &mdash; <b>export a backup first</b> if you might want it back. This can&rsquo;t be undone.</div>
+  </section>
 </div>
 </section>
 
@@ -3308,7 +3321,7 @@ if ('serviceWorker' in navigator) {
 <script>
 // What's-new banner — shows once, remembers dismissal. Bump the version to re-announce.
 (function () {
-  var KEY = 'mp.whatsnew.v2';
+  var KEY = 'mp.whatsnew.v3';
   var el = document.getElementById('whatsnew');
   if (!el) return;
   var dismissed = false;
@@ -3318,6 +3331,33 @@ if ('serviceWorker' in navigator) {
   if (x) x.addEventListener('click', function () {
     el.hidden = true;
     try { localStorage.setItem(KEY, '1'); } catch (e) {}
+  });
+})();
+</script>
+
+<script>
+// Reset — clear every Motorpool value on this device, back to the sample build. Two-tap confirm.
+(function () {
+  var btn = document.getElementById('dataReset');
+  if (!btn) return;
+  var status = document.getElementById('resetStatus');
+  var label = btn.innerHTML, armed = false, t = null;
+  function disarm() { armed = false; btn.classList.remove('armed'); btn.innerHTML = label; if (status) status.textContent = ''; if (t) { clearTimeout(t); t = null; } }
+  btn.addEventListener('click', function () {
+    if (!armed) {
+      armed = true; btn.classList.add('armed');
+      btn.innerHTML = '&#8635;&ensp;Tap again to confirm';
+      if (status) status.textContent = 'This clears your data on this device.';
+      t = setTimeout(disarm, 4000);
+      return;
+    }
+    try {
+      var kill = [];
+      for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && k.indexOf('mp.') === 0) kill.push(k); }
+      kill.forEach(function (k) { localStorage.removeItem(k); });
+    } catch (e) {}
+    if (status) status.textContent = 'Reset — reloading…';
+    setTimeout(function () { location.hash = '#hub'; location.reload(); }, 250);
   });
 })();
 </script>
