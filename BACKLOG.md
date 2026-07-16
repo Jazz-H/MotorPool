@@ -3,7 +3,6 @@
 Working list, roughly in priority order. Knock 'em down top to bottom.
 
 ## ⭐ Queued features
-- [ ] **Add owned vehicles to the Garage** — the Garage tab only holds the one daily driver. Let users add multiple vehicles they already own (each with its own identity, photo, specs, and mod list), not just candidates they're shopping.
 - [ ] **Rate a vehicle from photos** — no way today for a user to submit photos of a vehicle they're considering and have the app score/rate it. (Ties into the split-off `jazz-h/vehicle-match` tool — integrate its scoring, or add a photo-in → rating flow inside a candidate card.)
 
 ## Reframe as a shareable, portfolio-worthy tool
@@ -34,6 +33,7 @@ Working list, roughly in priority order. Knock 'em down top to bottom.
 - [x] **"Add candidate" at the top** of the Candidate Log (moto + car) — adding is now the first action, above every seed card
 - [x] **Dismissible amber side-quotes** — every `.insight` yellow-bordered note in a section summary gets a subtle ×; dismissal is remembered globally (`mp.hint.insight.*`, seen-once like the NEW banner)
 - [x] **Gear as its own Moto section** — pulled the gear/setup list out of "01 The Money" into a standalone collapsible **02 Gear & Setup** section with its own live summary; remaining sections renumbered
+- [x] **Owned vehicles in the Garage** — new **Also Owned** section: add/edit/remove vehicles you already own, each with a photo, four spec cells, and its own per-vehicle mod list (installed vs. planned totals), persisted to `mp.garage.owned`
 - [x] **Daily-photo render fix** (fallback overlay was covering saved photos) + cropper hardening (downscale + size fallback)
 - [x] **Unified high-quality checkboxes** + **strikethrough on checked items**
 - [x] **Bought gear sinks to the bottom** of the list

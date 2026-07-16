@@ -472,26 +472,31 @@
     color:var(--ink);font-size:.94rem;-webkit-tap-highlight-color:transparent;transition:background .12s;
   }
   .check-list label:hover{background:#f1eee6;}
-  /* ---- unified checkbox — identical across gear, checklists, and the add-mod form ---- */
+  /* ---- unified checkbox — identical across gear, checklists, owned-vehicle mods, and the add-mod form ---- */
   .check-list input[type="checkbox"],
   .gear-pick input[type="checkbox"],
+  .owned-mods input[type="checkbox"],
   .modadd-bought input[type="checkbox"]{
     appearance:none;-webkit-appearance:none;flex:0 0 auto;margin:0;cursor:pointer;position:relative;
     width:20px;height:20px;border:2px solid var(--line-strong);border-radius:6px;background:#fff;
     box-shadow:inset 0 1px 2px rgba(0,0,0,.05);transition:background .12s,border-color .12s,box-shadow .12s;}
   .check-list input[type="checkbox"]:hover,
   .gear-pick input[type="checkbox"]:hover,
+  .owned-mods input[type="checkbox"]:hover,
   .modadd-bought input[type="checkbox"]:hover{border-color:var(--ink-faint);}
   .check-list input[type="checkbox"]:checked,
   .gear-pick input[type="checkbox"]:checked,
+  .owned-mods input[type="checkbox"]:checked,
   .modadd-bought input[type="checkbox"]:checked{background:var(--redline);border-color:var(--redline);box-shadow:none;}
   .check-list input[type="checkbox"]:checked::after,
   .gear-pick input[type="checkbox"]:checked::after,
+  .owned-mods input[type="checkbox"]:checked::after,
   .modadd-bought input[type="checkbox"]:checked::after{
     content:"";position:absolute;left:6px;top:2px;width:5px;height:9px;
     border:solid #fff;border-width:0 2.5px 2.5px 0;border-radius:1px;transform:rotate(45deg);}
   .check-list input[type="checkbox"]:focus-visible,
   .gear-pick input[type="checkbox"]:focus-visible,
+  .owned-mods input[type="checkbox"]:focus-visible,
   .modadd-bought input[type="checkbox"]:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
   .check-list input[type="checkbox"]{margin-top:1px;}
   .check-list input:checked + span,
@@ -959,6 +964,32 @@
   .addcand:active{transform:scale(.995);}
   .addcand:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
   .addcand .plus{color:var(--redline);margin-right:8px;font-size:1.1rem;}
+
+  /* ---------- OWNED VEHICLES (Garage) ---------- */
+  .owned-card{margin-bottom:20px;}
+  .owned-card .uc-trim{display:block;width:100%;appearance:none;-webkit-appearance:none;border:none;background:transparent;
+    font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);
+    padding:0 0 2px;margin-top:2px;border-bottom:1px dashed transparent;}
+  .owned-card .uc-trim:focus{outline:none;border-bottom-color:var(--amber);}
+  .owned-card .uc-trim::placeholder{color:var(--ink-faint);}
+  .owned-mods{padding:13px 16px;border-top:1px solid var(--line);}
+  .owned-mods .om-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:2px;}
+  .owned-mods .om-title{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);}
+  .owned-mods .om-empty{color:var(--ink-faint);font-size:.86rem;padding:6px 0 2px;}
+  .om-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);}
+  .om-row:last-of-type{border-bottom:none;}
+  .om-pick{display:flex;align-items:center;gap:10px;flex:1;min-width:0;cursor:pointer;margin:0;}
+  .om-name{flex:1;min-width:0;appearance:none;-webkit-appearance:none;border:none;background:transparent;color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:.92rem;padding:2px 1px;border-bottom:1px dashed transparent;}
+  .om-name:focus{outline:none;border-bottom-color:var(--amber);}
+  .om-row.is-done .om-name{color:var(--ink-faint);text-decoration:line-through;}
+  .om-cost{width:64px;text-align:right;appearance:none;-webkit-appearance:none;border:none;background:transparent;color:var(--ink);
+    font-family:"IBM Plex Mono",monospace;font-size:.84rem;padding:2px 1px;border-bottom:1px dashed transparent;}
+  .om-cost:focus{outline:none;border-bottom-color:var(--amber);}
+  .om-x{border:none;background:transparent;color:var(--ink-faint);cursor:pointer;font-size:1.2rem;line-height:1;
+    padding:0 4px;-webkit-tap-highlight-color:transparent;transition:color .15s;}
+  .om-x:hover{color:var(--redline-deep);}
+  .om-x:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:3px;}
 
   /* ---------- WHAT'S-NEW BANNER ---------- */
   .whatsnew{background:linear-gradient(90deg,rgba(216,58,41,.16),var(--steel-850));border-bottom:1px solid var(--line-steel);}
@@ -1441,6 +1472,12 @@
     <div class="callout" data-dk="mods">All appearance &amp; sound so far &mdash; louvers, rear diffuser, chin spoiler, smoked tails, and the Roush axle-back. The quarter-window louvers are already bought; the rest are the running list. <b>Add a mod above</b> &mdash; the Spent / Still-to-buy / All-in totals update automatically.</div>
     </details>
     </div>
+  </section>
+
+  <section id="garage-owned" style="border-bottom:none;">
+    <div class="sec-head"><span class="sec-num">&#9670;</span><h2>Also Owned</h2></div>
+    <p class="sec-note">Everything else in your garage beyond the daily driver &mdash; add each vehicle with its photo, specs, and mod list. <span class="dd-hint">Tap any field to edit.</span></p>
+    <!-- JS injects the Add-vehicle button + form + the owned-vehicle cards here -->
   </section>
 </div>
 </section>
@@ -3425,6 +3462,197 @@ if ('serviceWorker' in navigator) {
       var arr = load(scope);
       if (idx >= 0 && idx < arr.length) { arr.splice(idx, 1); save(scope, arr); render(container, scope); }
     });
+  });
+})();
+</script>
+
+<script>
+// Owned vehicles — the Garage "Also Owned" section: add/edit/remove vehicles you already own,
+// each with a photo, four spec cells, and its own mod list. Persisted to mp.garage.owned.
+(function () {
+  var sec = document.getElementById('garage-owned');
+  if (!sec) return;
+  var KEY = 'mp.garage.owned';
+  function load() { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { return []; } }
+  function save(a) { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {} }
+  function attr(s) { return (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function n(v) { var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.]/g, '')); return isFinite(x) ? x : 0; }
+  function money(x) { return '$' + Math.round(x).toLocaleString('en-US'); }
+
+  var SPECS = [
+    { f: 'engine', label: 'Engine', ph: '—' },
+    { f: 'output', label: 'Output', ph: '—' },
+    { f: 'drive', label: 'Drive', ph: '—' },
+    { f: 'miles', label: 'Miles', ph: '—' }
+  ];
+
+  function photoHtml(v) {
+    if (v.photo) return '<div class="uc-photo"><img src="' + attr(v.photo) + '" alt="Vehicle photo">' +
+      '<button class="ov-photo-rm uc-photo-rm" type="button" aria-label="Remove photo">&times;</button></div>';
+    return '<button class="ov-photo-add uc-photo-add" type="button"><span class="cam">&#9723;</span>Add photo</button>';
+  }
+  function specCell(v, s) {
+    return '<div class="cand-fact"><span class="k">' + s.label + '</span>' +
+      '<input class="uc-f" data-f="' + s.f + '" maxlength="24" placeholder="' + s.ph + '" value="' + attr(v[s.f]) + '"></div>';
+  }
+  function sumText(mods) {
+    if (!mods.length) return '';
+    var spent = 0, planned = 0;
+    mods.forEach(function (m) { var c = n(m.cost); planned += c; if (m.done) spent += c; });
+    return money(spent) + ' in · ' + money(planned) + ' total';
+  }
+  function modRow(m, mi) {
+    return '<div class="om-row' + (m.done ? ' is-done' : '') + '" data-mi="' + mi + '">' +
+      '<label class="om-pick"><input type="checkbox" class="om-done"' + (m.done ? ' checked' : '') + ' aria-label="Installed / owned">' +
+      '<input class="om-name" data-mf="name" maxlength="60" placeholder="Mod / part" value="' + attr(m.name) + '"></label>' +
+      '<span class="amt">$<input class="om-cost" data-mf="cost" inputmode="decimal" maxlength="10" placeholder="0" value="' + attr(m.cost) + '"></span>' +
+      '<button class="om-x" type="button" aria-label="Remove mod">&times;</button></div>';
+  }
+  function modsHtml(v) {
+    var mods = v.mods || [];
+    return '<div class="owned-mods">' +
+      '<div class="om-head"><span class="om-title">Mod list</span>' +
+      '<button type="button" class="ml-add-btn ov-mod-add" aria-expanded="false"><span class="ml-add-ico" aria-hidden="true">+</span> Add mod</button></div>' +
+      '<form class="modadd collapsed ov-mod-form" autocomplete="off">' +
+        '<div class="modadd-row">' +
+          '<input class="modadd-name ovm-name" type="text" placeholder="Mod / part" aria-label="Mod name" maxlength="60" required>' +
+          '<input class="modadd-price ovm-cost" type="text" inputmode="decimal" placeholder="$ cost" aria-label="Cost" maxlength="10">' +
+        '</div>' +
+        '<div class="modadd-foot"><label class="modadd-bought"><input type="checkbox" class="ovm-done"> Already installed</label>' +
+        '<button type="submit" class="modadd-btn">+ Add mod</button></div>' +
+      '</form>' +
+      (mods.length ? mods.map(modRow).join('') : '<div class="om-empty">No mods logged yet.</div>') +
+      '<div class="om-sum">' + sumText(mods) + '</div>' +
+      '</div>';
+  }
+  function cardHtml(v, i) {
+    return '<article class="cand-card usercand owned-card" data-idx="' + i + '">' +
+      photoHtml(v) +
+      '<div class="cand-top"><div>' +
+        '<span class="cand-ey">Owned &middot; &ldquo;<span class="ov-nick" contenteditable="true" role="textbox" aria-label="Nickname">' + attr(v.nick || '') + '</span>&rdquo;</span>' +
+        '<input class="uc-name" data-f="name" maxlength="60" placeholder="Year / make / model" value="' + attr(v.name) + '">' +
+        '<input class="uc-trim" data-f="trim" maxlength="40" placeholder="Trim / notes" value="' + attr(v.trim) + '">' +
+      '</div>' +
+      '<div class="uc-head-actions"><button class="ov-rm uc-rm" type="button" aria-label="Remove vehicle">&times;</button></div></div>' +
+      '<div class="cand-facts">' + SPECS.map(function (s) { return specCell(v, s); }).join('') + '</div>' +
+      modsHtml(v) +
+      '</article>';
+  }
+  function render() { container.innerHTML = load().map(cardHtml).join(''); }
+  function idxOf(el) { var c = el.closest('.owned-card'); return c ? parseInt(c.getAttribute('data-idx'), 10) : -1; }
+
+  // Inject the Add-vehicle affordance at the top (same pattern as Add-a-mod / Add-candidate).
+  var head = document.createElement('div'); head.className = 'modlist-head';
+  head.innerHTML = '<span class="dash-h" style="font-size:.9rem;">Your vehicles</span>';
+  var addBtn = document.createElement('button'); addBtn.type = 'button'; addBtn.className = 'ml-add-btn';
+  addBtn.setAttribute('aria-expanded', 'false'); addBtn.innerHTML = '<span class="ml-add-ico" aria-hidden="true">+</span> Add vehicle';
+  head.appendChild(addBtn);
+  var form = document.createElement('form'); form.className = 'modadd collapsed'; form.setAttribute('autocomplete', 'off');
+  form.innerHTML =
+    '<div class="modadd-row">' +
+      '<input class="modadd-name ov-add-name" type="text" placeholder="Year / make / model" aria-label="Year make model" maxlength="60" required>' +
+      '<input class="modadd-price ov-add-nick" type="text" placeholder="Nickname (optional)" aria-label="Nickname" maxlength="40">' +
+    '</div>' +
+    '<div class="modadd-foot"><span></span><button type="submit" class="modadd-btn">+ Add vehicle</button></div>';
+  var container = document.createElement('div'); container.className = 'owned-list';
+  var fileIn = document.createElement('input'); fileIn.type = 'file'; fileIn.accept = 'image/*'; fileIn.style.display = 'none';
+  var targetIdx = -1;
+  sec.appendChild(head); sec.appendChild(form); sec.appendChild(container); sec.appendChild(fileIn);
+  render();
+
+  addBtn.addEventListener('click', function () {
+    var willOpen = form.classList.contains('collapsed');
+    form.classList.toggle('collapsed', !willOpen);
+    addBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    if (willOpen) { var nm = form.querySelector('.ov-add-name'); if (nm) nm.focus(); }
+  });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var nm = form.querySelector('.ov-add-name').value.trim(); if (!nm) return;
+    var nick = form.querySelector('.ov-add-nick').value.trim();
+    var arr = load();
+    arr.push({ name: nm, nick: nick, trim: '', engine: '', output: '', drive: '', miles: '', mods: [] });
+    save(arr); render();
+    form.reset(); form.classList.add('collapsed'); addBtn.setAttribute('aria-expanded', 'false');
+  });
+
+  fileIn.addEventListener('change', function () {
+    var file = fileIn.files && fileIn.files[0]; var idx = targetIdx;
+    fileIn.value = '';
+    if (!file || idx < 0) return;
+    window.mpCrop(file, { aspect: 16 / 10, outW: 640, onSave: function (uri) {
+      var arr = load(); if (!arr[idx]) return true;
+      arr[idx].photo = uri; try { save(arr); } catch (e) {}
+      var check = load(); if (!check[idx] || check[idx].photo !== uri) return false;
+      render(); return true;
+    } });
+  });
+
+  // In-place text edits (no re-render, so focus survives typing).
+  container.addEventListener('input', function (e) {
+    var t = e.target, idx = idxOf(t); if (idx < 0) return;
+    var arr = load(); var v = arr[idx]; if (!v) return;
+    if (t.classList.contains('ov-nick')) { v.nick = (t.textContent || '').trim(); save(arr); return; }
+    var mrow = t.closest('.om-row');
+    if (mrow && t.getAttribute('data-mf')) {
+      var mi = parseInt(mrow.getAttribute('data-mi'), 10);
+      if (v.mods && v.mods[mi]) {
+        v.mods[mi][t.getAttribute('data-mf')] = t.value; save(arr);
+        if (t.getAttribute('data-mf') === 'cost') {
+          var sumEl = t.closest('.owned-mods').querySelector('.om-sum');
+          if (sumEl) sumEl.textContent = sumText(v.mods);
+        }
+      }
+      return;
+    }
+    if (t.getAttribute('data-f')) { v[t.getAttribute('data-f')] = t.value; save(arr); }
+  });
+
+  // Toggle a mod's installed state (re-render to restrike + refresh the total).
+  container.addEventListener('change', function (e) {
+    if (!e.target.classList.contains('om-done')) return;
+    var idx = idxOf(e.target); var mrow = e.target.closest('.om-row'); if (idx < 0 || !mrow) return;
+    var mi = parseInt(mrow.getAttribute('data-mi'), 10);
+    var arr = load(); if (arr[idx] && arr[idx].mods && arr[idx].mods[mi]) { arr[idx].mods[mi].done = e.target.checked; save(arr); render(); }
+  });
+
+  container.addEventListener('click', function (e) {
+    var addP = e.target.closest('.ov-photo-add');
+    if (addP) { targetIdx = idxOf(addP); fileIn.click(); return; }
+    var rmP = e.target.closest('.ov-photo-rm');
+    if (rmP) { var pi = idxOf(rmP); var a = load(); if (a[pi]) { delete a[pi].photo; save(a); render(); } return; }
+    var modAdd = e.target.closest('.ov-mod-add');
+    if (modAdd) {
+      var f = modAdd.closest('.owned-mods').querySelector('.ov-mod-form');
+      var willOpen = f.classList.contains('collapsed');
+      f.classList.toggle('collapsed', !willOpen);
+      modAdd.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      if (willOpen) { var nm = f.querySelector('.ovm-name'); if (nm) nm.focus(); }
+      return;
+    }
+    var modX = e.target.closest('.om-x');
+    if (modX) {
+      var mxIdx = idxOf(modX); var mr = modX.closest('.om-row'); var mmi = parseInt(mr.getAttribute('data-mi'), 10);
+      var ma = load(); if (ma[mxIdx] && ma[mxIdx].mods) { ma[mxIdx].mods.splice(mmi, 1); save(ma); render(); }
+      return;
+    }
+    var rm = e.target.closest('.ov-rm');
+    if (rm) {
+      var ri = idxOf(rm); var ra = load();
+      if (ri >= 0 && ri < ra.length) { ra.splice(ri, 1); save(ra); render(); }
+    }
+  });
+
+  container.addEventListener('submit', function (e) {
+    var f = e.target.closest('.ov-mod-form'); if (!f) return;
+    e.preventDefault();
+    var idx = idxOf(f); if (idx < 0) return;
+    var nm = f.querySelector('.ovm-name').value.trim(); if (!nm) return;
+    var cost = f.querySelector('.ovm-cost').value.trim(), done = f.querySelector('.ovm-done').checked;
+    var arr = load(); if (!arr[idx]) return;
+    if (!arr[idx].mods) arr[idx].mods = [];
+    arr[idx].mods.push({ name: nm, cost: cost, done: done });
+    save(arr); render();
   });
 })();
 </script>
