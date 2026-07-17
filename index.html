@@ -126,6 +126,19 @@
   body.intro-seen .hero-sub{display:none;}
   /* Instrument readout — the tightened Option B strip. Desktop only; chips carry mobile. */
   .hero-readout{display:none;}
+  /* Garage fleet summary is surfaced on mobile too (2x2 grid); its redundant daily-spec chips hide. */
+  @media (max-width:959px){
+    #view-garage .hero .chips{display:none;}
+    .hero-fleet{display:grid;grid-template-columns:1fr 1fr;margin:20px auto 0;max-width:400px;text-align:left;
+      border:1px solid var(--line-steel-strong);border-radius:11px;overflow:hidden;
+      background:linear-gradient(180deg,var(--steel-850),#1f242a);box-shadow:0 1px 0 rgba(255,255,255,.06) inset;}
+    .hero-fleet .ro{padding:12px 15px;border-right:1px solid var(--line-steel);border-top:1px solid var(--line-steel);min-width:0;}
+    .hero-fleet .ro:nth-child(-n+2){border-top:none;}
+    .hero-fleet .ro:nth-child(2n){border-right:none;}
+    .hero-fleet .ro .k{font-family:"IBM Plex Mono",monospace;font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:4px;}
+    .hero-fleet .ro .v{font-family:"Saira Condensed",sans-serif;font-weight:700;font-size:1.3rem;color:var(--paper);line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .hero-fleet .ro .v small{font-family:"IBM Plex Mono",monospace;font-size:.56rem;font-weight:400;color:var(--ink-faint);}
+  }
 
   /* ---------- SECTION FRAME ---------- */
   section{padding:34px 0;}
