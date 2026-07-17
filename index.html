@@ -1072,8 +1072,73 @@
      (a single full-width card made the 16:10 photo enormous). */
   @media (min-width:720px){
     #garage-owned .owned-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;align-items:start;}
+    #garage-owned .owned-list.is-empty{display:block;}
     #garage-owned .owned-card{margin-bottom:0;}
   }
+  /* ---- Also Owned: elevated "bay card" add form (as a modal) + blueprint empty state ---- */
+  /* The modal is appended to <body>, so it must NOT be scoped under #garage-owned (which sits
+     inside the animated .view stacking context and would trap it beneath the fixed nav). */
+  .ov-modal{position:fixed;inset:0;z-index:1200;display:flex;align-items:center;justify-content:center;padding:20px;
+    background:rgba(9,11,13,.68);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);}
+  .ov-modal.collapsed{display:none;}
+  .ov-modal .ov-addcard{width:100%;max-width:524px;max-height:88vh;overflow:auto;
+    border:1px solid var(--line-steel-strong);border-radius:12px;
+    background:linear-gradient(180deg,var(--steel-850),#1f242a);box-shadow:0 30px 80px -28px rgba(0,0,0,.85),0 1px 0 rgba(255,255,255,.06) inset;animation:ov-pop .17s ease-out;}
+  @keyframes ov-pop{from{opacity:0;transform:translateY(10px) scale(.985);}to{opacity:1;transform:none;}}
+  @media (max-width:560px){
+    .ov-modal{align-items:flex-end;padding:0;}
+    .ov-modal .ov-addcard{max-width:none;max-height:92vh;border-radius:16px 16px 0 0;border-bottom:none;animation:ov-sheet .2s ease-out;}
+    @keyframes ov-sheet{from{transform:translateY(100%);}to{transform:none;}}
+  }
+  @media (prefers-reduced-motion:reduce){.ov-modal .ov-addcard{animation:none;}}
+  .ov-modal .ovc-hd{position:sticky;top:0;z-index:1;display:flex;align-items:center;gap:10px;padding:12px 15px;border-bottom:1px solid var(--line-steel);
+    background:linear-gradient(180deg,#262c32,#22272d);}
+  .ov-modal .ovc-tick{width:3px;height:15px;border-radius:2px;background:var(--redline);box-shadow:0 0 10px rgba(216,58,41,.45);flex:0 0 auto;}
+  .ov-modal .ovc-lbl{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--paper-dim);font-weight:600;}
+  .ov-modal .ovc-cancel{margin-left:auto;display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid var(--line-steel-strong);
+    border-radius:6px;color:#b7b3a9;font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:6px 11px;cursor:pointer;transition:color .15s,border-color .15s;}
+  .ov-modal .ovc-cancel:hover{color:var(--paper);border-color:#b7b3a9;}
+  .ov-modal .ovc-cancel:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+  .ov-modal .ovc-bd{padding:16px 16px 18px;}
+  .ov-modal .ov-frow{display:flex;gap:12px;flex-wrap:wrap;}
+  .ov-modal .ov-frow + .ov-frow{margin-top:13px;}
+  .ov-modal .ov-fld{display:flex;flex-direction:column;gap:6px;flex:1 1 140px;}
+  .ov-modal .ov-fld.yr{flex:0 0 92px;}
+  .ov-modal .ov-fld label{font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);}
+  .ov-modal .ov-fld label i{font-style:normal;opacity:.6;}
+  .ov-modal .ov-fld input{width:100%;background:var(--steel-900);border:1px solid var(--line-steel-strong);border-radius:7px;color:var(--paper);
+    font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:.96rem;padding:11px 12px;transition:border-color .15s,box-shadow .15s;}
+  .ov-modal .ov-fld input::placeholder{color:#767b82;}
+  .ov-modal .ov-fld input:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(224,160,18,.22);}
+  .ov-modal .ov-fld input.num{font-variant-numeric:tabular-nums;letter-spacing:.02em;}
+  .ov-modal .ov-add-opts{display:flex;flex-wrap:wrap;gap:16px 26px;margin-top:16px;}
+  .ov-modal .ov-add-opts .ov-opt{display:flex;flex-direction:column;align-items:flex-start;gap:7px;}
+  .ov-modal .ov-add-opts .ov-opt-l{font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:#9aa0a7;}
+  .ov-modal .ov-add-opts .ov-seg{display:inline-flex;background:var(--steel-900);border:1px solid var(--line-steel-strong);border-radius:8px;padding:3px;gap:3px;overflow:visible;}
+  .ov-modal .ov-add-opts .ov-seg-btn{display:inline-flex;align-items:center;gap:7px;border:none;border-radius:6px;padding:8px 13px;
+    font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#b7b3a9;background:transparent;cursor:pointer;transition:background .14s,color .14s;}
+  .ov-modal .ov-add-opts .ov-seg-btn .sg-i{opacity:.8;}
+  .ov-modal .ov-add-opts .ov-seg-btn:hover{color:var(--paper);}
+  .ov-modal .ov-add-opts .ov-seg-btn.on{color:#fff;background:linear-gradient(180deg,#e0432f,var(--redline-deep));box-shadow:0 1px 0 rgba(255,255,255,.22) inset,0 4px 12px -4px rgba(216,58,41,.45);}
+  .ov-modal .ov-add-opts .ov-seg-btn.on .sg-i{opacity:1;}
+  .ov-modal .ov-foot{margin-top:19px;display:flex;flex-direction:column;gap:11px;}
+  .ov-modal .ov-foot .hint{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.02em;color:var(--ink-faint);display:flex;align-items:center;gap:7px;}
+  .ov-modal .ov-foot .hint .ret{color:var(--redline);}
+  .ov-cta{display:inline-flex;align-items:center;justify-content:center;gap:9px;width:100%;cursor:pointer;
+    font-family:"Saira Condensed",sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:1rem;color:#fff;border:none;border-radius:8px;padding:14px;
+    transition:transform .14s,box-shadow .14s;background:linear-gradient(180deg,#e2452f,var(--redline-deep));box-shadow:0 1px 0 rgba(255,255,255,.25) inset,0 12px 26px -12px rgba(216,58,41,.45);}
+  .ov-cta:hover{transform:translateY(-1px);box-shadow:0 1px 0 rgba(255,255,255,.3) inset,0 16px 30px -12px rgba(216,58,41,.5);}
+  .ov-cta:active{transform:translateY(0);}
+  .ov-cta:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+  #garage-owned .ov-empty{position:relative;border:1.5px dashed var(--line-steel-strong);border-radius:12px;padding:34px 22px;text-align:center;
+    display:flex;flex-direction:column;align-items:center;gap:12px;
+    background:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px) 0 0/26px 26px,linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px) 0 0/26px 26px,rgba(255,255,255,.012);}
+  #garage-owned .ov-empty .coord{position:absolute;top:9px;left:12px;font-family:"IBM Plex Mono",monospace;font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);}
+  #garage-owned .ov-empty .coord.r{left:auto;right:12px;}
+  #garage-owned .ov-empty .ov-empty-car{opacity:.55;}
+  #garage-owned .ov-empty p{margin:0;color:#b6b3aa;font-size:.94rem;max-width:36ch;}
+  #garage-owned .ov-empty .sub{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);}
+  #garage-owned .ov-empty .ov-cta{width:auto;padding:12px 22px;margin-top:2px;}
 
   /* ---------- AI LISTING RATER ---------- */
   .ai-row{display:flex;flex-direction:column;gap:7px;margin:0 0 14px;}
@@ -3673,8 +3738,22 @@ if ('serviceWorker' in navigator) {
   // Segmented control (car/moto, paid/financed) — used in the card and the add form.
   function seg(name, cur, opts) {
     return '<div class="ov-seg" role="group">' + opts.map(function (o) {
-      return '<button type="button" class="ov-seg-btn' + (o.v === cur ? ' on' : '') + '" data-' + name + '="' + o.v + '" aria-pressed="' + (o.v === cur) + '">' + o.label + '</button>';
+      return '<button type="button" class="ov-seg-btn' + (o.v === cur ? ' on' : '') + '" data-' + name + '="' + o.v + '" aria-pressed="' + (o.v === cur) + '">' + (o.icon || '') + o.label + '</button>';
     }).join('') + '</div>';
+  }
+  // Small line icons for the add form's segmented controls + primary button.
+  var IC = {
+    car: '<svg class="sg-i" width="15" height="11" viewBox="0 0 20 14" fill="none" aria-hidden="true"><path d="M2 10h16M4 10l2-5a2 2 0 0 1 1.9-1.3h4.2A2 2 0 0 1 16 5l2 5M6 10v1.5M14 10v1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    moto: '<svg class="sg-i" width="16" height="11" viewBox="0 0 22 14" fill="none" aria-hidden="true"><circle cx="5" cy="10" r="3" stroke="currentColor" stroke-width="1.6"/><circle cx="17" cy="10" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M5 10l4-4h5l2 4M9 6l1-2h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    check: '<svg class="sg-i" width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7l3 3 5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    pct: '<svg class="sg-i" width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M4 3v8M10 3v8M2 5h5M7 9h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+    plus: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>'
+  };
+  function emptyHtml() {
+    return '<div class="ov-empty"><span class="coord">BAY · EMPTY</span><span class="coord r">00 / 00</span>' +
+      '<svg class="ov-empty-car" width="66" height="40" viewBox="0 0 72 42" fill="none" aria-hidden="true"><path d="M5 31h62M12 31l5.5-14A5 5 0 0 1 22.2 14h27.6a5 5 0 0 1 4.6 3l5.6 14M19 31v4M53 31v4" stroke="#9aa0a7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="21" cy="31" r="4.6" stroke="#9aa0a7" stroke-width="2"/><circle cx="51" cy="31" r="4.6" stroke="#9aa0a7" stroke-width="2"/><path d="M23 22h26" stroke="#d83a29" stroke-width="2" stroke-linecap="round"/></svg>' +
+      '<p>Nothing else in the garage yet.</p><span class="sub">Add your bikes, project cars, or anything you own</span>' +
+      '<button type="button" class="ov-cta ov-empty-add">' + IC.plus + ' Add vehicle</button></div>';
   }
   function equity(v) { var financed = v.finance === 'financed'; return n(v.value) - (financed ? n(v.owed) : 0); }
   function equityText(v) { var val = n(v.value), owed = v.finance === 'financed' ? n(v.owed) : 0, eq = val - owed; return (val || owed) ? ((eq < 0 ? '−' : '') + money(Math.abs(eq))) : '—'; }
@@ -3748,7 +3827,11 @@ if ('serviceWorker' in navigator) {
       modsHtml(v) +
       '</article>';
   }
-  function render() { container.innerHTML = load().map(cardHtml).join(''); }
+  function render() {
+    var arr = load();
+    if (!arr.length) { container.classList.add('is-empty'); container.innerHTML = emptyHtml(); }
+    else { container.classList.remove('is-empty'); container.innerHTML = arr.map(cardHtml).join(''); }
+  }
   function idxOf(el) { var c = el.closest('.owned-card'); return c ? parseInt(c.getAttribute('data-idx'), 10) : -1; }
 
   // Inject the Add-vehicle affordance at the top (same pattern as Add-a-mod / Add-candidate).
@@ -3757,50 +3840,71 @@ if ('serviceWorker' in navigator) {
   var addBtn = document.createElement('button'); addBtn.type = 'button'; addBtn.className = 'ml-add-btn';
   addBtn.setAttribute('aria-expanded', 'false'); addBtn.innerHTML = '<span class="ml-add-ico" aria-hidden="true">+</span> Add vehicle';
   head.appendChild(addBtn);
-  var form = document.createElement('form'); form.className = 'modadd collapsed'; form.setAttribute('autocomplete', 'off');
-  form.innerHTML =
-    '<div class="modadd-row">' +
-      '<input class="modadd-name ov-add-name" type="text" placeholder="Year / make / model" aria-label="Year make model" maxlength="60" required>' +
-      '<input class="modadd-price ov-add-nick" type="text" placeholder="Nickname (optional)" aria-label="Nickname" maxlength="40">' +
-    '</div>' +
-    '<div class="ov-add-opts">' +
-      '<div class="ov-opt"><span class="ov-opt-l">Type</span>' + seg('type', 'car', [{ v: 'car', label: 'Car' }, { v: 'moto', label: 'Moto' }]) + '</div>' +
-      '<div class="ov-opt"><span class="ov-opt-l">Ownership</span>' + seg('fin', 'paid', [{ v: 'paid', label: 'Paid off' }, { v: 'financed', label: 'Financed' }]) + '</div>' +
-    '</div>' +
-    '<div class="modadd-foot"><span></span><button type="submit" class="modadd-btn">+ Add vehicle</button></div>';
+  // Elevated "bay card" add form: header w/ Cancel, split Year/Make/Model, icon toggles, one primary.
+  var card = document.createElement('div'); card.className = 'ov-addcard';
+  card.innerHTML =
+    '<div class="ovc-hd"><span class="ovc-tick"></span><span class="ovc-lbl">New entry</span>' +
+      '<button type="button" class="ovc-cancel ov-cancel">&times; Cancel</button></div>' +
+    '<form class="ovc-bd ov-add-form" autocomplete="off">' +
+      '<div class="ov-frow">' +
+        '<div class="ov-fld yr"><label>Year</label><input class="ov-add-year num" type="text" inputmode="numeric" maxlength="4" placeholder="2018" aria-label="Year"></div>' +
+        '<div class="ov-fld"><label>Make</label><input class="ov-add-make" type="text" maxlength="30" placeholder="Toyota" aria-label="Make" required></div>' +
+        '<div class="ov-fld"><label>Model</label><input class="ov-add-model" type="text" maxlength="40" placeholder="4Runner" aria-label="Model"></div>' +
+      '</div>' +
+      '<div class="ov-frow"><div class="ov-fld"><label>Nickname <i>&middot; optional</i></label>' +
+        '<input class="ov-add-nick" type="text" maxlength="40" placeholder="the rig" aria-label="Nickname"></div></div>' +
+      '<div class="ov-add-opts">' +
+        '<div class="ov-opt"><span class="ov-opt-l">Type</span>' + seg('type', 'car', [{ v: 'car', label: 'Car', icon: IC.car }, { v: 'moto', label: 'Moto', icon: IC.moto }]) + '</div>' +
+        '<div class="ov-opt"><span class="ov-opt-l">Ownership</span>' + seg('fin', 'paid', [{ v: 'paid', label: 'Paid off', icon: IC.check }, { v: 'financed', label: 'Financed', icon: IC.pct }]) + '</div>' +
+      '</div>' +
+      '<div class="ov-foot"><span class="hint"><span class="ret">&#8627;</span> You&rsquo;ll add specs, value &amp; a photo on the card next.</span>' +
+        '<button type="submit" class="ov-cta">' + IC.plus + ' Add vehicle</button></div>' +
+    '</form>';
+  var form = card.querySelector('.ov-add-form');
+  // Wrap the bay card in a modal overlay (backdrop dims the garage behind it).
+  var overlay = document.createElement('div'); overlay.className = 'ov-modal collapsed';
+  overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-modal', 'true'); overlay.setAttribute('aria-label', 'Add a vehicle');
+  overlay.appendChild(card);
   // segmented toggles inside the add form (visual-only until submit)
   function pickSeg(scope, name) { var b = scope.querySelector('.ov-seg-btn.on[data-' + name + ']'); return b ? b.getAttribute('data-' + name) : null; }
-  form.addEventListener('click', function (e) {
+  card.addEventListener('click', function (e) {
     var btn = e.target.closest('.ov-seg-btn'); if (!btn) return;
     var grp = btn.closest('.ov-seg');
     Array.prototype.forEach.call(grp.querySelectorAll('.ov-seg-btn'), function (b) { var on = b === btn; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
   });
   function resetFormSegs() {
-    Array.prototype.forEach.call(form.querySelectorAll('.ov-seg'), function (grp) {
+    Array.prototype.forEach.call(card.querySelectorAll('.ov-seg'), function (grp) {
       Array.prototype.forEach.call(grp.querySelectorAll('.ov-seg-btn'), function (b, i) { b.classList.toggle('on', i === 0); b.setAttribute('aria-pressed', i === 0); });
     });
   }
+  function openForm() { overlay.classList.remove('collapsed'); addBtn.setAttribute('aria-expanded', 'true'); document.documentElement.style.overflow = 'hidden'; var f = card.querySelector('.ov-add-make'); if (f) f.focus(); }
+  function closeForm() { overlay.classList.add('collapsed'); addBtn.setAttribute('aria-expanded', 'false'); document.documentElement.style.overflow = ''; }
   var container = document.createElement('div'); container.className = 'owned-list';
   var fileIn = document.createElement('input'); fileIn.type = 'file'; fileIn.accept = 'image/*'; fileIn.style.display = 'none';
   var targetIdx = -1;
-  sec.appendChild(head); sec.appendChild(form); sec.appendChild(container); sec.appendChild(fileIn);
+  sec.appendChild(head); sec.appendChild(container); sec.appendChild(fileIn);
+  document.body.appendChild(overlay);   // render the modal at body level, above the fixed nav
   render();
 
-  addBtn.addEventListener('click', function () {
-    var willOpen = form.classList.contains('collapsed');
-    form.classList.toggle('collapsed', !willOpen);
-    addBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-    if (willOpen) { var nm = form.querySelector('.ov-add-name'); if (nm) nm.focus(); }
-  });
+  addBtn.addEventListener('click', openForm);
+  card.querySelector('.ov-cancel').addEventListener('click', closeForm);
+  overlay.addEventListener('mousedown', function (e) { if (e.target === overlay) closeForm(); });   // click the backdrop to dismiss
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !overlay.classList.contains('collapsed')) closeForm(); });
+  // "Add vehicle" inside the empty state opens the same modal
+  container.addEventListener('click', function (e) { if (e.target.closest('.ov-empty-add')) openForm(); });
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    var nm = form.querySelector('.ov-add-name').value.trim(); if (!nm) return;
-    var nick = form.querySelector('.ov-add-nick').value.trim();
-    var type = pickSeg(form, 'type') || 'car', fin = pickSeg(form, 'fin') || 'paid';
+    var yr = card.querySelector('.ov-add-year').value.trim();
+    var mk = card.querySelector('.ov-add-make').value.trim();
+    var md = card.querySelector('.ov-add-model').value.trim();
+    if (!mk && !md) { card.querySelector('.ov-add-make').focus(); return; }
+    var name = [yr, mk, md].filter(Boolean).join(' ');
+    var nick = card.querySelector('.ov-add-nick').value.trim();
+    var type = pickSeg(card, 'type') || 'car', fin = pickSeg(card, 'fin') || 'paid';
     var arr = load();
-    arr.push({ name: nm, nick: nick, trim: '', type: type, finance: fin, value: '', owed: '', payment: '', engine: '', output: '', drive: '', miles: '', mods: [] });
+    arr.push({ name: name, year: yr, make: mk, model: md, nick: nick, trim: '', type: type, finance: fin, value: '', owed: '', payment: '', engine: '', output: '', drive: '', miles: '', mods: [] });
     save(arr); render();
-    form.reset(); resetFormSegs(); form.classList.add('collapsed'); addBtn.setAttribute('aria-expanded', 'false');
+    form.reset(); resetFormSegs(); closeForm();
   });
 
   fileIn.addEventListener('change', function () {
