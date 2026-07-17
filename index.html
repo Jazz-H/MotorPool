@@ -1142,6 +1142,61 @@
   #garage-owned .ov-empty p{margin:0;color:#b6b3aa;font-size:.94rem;max-width:36ch;}
   #garage-owned .ov-empty .sub{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);}
   #garage-owned .ov-empty .ov-cta{width:auto;padding:12px 22px;margin-top:2px;}
+  /* ===== Also Owned: dark tap-to-expand "bay" card ===== */
+  .owned-card.ov-bay{background:linear-gradient(180deg,var(--steel-850),#1e232a);color:var(--paper);
+    border:1px solid var(--line-steel-strong);border-radius:12px;overflow:hidden;padding:0;margin-bottom:0;
+    box-shadow:0 18px 44px -32px rgba(0,0,0,.8),0 1px 0 rgba(255,255,255,.06) inset;}
+  .ov-bay .ov-sumhd{display:flex;align-items:center;gap:9px;padding:9px 12px;border-bottom:1px solid var(--line-steel);background:linear-gradient(180deg,rgba(255,255,255,.03),transparent);}
+  .ov-bay .ov-bay-no{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);}
+  .ov-bay .ov-bay-type{display:inline-flex;align-items:center;gap:6px;font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:#b7b3a9;}
+  .ov-bay .ov-bay-type svg{opacity:.85;}
+  .ov-bay .ov-own-badge{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:4px 10px;border-radius:999px;border:1px solid var(--line-steel-strong);color:var(--ink-faint);white-space:nowrap;}
+  .ov-bay .ov-own-badge.fin{color:var(--amber);border-color:rgba(224,160,18,.4);}
+  .ov-bay .ov-sumhd .ov-rm{position:static;flex:0 0 auto;border:none;background:transparent;color:var(--ink-faint);font-size:1.15rem;line-height:1;cursor:pointer;padding:2px 5px;border-radius:4px;width:auto;height:auto;}
+  .ov-bay .ov-sumhd .ov-rm:hover,.ov-bay .ov-sumhd .ov-rm.armed{color:var(--redline);}
+  .ov-bay .ov-summary{display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .ov-bay .ov-summary:focus-visible{outline:2px solid var(--amber);outline-offset:-2px;border-radius:8px;}
+  .ov-bay .ov-sum-name{display:flex;flex-direction:column;gap:3px;min-width:0;}
+  .ov-bay .ov-sum-title{font-family:"Saira Condensed",sans-serif;font-weight:800;text-transform:uppercase;font-size:1.2rem;line-height:1;color:var(--paper);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .ov-bay .ov-sum-nick{font-family:"IBM Plex Mono",monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--redline);}
+  .ov-bay .ov-sum-eq{margin-left:auto;text-align:right;display:flex;flex-direction:column;gap:2px;flex:0 0 auto;}
+  .ov-bay .ov-sum-eqv{font-family:"Saira Condensed",sans-serif;font-weight:800;font-size:1.2rem;line-height:1;font-variant-numeric:tabular-nums;}
+  .ov-bay .ov-sum-eq small{font-family:"IBM Plex Mono",monospace;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);}
+  .ov-bay .ov-chev{color:var(--ink-faint);transition:transform .18s;flex:0 0 auto;font-size:.9rem;}
+  .ov-bay.open .ov-chev{transform:rotate(180deg);}
+  .ov-bay .ov-detail{display:none;padding:14px;border-top:1px solid var(--line-steel);}
+  .ov-bay.open .ov-detail{display:block;}
+  .ov-bay .ov-detail > *{margin-bottom:13px;} .ov-bay .ov-detail > *:last-child{margin-bottom:0;}
+  /* re-skin the (paper-styled) internals to dark */
+  .ov-bay .cand-top{background:transparent;padding:0;border-bottom:0;}
+  .ov-bay .cand-ey{color:#9aa0a7;}
+  .ov-bay .uc-name{color:var(--paper);font-size:1.14rem;background:transparent;}
+  .ov-bay .uc-trim{color:#b7b3a9;}
+  .ov-bay .uc-name::placeholder,.ov-bay .uc-trim::placeholder,.ov-bay .uc-f::placeholder,.ov-bay .ovf-in::placeholder{color:#767b82;}
+  .ov-bay .cand-facts{border:1px solid var(--line-steel);border-radius:8px;overflow:hidden;background:var(--steel-900);}
+  .ov-bay .cand-facts,.ov-bay .cand-fact{border-color:var(--line-steel) !important;}
+  .ov-bay .cand-fact .k{color:var(--ink-faint);}
+  .ov-bay .cand-fact input.uc-f{color:var(--paper);background:transparent;}
+  .ov-bay .ov-meta{border-bottom:0 !important;padding:0 !important;}
+  .ov-bay .ov-opt-l{color:#9aa0a7;}
+  .ov-bay .ov-seg{border-color:var(--line-steel-strong);}
+  .ov-bay .ov-seg-btn{color:#b7b3a9;}
+  .ov-bay .ov-seg-btn + .ov-seg-btn{border-left-color:var(--line-steel-strong);}
+  .ov-bay .ov-seg-btn.on{background:var(--redline);color:#fff;}
+  .ov-bay .ovf{border:1px solid var(--line-steel);border-radius:8px;overflow:hidden;}
+  .ov-bay .ovf-row{border-top-color:var(--line-steel);}
+  .ov-bay .ovf-row .k{color:#9aa0a7;} .ov-bay .ovf-row .k small{color:var(--ink-faint);}
+  .ov-bay .ovf-row .amt{color:var(--paper);} .ov-bay .ovf-row .amt small{color:var(--ink-faint);}
+  .ov-bay .ovf-in{color:var(--paper);border-bottom-color:var(--line-steel-strong);}
+  .ov-bay .ovf-row.total .k{color:var(--paper);} .ov-bay .ovf-tag{color:var(--ink-faint);}
+  .ov-bay .om-title{color:#9aa0a7;} .ov-bay .om-empty{color:var(--ink-faint);}
+  .ov-bay .om-row{border-bottom-color:var(--line-steel);}
+  .ov-bay .om-name,.ov-bay .om-cost{color:var(--paper);}
+  .ov-bay .om-row.is-done .om-name{color:var(--ink-faint);}
+  .ov-bay .om-sum{color:var(--ink-faint);}
+  .ov-bay .uc-photo-add{background:repeating-linear-gradient(135deg,#191d22 0 12px,#1c2126 12px 24px);color:var(--ink-faint);border:1px solid var(--line-steel);border-radius:8px;}
+  .ov-bay .uc-photo{border-radius:8px;border:1px solid var(--line-steel);}
+  @media (min-width:720px){ #garage-owned .owned-list{align-items:start;} }
 
   /* ---------- AI LISTING RATER ---------- */
   .ai-row{display:flex;flex-direction:column;gap:7px;margin:0 0 14px;}
@@ -3839,28 +3894,56 @@ window.mpAddModal = function (cfg) {
       '<div class="om-sum">' + sumText(mods) + '</div>' +
       '</div>';
   }
+  function typeIcon(v) { return v.type === 'moto' ? IC.moto : IC.car; }
+  function ownBadge(v) {
+    if (v.finance === 'financed') { var pay = (v.payment == null ? '' : String(v.payment)).replace(/[^0-9.]/g, ''); return '<span class="ov-own-badge fin">Financed' + (pay ? ' &middot; $' + pay + '/mo' : '') + '</span>'; }
+    return '<span class="ov-own-badge">Paid off</span>';
+  }
+  function bayNo(i) { return 'Bay ' + (i + 1 < 10 ? '0' : '') + (i + 1); }
+  // Dark "bay" card: a compact summary row that taps open to the full editable detail.
   function cardHtml(v, i) {
-    return '<article class="cand-card usercand owned-card" data-idx="' + i + '">' +
-      photoHtml(v) +
-      '<div class="cand-top"><div>' +
-        '<span class="cand-ey">Owned &middot; &ldquo;<span class="ov-nick" contenteditable="true" role="textbox" aria-label="Nickname">' + attr(v.nick || '') + '</span>&rdquo;</span>' +
-        '<input class="uc-name" data-f="name" maxlength="60" placeholder="Year / make / model" value="' + attr(v.name) + '">' +
-        '<input class="uc-trim" data-f="trim" maxlength="40" placeholder="Trim / notes" value="' + attr(v.trim) + '">' +
+    var title = attr(v.name) || 'Untitled vehicle';
+    return '<article class="cand-card usercand owned-card ov-bay" data-idx="' + i + '">' +
+      '<div class="ov-sumhd">' +
+        '<span class="ov-bay-no">' + bayNo(i) + '</span>' +
+        '<span class="ov-bay-type">' + typeIcon(v) + (v.type === 'moto' ? 'Moto' : 'Car') + '</span>' +
+        ownBadge(v) +
+        '<button class="ov-rm uc-rm" type="button" aria-label="Remove vehicle">&times;</button>' +
       '</div>' +
-      '<div class="uc-head-actions"><button class="ov-rm uc-rm" type="button" aria-label="Remove vehicle">&times;</button></div></div>' +
-      '<div class="ov-meta">' +
-        '<div class="ov-opt"><span class="ov-opt-l">Type</span>' + seg('type', v.type === 'moto' ? 'moto' : 'car', [{ v: 'car', label: 'Car' }, { v: 'moto', label: 'Moto' }]) + '</div>' +
-        '<div class="ov-opt"><span class="ov-opt-l">Ownership</span>' + seg('fin', v.finance === 'financed' ? 'financed' : 'paid', [{ v: 'paid', label: 'Paid off' }, { v: 'financed', label: 'Financed' }]) + '</div>' +
+      '<div class="ov-summary" role="button" tabindex="0" aria-expanded="false">' +
+        '<div class="ov-sum-name"><span class="ov-sum-title">' + title + '</span>' +
+          (v.nick ? '<span class="ov-sum-nick">&ldquo;' + attr(v.nick) + '&rdquo;</span>' : '') + '</div>' +
+        '<div class="ov-sum-eq"><span class="ov-sum-eqv" style="color:' + eqColor(v) + '">' + equityText(v) + '</span><small>equity</small></div>' +
+        '<span class="ov-chev" aria-hidden="true">&#9662;</span>' +
       '</div>' +
-      '<div class="cand-facts">' + specsFor(v).map(function (s) { return specCell(v, s); }).join('') + '</div>' +
-      financeHtml(v) +
-      modsHtml(v) +
+      '<div class="ov-detail">' +
+        photoHtml(v) +
+        '<div class="cand-top"><div>' +
+          '<span class="cand-ey">Nickname &middot; &ldquo;<span class="ov-nick" contenteditable="true" role="textbox" aria-label="Nickname">' + attr(v.nick || '') + '</span>&rdquo;</span>' +
+          '<input class="uc-name" data-f="name" maxlength="60" placeholder="Year / make / model" value="' + attr(v.name) + '">' +
+          '<input class="uc-trim" data-f="trim" maxlength="40" placeholder="Trim / notes" value="' + attr(v.trim) + '">' +
+        '</div></div>' +
+        '<div class="ov-meta">' +
+          '<div class="ov-opt"><span class="ov-opt-l">Type</span>' + seg('type', v.type === 'moto' ? 'moto' : 'car', [{ v: 'car', label: 'Car' }, { v: 'moto', label: 'Moto' }]) + '</div>' +
+          '<div class="ov-opt"><span class="ov-opt-l">Ownership</span>' + seg('fin', v.finance === 'financed' ? 'financed' : 'paid', [{ v: 'paid', label: 'Paid off' }, { v: 'financed', label: 'Financed' }]) + '</div>' +
+        '</div>' +
+        '<div class="cand-facts">' + specsFor(v).map(function (s) { return specCell(v, s); }).join('') + '</div>' +
+        financeHtml(v) +
+        modsHtml(v) +
+      '</div>' +
       '</article>';
   }
   function render() {
+    // Preserve which bays are expanded across re-renders (seg change, mod edit, photo…).
+    var openIdx = {};
+    if (container) Array.prototype.forEach.call(container.querySelectorAll('.ov-bay.open'), function (c) { openIdx[c.getAttribute('data-idx')] = 1; });
     var arr = load();
-    if (!arr.length) { container.classList.add('is-empty'); container.innerHTML = emptyHtml(); }
-    else { container.classList.remove('is-empty'); container.innerHTML = arr.map(cardHtml).join(''); }
+    if (!arr.length) { container.classList.add('is-empty'); container.innerHTML = emptyHtml(); return; }
+    container.classList.remove('is-empty'); container.innerHTML = arr.map(cardHtml).join('');
+    Object.keys(openIdx).forEach(function (idx) {
+      var c = container.querySelector('.ov-bay[data-idx="' + idx + '"]');
+      if (c) { c.classList.add('open'); var s = c.querySelector('.ov-summary'); if (s) s.setAttribute('aria-expanded', 'true'); }
+    });
   }
   function idxOf(el) { var c = el.closest('.owned-card'); return c ? parseInt(c.getAttribute('data-idx'), 10) : -1; }
 
@@ -3983,7 +4066,12 @@ window.mpAddModal = function (cfg) {
     var arr = load(); if (arr[idx] && arr[idx].mods && arr[idx].mods[mi]) { arr[idx].mods[mi].done = e.target.checked; save(arr); render(); }
   });
 
+  container.addEventListener('keydown', function (e) {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('ov-summary')) { e.preventDefault(); e.target.click(); }
+  });
   container.addEventListener('click', function (e) {
+    var sum = e.target.closest('.ov-summary');
+    if (sum) { var oc = sum.closest('.ov-bay'); if (oc) { var willOpen = !oc.classList.contains('open'); oc.classList.toggle('open', willOpen); sum.setAttribute('aria-expanded', willOpen ? 'true' : 'false'); } return; }
     var segBtn = e.target.closest('.ov-seg-btn');
     if (segBtn) { // switch car/moto or paid/financed → re-render (relabels specs, shows/hides finance rows)
       var si = idxOf(segBtn); var sa = load(); var sv = sa[si]; if (!sv) return;
