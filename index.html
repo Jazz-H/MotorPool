@@ -1649,10 +1649,11 @@
     <span class="chip" data-dd-echo="engine">2.0L</span>
     <span class="chip"><b data-dd-echo="miles">32,000</b> mi</span>
   </div>
-  <div class="hero-readout">
-    <div class="ro"><span class="k">Equity</span><span class="v" id="roGarEquity">&mdash;</span></div>
-    <div class="ro"><span class="k">Mods logged</span><span class="v" id="roGarMods">&mdash;</span></div>
-    <div class="ro"><span class="k">In hand</span><span class="v" id="roGarSpent">&mdash;</span></div>
+  <div class="hero-readout hero-fleet">
+    <div class="ro"><span class="k">Fleet</span><span class="v"><span id="fleetVeh">1</span> <small>vehicles</small></span></div>
+    <div class="ro"><span class="k">Total value</span><span class="v" id="fleetVal">&mdash;</span></div>
+    <div class="ro"><span class="k">Equity</span><span class="v" id="fleetEq">&mdash;</span></div>
+    <div class="ro"><span class="k">Mods logged</span><span class="v" id="fleetMods">&mdash;</span></div>
   </div>
 </header>
 
@@ -1702,7 +1703,7 @@
     <details class="sec-block g-col" id="garage-mods" style="padding-top:8px;">
     <summary>
     <h4 class="dash-h">Mod List</h4>
-    <span class="insight"><em>Mods</em> Spent <b data-mirror="hubModSpent">&mdash;</b> &middot; <b data-mirror="roGarMods">&mdash;</b> logged &middot; tap to edit prices or add a mod.</span>
+    <span class="insight"><em>Mods</em> Spent <b data-mirror="hubModSpent">&mdash;</b> &middot; <b data-mirror="hubModCount">&mdash;</b> logged &middot; tap to edit prices or add a mod.</span>
     </summary>
     <div class="modlist-head" style="justify-content:flex-end;">
       <button type="button" class="ml-add-btn" id="modAddToggle" aria-haspopup="dialog">
@@ -5695,6 +5696,41 @@ window.mpAddModal = function (cfg) {
     if (el) { el.addEventListener('input', budgetSum); el.addEventListener('blur', budgetSum); }
   });
   budgetSum();
+})();
+</script>
+
+<script>
+// Garage fleet summary — garage-wide totals (daily + every owned vehicle) in the hero.
+(function () {
+  var garage = document.getElementById('view-garage'); if (!garage) return;
+  function num(s) { var x = parseFloat(String(s == null ? '' : s).replace(/[^0-9.]/g, '')); return isFinite(x) ? x : 0; }
+  function money(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+  function lsNum(k) { try { return num(localStorage.getItem(k)); } catch (e) { return 0; } }
+  function domNum(id) { var e = document.getElementById(id); return e ? num(e.textContent) : 0; }
+  function owned() { try { return JSON.parse(localStorage.getItem('mp.garage.owned') || '[]'); } catch (e) { return []; } }
+  function set(id, v) { var e = document.getElementById(id); if (e) e.textContent = v; }
+  function compute() {
+    var dVal = lsNum('mp.val.private'), dEq = dVal - lsNum('mp.val.owed');
+    var count = 1, value = dVal, equity = dEq, mods = domNum('hubModCount');  // daily mod count (incl. seeds)
+    owned().forEach(function (v) {
+      count++;
+      var val = num(v.value), owed = (v.finance === 'financed' ? num(v.owed) : 0);
+      value += val; equity += (val - owed);
+      mods += (v.mods || []).length;
+    });
+    set('fleetVeh', count);
+    set('fleetVal', value ? money(value) : '—');
+    set('fleetMods', mods);
+    var eqEl = document.getElementById('fleetEq');
+    if (eqEl) { eqEl.textContent = (dVal || value) ? ((equity < 0 ? '−' : '') + money(Math.abs(equity))) : '—'; eqEl.style.color = equity >= 0 ? '#5bb07a' : 'var(--redline-deep)'; }
+  }
+  compute();
+  garage.addEventListener('input', compute);
+  garage.addEventListener('change', compute);
+  var ownedSec = document.getElementById('garage-owned');
+  if (ownedSec) { try { new MutationObserver(compute).observe(ownedSec, { childList: true, subtree: true }); } catch (e) {} }
+  window.addEventListener('hashchange', function () { if (/garage/.test(location.hash)) compute(); });
+  setInterval(compute, 2000);   // safety net for cross-module updates (daily mod recompute, etc.)
 })();
 </script>
 
