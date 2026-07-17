@@ -1130,6 +1130,9 @@
   .ov-cta:hover{transform:translateY(-1px);box-shadow:0 1px 0 rgba(255,255,255,.3) inset,0 16px 30px -12px rgba(216,58,41,.5);}
   .ov-cta:active{transform:translateY(0);}
   .ov-cta:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+  .ov-modal .ov-check{display:flex;align-items:center;gap:9px;margin-top:15px;cursor:pointer;
+    font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:#b7b3a9;}
+  .ov-modal .ov-check input{width:16px;height:16px;accent-color:var(--redline);cursor:pointer;flex:0 0 auto;}
   #garage-owned .ov-empty{position:relative;border:1.5px dashed var(--line-steel-strong);border-radius:12px;padding:34px 22px;text-align:center;
     display:flex;flex-direction:column;align-items:center;gap:12px;
     background:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px) 0 0/26px 26px,linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px) 0 0/26px 26px,rgba(255,255,255,.012);}
@@ -1647,21 +1650,10 @@
     <span class="insight"><em>Mods</em> Spent <b data-mirror="hubModSpent">&mdash;</b> &middot; <b data-mirror="roGarMods">&mdash;</b> logged &middot; tap to edit prices or add a mod.</span>
     </summary>
     <div class="modlist-head" style="justify-content:flex-end;">
-      <button type="button" class="ml-add-btn" id="modAddToggle" aria-expanded="false" aria-controls="modAddForm">
+      <button type="button" class="ml-add-btn" id="modAddToggle" aria-haspopup="dialog">
         <span class="ml-add-ico" aria-hidden="true">+</span> Add a mod
       </button>
     </div>
-    <form id="modAddForm" class="modadd collapsed" autocomplete="off">
-      <div class="modadd-row">
-        <input class="modadd-name" type="text" placeholder="Mod name" aria-label="Mod name" maxlength="80" required>
-        <input class="modadd-price" type="text" inputmode="decimal" placeholder="$ price" aria-label="Price" maxlength="12" required>
-      </div>
-      <input class="modadd-note" type="text" placeholder="Note (optional)" aria-label="Note" maxlength="120">
-      <div class="modadd-foot">
-        <label class="modadd-bought"><input type="checkbox" class="modadd-boughtcb"> Already bought</label>
-        <button type="submit" class="modadd-btn">+ Add mod</button>
-      </div>
-    </form>
     <div class="panel" style="margin-bottom:16px;">
       <div class="ledger" id="modLedger">
         <div class="ledger-row done"><span class="item">All-Weather Floor Mats <span class="owned">Bought &check;</span><small>Front + rear &middot; black, precision-molded</small></span><span class="amt">$110.00</span></div>
@@ -3188,12 +3180,38 @@ if ('serviceWorker' in navigator) {
 </script>
 
 <script>
+// Shared "bay card" add-modal — the same focused popup used by Add-vehicle, reused by the
+// other add forms (mods, candidates). cfg: { label, submitLabel, hint, bodyHtml, onSubmit(form) }.
+// onSubmit returns false to keep the modal open (e.g. validation failed); anything else closes it.
+window.mpAddModal = function (cfg) {
+  var PLUS = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1v12M1 7h12" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>';
+  var overlay = document.createElement('div'); overlay.className = 'ov-modal collapsed';
+  overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-modal', 'true'); overlay.setAttribute('aria-label', cfg.label || 'Add');
+  overlay.innerHTML =
+    '<div class="ov-addcard"><div class="ovc-hd"><span class="ovc-tick"></span><span class="ovc-lbl">' + (cfg.label || 'New entry') + '</span>' +
+      '<button type="button" class="ovc-cancel">&times; Cancel</button></div>' +
+    '<form class="ovc-bd am-form" autocomplete="off">' + cfg.bodyHtml +
+      '<div class="ov-foot">' + (cfg.hint ? '<span class="hint"><span class="ret">&#8627;</span> ' + cfg.hint + '</span>' : '') +
+        '<button type="submit" class="ov-cta">' + PLUS + ' ' + (cfg.submitLabel || 'Add') + '</button></div>' +
+    '</form></div>';
+  var form = overlay.querySelector('.am-form');
+  function open() { overlay.classList.remove('collapsed'); document.documentElement.style.overflow = 'hidden'; if (cfg.onOpen) cfg.onOpen(form); var f = form.querySelector('input, select, textarea'); if (f) f.focus(); }
+  function close() { overlay.classList.add('collapsed'); document.documentElement.style.overflow = ''; }
+  overlay.querySelector('.ovc-cancel').addEventListener('click', close);
+  overlay.addEventListener('mousedown', function (e) { if (e.target === overlay) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !overlay.classList.contains('collapsed')) close(); });
+  form.addEventListener('submit', function (e) { e.preventDefault(); if (cfg.onSubmit(form) !== false) { form.reset(); close(); } });
+  document.body.appendChild(overlay);
+  return { open: open, close: close, form: form };
+};
+</script>
+
+<script>
 // Add-a-mod: log new mods on the Garage tab; totals recompute; persisted.
 (function () {
   var LKEY = 'mp.mods.user';
   var ledger = document.getElementById('modLedger');
-  var form = document.getElementById('modAddForm');
-  if (!ledger || !form) return;
+  if (!ledger) return;
 
   function esc(s) { return (s || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function money(n) { return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
@@ -3450,18 +3468,31 @@ if ('serviceWorker' in navigator) {
     head.classList.toggle('open', !collapsed);
   }
 
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var name = form.querySelector('.modadd-name').value.trim();
-    var price = parseAmt(form.querySelector('.modadd-price').value);
-    var note = form.querySelector('.modadd-note').value.trim();
-    var bought = form.querySelector('.modadd-boughtcb').checked;
-    if (!name || !(price > 0)) return;
-    var arr = load(); arr.push({ id: uid(), name: name, price: price, note: note, bought: bought }); save(arr);
-    form.reset();
-    renderUser(); initReorder(); groupBought(); recompute(); saveOrder();
-    form.querySelector('.modadd-name').focus();
+  // Add-a-mod modal (shares the bay-card popup with Add-vehicle).
+  var modModal = window.mpAddModal({
+    label: 'New mod', submitLabel: 'Add mod',
+    hint: 'Tick “already bought” for parts you’ve got in hand.',
+    bodyHtml:
+      '<div class="ov-frow"><div class="ov-fld"><label>Mod / part</label>' +
+        '<input class="modadd-name" type="text" maxlength="80" placeholder="Exhaust, tires, tune…" required></div></div>' +
+      '<div class="ov-frow">' +
+        '<div class="ov-fld"><label>Price</label><input class="modadd-price num" type="text" inputmode="decimal" maxlength="12" placeholder="$540" required></div>' +
+        '<div class="ov-fld"><label>Note <i>· optional</i></label><input class="modadd-note" type="text" maxlength="120" placeholder="brand, plan…"></div>' +
+      '</div>' +
+      '<label class="ov-check"><input type="checkbox" class="modadd-boughtcb"> Already bought / installed</label>',
+    onSubmit: function (f) {
+      var name = f.querySelector('.modadd-name').value.trim();
+      var price = parseAmt(f.querySelector('.modadd-price').value);
+      var note = f.querySelector('.modadd-note').value.trim();
+      var bought = f.querySelector('.modadd-boughtcb').checked;
+      if (!name || !(price > 0)) { f.querySelector('.modadd-name').focus(); return false; }
+      var arr = load(); arr.push({ id: uid(), name: name, price: price, note: note, bought: bought }); save(arr);
+      renderUser(); initReorder(); groupBought(); recompute(); saveOrder();
+      return true;
+    }
   });
+  var modToggle = document.getElementById('modAddToggle');
+  if (modToggle) modToggle.addEventListener('click', modModal.open);
 
   ledger.addEventListener('click', function (e) {
     var tog = e.target.closest('.modbought');
@@ -3616,14 +3647,28 @@ if ('serviceWorker' in navigator) {
     btn.setAttribute('aria-expanded', 'false');
     btn.innerHTML = '<span class="ml-add-ico" aria-hidden="true">+</span> Add candidate';
     head.appendChild(btn);
-    var cform = document.createElement('form'); cform.className = 'modadd collapsed'; cform.setAttribute('autocomplete', 'off');
-    cform.innerHTML =
-      '<div class="modadd-row">' +
-        '<input class="modadd-name cadd-name" type="text" placeholder="Year / make / model" aria-label="Year make model" maxlength="60" required>' +
-        '<input class="modadd-price cadd-price" type="text" placeholder="$ price" aria-label="Price" maxlength="12">' +
-      '</div>' +
-      '<input class="modadd-note cadd-miles" type="text" placeholder="Miles (optional)" aria-label="Miles" maxlength="12">' +
-      '<div class="modadd-foot"><span></span><button type="submit" class="modadd-btn">+ Add candidate</button></div>';
+    var candModal = window.mpAddModal({
+      label: 'New candidate', submitLabel: 'Add candidate',
+      hint: 'Add title, location, status &amp; a photo on the card next.',
+      bodyHtml:
+        '<div class="ov-frow">' +
+          '<div class="ov-fld yr"><label>Year</label><input class="cadd-year num" type="text" inputmode="numeric" maxlength="4" placeholder="2018"></div>' +
+          '<div class="ov-fld"><label>Make</label><input class="cadd-make" type="text" maxlength="30" placeholder="Honda" required></div>' +
+          '<div class="ov-fld"><label>Model</label><input class="cadd-model" type="text" maxlength="40" placeholder="CB500F"></div>' +
+        '</div>' +
+        '<div class="ov-frow">' +
+          '<div class="ov-fld"><label>Price</label><input class="cadd-price" type="text" inputmode="numeric" maxlength="12" placeholder="$3,900"></div>' +
+          '<div class="ov-fld"><label>Miles <i>· optional</i></label><input class="cadd-miles" type="text" inputmode="numeric" maxlength="12" placeholder="7,500"></div>' +
+        '</div>',
+      onSubmit: function (f) {
+        var yr = f.querySelector('.cadd-year').value.trim(), mk = f.querySelector('.cadd-make').value.trim(), md = f.querySelector('.cadd-model').value.trim();
+        if (!mk && !md) { f.querySelector('.cadd-make').focus(); return false; }
+        var name = [yr, mk, md].filter(Boolean).join(' ');
+        var price = f.querySelector('.cadd-price').value.trim(), miles = f.querySelector('.cadd-miles').value.trim();
+        var arr = load(scope); arr.push({ name: name, price: price, miles: miles, title: '', loc: '', note: '' });
+        save(scope, arr); render(container, scope); return true;
+      }
+    });
     // Hidden file input shared by every card in this section; targetIdx tracks which card asked.
     var fileIn = document.createElement('input');
     fileIn.type = 'file';
@@ -3633,7 +3678,7 @@ if ('serviceWorker' in navigator) {
     // Put the add affordance at the TOP of the log (right under the note, above every
     // seed card) so adding is the first action — mirrors Add-a-mod atop the mod list.
     var firstCard = sec.querySelector('.cand-card');
-    [head, cform, container, fileIn].forEach(function (el) {
+    [head, container, fileIn].forEach(function (el) {
       if (firstCard) sec.insertBefore(el, firstCard); else sec.appendChild(el);
     });
     render(container, scope);
@@ -3658,22 +3703,7 @@ if ('serviceWorker' in navigator) {
       } });
     });
 
-    btn.addEventListener('click', function () {
-      var willOpen = cform.classList.contains('collapsed');
-      cform.classList.toggle('collapsed', !willOpen);
-      btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-      if (willOpen) { var nm = cform.querySelector('.cadd-name'); if (nm) nm.focus(); }
-    });
-    cform.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var nm = cform.querySelector('.cadd-name').value.trim(); if (!nm) return;
-      var price = cform.querySelector('.cadd-price').value.trim(), miles = cform.querySelector('.cadd-miles').value.trim();
-      var arr = load(scope);
-      arr.push({ name: nm, price: price, miles: miles, title: '', loc: '', note: '' });
-      save(scope, arr);
-      render(container, scope);
-      cform.reset(); cform.classList.add('collapsed'); btn.setAttribute('aria-expanded', 'false');
-    });
+    btn.addEventListener('click', candModal.open);
     container.addEventListener('input', function (e) {
       var inp = e.target.closest('input[data-f]');
       if (!inp) return;
