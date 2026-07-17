@@ -1,5 +1,5 @@
 /* The Garage — service worker: network-first for HTML, cache-first for assets. */
-var CACHE = 'motorpool-v15';
+var CACHE = 'motorpool-v16';
 var FONT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 var ASSETS = [
   './',

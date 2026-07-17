@@ -2789,6 +2789,7 @@
           <button type="button" class="data-btn" id="syncNow">Sync now</button>
         </div>
         <label class="acct-toggle"><input type="checkbox" id="syncAuto"><span>Auto-sync my builds to the cloud</span></label>
+        <button type="button" class="data-btn danger" id="syncReset" title="Delete cloud copies and re-upload this device's profiles">Reset sync&hellip;</button>
       </div>
       <div class="callout">Sync uploads each profile&rsquo;s build data to your account so it&rsquo;s there on your other devices. Photos and figures travel; your on-device AI key never does.</div>
     </div>
@@ -4291,16 +4292,26 @@ if ('serviceWorker' in navigator) {
     if (id === active()) { clearBuild(); Object.keys(clean).forEach(function (k) { try { localStorage.setItem(k, clean[k]); } catch (e) {} }); }
     else { jset(SNAP + id, clean); }
   }
-  function setCloud(id, cloud) { var p = list(); p.forEach(function (x) { if (x.id === id) x.cloud = cloud; }); jset(PKEY, p); }
+  function setCloud(id, cloud) { var p = list(); p.forEach(function (x) { if (x.id === id) { if (cloud) x.cloud = cloud; else delete x.cloud; } }); jset(PKEY, p); }
   // Import a cloud profile as a new local (inactive) profile.
   function importProfile(name, blob, cloud) {
     var id = uid(), p = list();
     p.push({ id: id, name: name || ('Build ' + (p.length + 1)), createdAt: Date.now(), cloud: cloud || undefined });
     jset(PKEY, p); jset(SNAP + id, cleanBlob(blob)); return id;
   }
+  // Remove a profile locally without touching the cloud or reloading (returns whether it was active).
+  function dropLocal(id) {
+    var wasActive = (id === active());
+    var p = list().filter(function (x) { return x.id !== id; }); jset(PKEY, p);
+    try { localStorage.removeItem(SNAP + id); } catch (e) {}
+    return wasActive;
+  }
+  function activate(id) { loadSnapshot(id); setActive(id); }
+  function ensureActive() { var a = active(), ps = list(); for (var i = 0; i < ps.length; i++) { if (ps[i].id === a) return; } if (ps.length) activate(ps[0].id); }
   window.mpProfiles = {
     buildKeys: buildKeys, list: list, active: active, get: get, rename: rename,
     getData: getData, setData: setData, setCloud: setCloud, importProfile: importProfile,
+    dropLocal: dropLocal, activate: activate, ensureActive: ensureActive,
     reloadApp: reload, refreshUI: function () { if (typeof render === 'function') render(); }
   };
 
@@ -5253,31 +5264,54 @@ if ('serviceWorker' in navigator) {
     return client().then(function (c) {
       return c.from('profiles').select('id,name,data,updated_at').then(function (r) {
         if (r.error) throw r.error;
-        var rows = r.data || [], locals = P.list();
-        var byCloud = {}; locals.forEach(function (x) { if (x.cloud && x.cloud.id) byCloud[x.cloud.id] = x; });
-        var toPush = [], conflicts = [];
+        var rows = r.data || [], locals = P.list(), cloudEmpty = rows.length === 0;
+        var rowById = {}; rows.forEach(function (row) { rowById[row.id] = row; });
+        var claimed = {}, toPush = [], conflicts = [];
 
-        rows.forEach(function (row) {
-          var lp = byCloud[row.id];
-          if (!lp) { P.importProfile(row.name, row.data, { id: row.id, updatedAt: row.updated_at, lastSynced: Date.now(), hash: hash(row.data || {}) }); return; }
-          var localHash = hash(P.getData(lp.id));
-          var localChanged = localHash !== (lp.cloud && lp.cloud.hash);
+        function meta(row) { return { id: row.id, updatedAt: row.updated_at, lastSynced: Date.now(), hash: hash(row.data || {}) }; }
+        function reconcileLinked(lp, row) {
+          var localChanged = hash(P.getData(lp.id)) !== (lp.cloud && lp.cloud.hash);
           var cloudChanged = row.updated_at !== (lp.cloud && lp.cloud.updatedAt);
           if (cloudChanged && !localChanged) { applyCloud(lp.id, row); if (lp.id === P.active()) activeTouched = true; }
           else if (localChanged && !cloudChanged) { toPush.push(lp.id); }
           else if (localChanged && cloudChanged) { conflicts.push({ id: lp.id, name: lp.name, row: row }); }
-        });
-        // profiles that only exist locally (never pushed) → upload
-        locals.forEach(function (x) { if (!(x.cloud && x.cloud.id)) toPush.push(x.id); });
+        }
+        // A never-synced local profile shares a name with a cloud profile → same build on another device.
+        function firstLink(lp, row) {
+          if (hash(P.getData(lp.id)) === hash(row.data || {})) { P.setCloud(lp.id, meta(row)); return; } // identical → just link
+          conflicts.push({ id: lp.id, name: lp.name, row: row, first: true });
+        }
 
-        // resolve conflicts (blocking prompt, one at a time)
+        // 1) resolve every local profile to a cloud row (by cloud id, else adopt a same-name row)
+        locals.forEach(function (lp) {
+          var linkedId = lp.cloud && lp.cloud.id;
+          if (linkedId && rowById[linkedId]) { claimed[linkedId] = true; reconcileLinked(lp, rowById[linkedId]); }
+          else if (linkedId && !rowById[linkedId]) {
+            // was linked, but the cloud row is gone
+            if (!cloudEmpty) { if (P.dropLocal(lp.id)) activeTouched = true; }   // deleted on another device → drop locally
+            else { P.setCloud(lp.id, null); toPush.push(lp.id); }                // whole account empty (reset/transient) → keep + re-upload
+          } else {
+            var match = null;
+            for (var i = 0; i < rows.length; i++) { if (!claimed[rows[i].id] && rows[i].name === lp.name) { match = rows[i]; break; } }
+            if (match) { claimed[match.id] = true; firstLink(lp, match); }
+            else toPush.push(lp.id);
+          }
+        });
+        // 2) cloud rows nobody claimed → import as new local profiles
+        rows.forEach(function (row) { if (!claimed[row.id]) P.importProfile(row.name, row.data, meta(row)); });
+        // 3) if we dropped the active profile, make sure something is active
+        P.ensureActive();
+
+        // 4) resolve conflicts (blocking prompt, one at a time)
         conflicts.forEach(function (cf) {
-          var keepLocal = window.confirm('"' + cf.name + '" changed both on this device and in the cloud.\n\nOK = keep THIS DEVICE’s version (upload it).\nCancel = keep the CLOUD version (download it).');
-          if (keepLocal) toPush.push(cf.id);
+          var msg = cf.first
+            ? 'A profile named "' + cf.name + '" already exists in your account with different data.\n\nOK = keep THIS DEVICE’s version.\nCancel = use your account’s CLOUD version.'
+            : '"' + cf.name + '" changed both on this device and in the cloud.\n\nOK = keep THIS DEVICE’s version.\nCancel = keep the CLOUD version.';
+          if (window.confirm(msg)) { if (cf.first) P.setCloud(cf.id, meta(cf.row)); toPush.push(cf.id); }  // link first so we update, not duplicate
           else { applyCloud(cf.id, cf.row); if (cf.id === P.active()) activeTouched = true; }
         });
 
-        // push everything queued, sequentially
+        // 5) push everything queued, sequentially
         var chain = Promise.resolve();
         toPush.forEach(function (id) { chain = chain.then(function () { return pushOne(c, id); }); });
         return chain;
@@ -5319,11 +5353,31 @@ if ('serviceWorker' in navigator) {
     client().then(function (c) { return c.from('profiles').delete().eq('id', cloudId); }).catch(function () {});
   };
 
+  // ---- reset: make THIS device the source of truth (untangles duplicate profiles) ----
+  var resetBtn = document.getElementById('syncReset');
+  function resetSync() {
+    if (!session() || running) return;
+    if (!window.confirm('Reset cloud sync?\n\nThis deletes ALL cloud copies of your profiles, then re-uploads the profiles on THIS device as the source of truth.\n\nRun it on the device whose builds are correct — then just open MotorPool on your other devices and they’ll pull this version.')) return;
+    running = true; if (resetBtn) resetBtn.disabled = true; say('Resetting…');
+    client().then(function (c) {
+      return c.from('profiles').delete().eq('user_id', userId()).then(function (r) {
+        if (r.error) throw r.error;
+        P.list().forEach(function (x) { P.setCloud(x.id, null); });        // unlink everything locally
+        var ids = P.list().map(function (x) { return x.id; }), chain = Promise.resolve();
+        ids.forEach(function (id) { chain = chain.then(function () { return pushOne(c, id); }); });  // re-upload fresh
+        return chain;
+      });
+    }).then(function () { stampSynced(); baseHash = activeHash(); renderStatus(); say('Sync reset — this device is now the source of truth.', 'ok'); })
+      .catch(function (e) { say('Reset failed — ' + ((e && e.message) || 'try again'), 'err'); })
+      .then(function () { running = false; if (resetBtn) resetBtn.disabled = false; });
+  }
+
   // ---- wire UI ----
   if (autoBox) { autoBox.checked = autoOn(); autoBox.addEventListener('change', function () { setAuto(autoBox.checked); if (autoBox.checked) syncNow(); }); }
   if (nowBtn) nowBtn.addEventListener('click', function () { syncNow(); });
+  if (resetBtn) resetBtn.addEventListener('click', resetSync);
 
-  function onSignIn() { baseHash = activeHash(); renderStatus(); if (autoOn()) syncNow(); }
+  function onSignIn() { baseHash = activeHash(); renderStatus(); syncNow(); }  // always reconcile on sign-in (pull + push)
   document.addEventListener('mp:auth', function (ev) { if (ev.detail) onSignIn(); else renderStatus(); });
   if (session()) onSignIn(); else renderStatus();
 })();

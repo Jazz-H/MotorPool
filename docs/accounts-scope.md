@@ -129,7 +129,7 @@ Once keys are in, the **Account** section appears in Settings (sign in / sign ou
 
 ## 11. Phase 3 — cloud sync (shipped; run the SQL once to activate)
 
-**Client is built.** Each local profile syncs to a `profiles` row (`data` jsonb = that profile's build blob, the export format). Auto-sync pushes the active profile on edit (debounced); **Sync now** and sign-in run a full two-way reconcile. Resolution: last-write-wins, with a keep-local / keep-cloud prompt only when both sides changed since the last sync. The AI key and device-local UI prefs never sync. Known v1 limits: a fresh device's default sample profile also uploads (all-profiles sync); remote deletes propagate only from the device that deletes.
+**Client is built.** Each local profile syncs to a `profiles` row (`data` jsonb = that profile's build blob, the export format). Auto-sync pushes the active profile on edit (debounced); **Sync now** and every sign-in run a full two-way reconcile. Profiles link across devices by cloud id, and unlinked profiles adopt a same-named cloud profile (so each device's default "My Build" merges into one instead of duplicating); a differing first link prompts keep-local / keep-cloud. Otherwise last-write-wins, with the same prompt only when both sides changed since the last sync. Deleting a profile removes its cloud row, and that removal propagates to other devices on their next sync (guarded: an empty cloud response never deletes local data). A **Reset sync** button wipes the cloud copies and re-uploads the current device as the source of truth, to untangle a bad state. The AI key and device-local UI prefs never sync.
 
 Table + row-level security (run in Supabase → **SQL editor** — this is the one manual step to turn sync on):
 ```sql
