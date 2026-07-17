@@ -1197,6 +1197,50 @@
   .ov-bay .uc-photo-add{background:repeating-linear-gradient(135deg,#191d22 0 12px,#1c2126 12px 24px);color:var(--ink-faint);border:1px solid var(--line-steel);border-radius:8px;}
   .ov-bay .uc-photo{border-radius:8px;border:1px solid var(--line-steel);}
   @media (min-width:720px){ #garage-owned .owned-list{align-items:start;} }
+  /* ===== Daily driver: featured card (Bay 00) with folded value + mods ===== */
+  .ov-feature{margin-bottom:22px;}
+  .ov-feature .ov-own-badge.daily-badge{background:var(--amber);border-color:var(--amber);color:#241c05;}
+  .ov-feature .daily-photo{aspect-ratio:16/7;border-bottom:1px solid var(--line-steel);border-radius:0;background:var(--steel-950,#15181c);}
+  .ov-feature .pt-top{background:transparent;border-bottom:0;padding:14px 15px 2px;}
+  .ov-feature .pt-ey{color:#9aa0a7;}
+  .ov-feature .pt-ey .dd-field{color:var(--redline);}
+  .ov-feature .pt-title,.ov-feature .pt-title .dd-field{color:var(--paper);}
+  .ov-feature .spec-grid{border-top:1px solid var(--line-steel);border-bottom:1px solid var(--line-steel);margin-top:10px;}
+  .ov-feature .spec-cell{border-right:1px solid var(--line-steel) !important;}
+  .ov-feature .spec-cell .k{color:var(--ink-faint);}
+  .ov-feature .spec-cell .v,.ov-feature .spec-cell .v.dd-field{color:var(--paper);}
+  .ov-feature .feat-stats{display:flex;flex-wrap:wrap;gap:12px 28px;padding:13px 15px;}
+  .ov-feature .feat-stats .fs .k{display:block;font-family:"IBM Plex Mono",monospace;font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:3px;}
+  .ov-feature .feat-stats .fs .v{font-family:"Saira Condensed",sans-serif;font-weight:700;font-size:1.15rem;color:var(--paper);font-variant-numeric:tabular-nums;}
+  .ov-feature .feat-stats .fs .v.eq b{color:#5bb07a;}
+  .ov-feature .ov-expand{display:flex;align-items:center;justify-content:space-between;width:100%;cursor:pointer;padding:11px 15px;
+    border:none;border-top:1px solid var(--line-steel);background:linear-gradient(180deg,rgba(255,255,255,.02),transparent);
+    font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:#b7b3a9;}
+  .ov-feature .ov-expand:hover{color:var(--paper);}
+  .ov-feature .ov-expand:focus-visible{outline:2px solid var(--amber);outline-offset:-2px;}
+  .ov-feature .ov-expand .ov-chev{transition:transform .18s;}
+  .ov-feature.open .ov-expand .ov-chev{transform:rotate(180deg);}
+  .ov-feature .ov-detail{display:none;padding:15px;border-top:1px solid var(--line-steel);}
+  .ov-feature.open .ov-detail{display:block;}
+  .ov-feature .feat-block + .feat-block{margin-top:20px;}
+  .ov-feature .feat-block-h{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;
+    font-family:"Saira Condensed",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.03em;font-size:1.1rem;color:var(--paper);}
+  .ov-feature .panel{background:var(--steel-900);color:var(--paper);border:1px solid var(--line-steel);box-shadow:none;margin-bottom:12px;}
+  .ov-feature .ledger-row{border-color:var(--line-steel) !important;}
+  .ov-feature .ledger-row .item,.ov-feature .ledger-row .amt{color:var(--paper);}
+  .ov-feature .ledger-row .item small{color:var(--ink-faint);}
+  .ov-feature .ledger-row.total .item,.ov-feature .ledger-row.total .amt{color:var(--paper);}
+  .ov-feature .val-in{color:var(--paper);}
+  .ov-feature .ledger-row .owned{color:#5bb07a;}
+  .ov-feature #eqVal{color:#5bb07a;}
+  .ov-feature .val-stamp{color:var(--ink-faint);}
+  /* dark the highlight rows (total / subtotals / bought header were --paper-dim) */
+  .ov-feature .ledger-row.total,.ov-feature .ledger-row.sub,.ov-feature .ledger-row.done,.ov-feature #modLedger .boughthead{background:rgba(255,255,255,.045);}
+  .ov-feature .ledger-row.total{border-top:2px solid var(--line-steel-strong);}
+  .ov-feature .ledger-row.sub.div{border-top:2px solid var(--line-steel-strong);}
+  .ov-feature .ledger-row.done .item,.ov-feature .ledger-row.sub .item,.ov-feature .ledger-row.sub .amt,.ov-feature #modLedger .boughthead .item{color:var(--paper);}
+  .ov-feature #modLedger .boughthead .bh-sum,.ov-feature #modLedger .boughthead .bh-count,.ov-feature #modLedger .boughthead .chev{color:#9aa0a7;}
+  @media (min-width:681px){ .ov-feature .spec-grid{grid-template-columns:repeat(4,1fr);} }
 
   /* ---------- AI LISTING RATER ---------- */
   .ai-row{display:flex;flex-direction:column;gap:7px;margin:0 0 14px;}
@@ -1662,69 +1706,72 @@
     <div class="sec-head"><span class="sec-num">&#9670;</span><h2>Daily Driver</h2></div>
     <p class="sec-note">The one you actually daily &mdash; and every mod on the list. <span class="dd-hint">Tap the name, nickname, or any spec to make it yours.</span></p>
 
-    <div class="proj-tile" style="margin-bottom:18px;">
+    <article class="owned-card ov-bay ov-feature" id="dailyCard">
+      <div class="ov-sumhd">
+        <span class="ov-bay-no">Bay 00</span>
+        <span class="ov-bay-type"><svg class="sg-i" width="15" height="11" viewBox="0 0 20 14" fill="none" aria-hidden="true"><path d="M2 10h16M4 10l2-5a2 2 0 0 1 1.9-1.3h4.2A2 2 0 0 1 16 5l2 5M6 10v1.5M14 10v1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Car</span>
+        <span class="ov-own-badge daily-badge">Daily</span>
+      </div>
       <div class="daily-photo">
         <div id="dpFallback" class="daily-photo-fb"><span>Add a photo of your daily driver</span></div>
         <button type="button" class="daily-photo-edit" id="dpEdit" aria-label="Replace daily driver photo" title="Replace photo"><svg class="dpe-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5h3l1.4-2.2a1 1 0 0 1 .84-.46h5.52a1 1 0 0 1 .84.46L16.9 8.5H20a1 1 0 0 1 1 1v8.5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.2"/></svg></button>
         <input type="file" id="dpFile" accept="image/*" hidden>
       </div>
-      <div class="pt-top">
-        <div><span class="pt-ey">Daily Driver &middot; &ldquo;<span class="dd-field" data-dd="nick" data-dd-echo="nick" contenteditable="true" role="textbox" aria-label="Edit nickname">daily</span>&rdquo;</span><h3 class="pt-title"><span class="dd-field" data-dd="title1" data-dd-echo="title1" contenteditable="true" role="textbox" aria-label="Edit year, make and model">2020 Honda Civic</span><br><span class="dd-field" data-dd="title2" data-dd-echo="title2" contenteditable="true" role="textbox" aria-label="Edit trim">Sport</span></h3></div>
-        <span class="pt-phase">Daily</span>
+      <div class="feat-body">
+        <div class="pt-top">
+          <div><span class="pt-ey">Daily &middot; &ldquo;<span class="dd-field" data-dd="nick" data-dd-echo="nick" contenteditable="true" role="textbox" aria-label="Edit nickname">daily</span>&rdquo;</span><h3 class="pt-title"><span class="dd-field" data-dd="title1" data-dd-echo="title1" contenteditable="true" role="textbox" aria-label="Edit year, make and model">2020 Honda Civic</span><br><span class="dd-field" data-dd="title2" data-dd-echo="title2" contenteditable="true" role="textbox" aria-label="Edit trim">Sport</span></h3></div>
+        </div>
+        <div class="spec-grid">
+          <div class="spec-cell"><span class="k">Engine</span><span class="v dd-field" data-dd="engine" data-dd-echo="engine" contenteditable="true" role="textbox" aria-label="Edit engine">2.0<small>L</small></span></div>
+          <div class="spec-cell"><span class="k">Output</span><span class="v dd-field" data-dd="output" data-dd-echo="output" contenteditable="true" role="textbox" aria-label="Edit output">158<small>hp</small></span></div>
+          <div class="spec-cell"><span class="k">Drive</span><span class="v dd-field" data-dd="drive" data-dd-echo="drive" contenteditable="true" role="textbox" aria-label="Edit drivetrain">FWD<small> CVT</small></span></div>
+          <div class="spec-cell"><span class="k">Miles</span><span class="v dd-field" data-dd="miles" data-dd-echo="miles" contenteditable="true" role="textbox" aria-label="Edit mileage">32,000</span></div>
+        </div>
+        <div class="feat-stats">
+          <div class="fs"><span class="k">Equity</span><span class="v eq"><b data-mirror="eqVal">&mdash;</b></span></div>
+          <div class="fs"><span class="k">Loan-to-value</span><span class="v"><b data-mirror="ltvVal">&mdash;</b></span></div>
+          <div class="fs"><span class="k">Mods</span><span class="v"><b data-mirror="hubModCount">&mdash;</b> logged &middot; <b data-mirror="hubModSpent">&mdash;</b> in hand</span></div>
+        </div>
       </div>
-      <div class="spec-grid">
-        <div class="spec-cell"><span class="k">Engine</span><span class="v dd-field" data-dd="engine" data-dd-echo="engine" contenteditable="true" role="textbox" aria-label="Edit engine">2.0<small>L</small></span></div>
-        <div class="spec-cell"><span class="k">Output</span><span class="v dd-field" data-dd="output" data-dd-echo="output" contenteditable="true" role="textbox" aria-label="Edit output">158<small>hp</small></span></div>
-        <div class="spec-cell"><span class="k">Drive</span><span class="v dd-field" data-dd="drive" data-dd-echo="drive" contenteditable="true" role="textbox" aria-label="Edit drivetrain">FWD<small> CVT</small></span></div>
-        <div class="spec-cell"><span class="k">Miles</span><span class="v dd-field" data-dd="miles" data-dd-echo="miles" contenteditable="true" role="textbox" aria-label="Edit mileage">32,000</span></div>
-        <div class="spec-cell"><span class="k">Mods</span><span class="v">5<small> &middot; $0.81k</small></span></div>
-      </div>
-    </div>
-
-    <div class="garage-cols">
-    <details class="sec-block g-col" id="garage-value" style="padding-top:8px;">
-    <summary>
-    <h4 class="dash-h">Value &amp; Equity</h4>
-    <span class="insight"><em>Equity</em> <b data-mirror="eqVal">&mdash;</b> &middot; loan-to-value <b data-mirror="ltvVal">&mdash;</b> &middot; tap to update your KBB figures.</span>
-    </summary>
-    <div class="panel" style="margin-bottom:16px;">
-      <div class="ledger">
-        <div class="ledger-row"><span class="item">KBB Trade-In <small>rough &mdash; update from KBB</small></span><span class="amt">$<input class="val-in" type="text" data-v="trade" inputmode="numeric" value="15000" aria-label="KBB trade-in value"></span></div>
-        <div class="ledger-row"><span class="item">KBB Private Party <small>rough &mdash; update from KBB</small></span><span class="amt">$<input class="val-in" type="text" data-v="private" inputmode="numeric" value="17000" aria-label="KBB private-party value"></span></div>
-        <div class="ledger-row"><span class="item">KBB Retail <small>rough &mdash; update from KBB</small></span><span class="amt">$<input class="val-in" type="text" data-v="retail" inputmode="numeric" value="19000" aria-label="KBB retail value"></span></div>
-        <div class="ledger-row"><span class="item">Owed <small>loan balance</small></span><span class="amt">$<input class="val-in" type="text" data-v="owed" inputmode="numeric" value="0" aria-label="Amount owed"></span></div>
-        <div class="ledger-row total"><span class="item">Equity <small id="eqNote">private party &minus; owed</small></span><span class="amt" id="eqVal">&mdash;</span></div>
-        <div class="ledger-row sub"><span class="item">Loan-to-value <small>owed &divide; private party</small></span><span class="amt" id="ltvVal">&mdash;</span></div>
-      </div>
-      <div class="val-stamp" id="valStamp" aria-live="polite"></div>
-    </div>
-    <div class="callout" data-dk="kbb">KBB has no free data feed, so this can&rsquo;t auto-pull &mdash; these are placeholder figures for a sample daily driver. <b>Punch in your real numbers</b> from <a href="https://www.kbb.com/whats-my-car-worth/" target="_blank" rel="noopener" style="color:var(--amber);text-decoration:underline">KBB&rsquo;s valuation tool &#8599;</a> and the equity updates live. Owed starts at <b>$0</b> &mdash; set your loan balance.</div>
-    </details>
-    <details class="sec-block g-col" id="garage-mods" style="padding-top:8px;">
-    <summary>
-    <h4 class="dash-h">Mod List</h4>
-    <span class="insight"><em>Mods</em> Spent <b data-mirror="hubModSpent">&mdash;</b> &middot; <b data-mirror="hubModCount">&mdash;</b> logged &middot; tap to edit prices or add a mod.</span>
-    </summary>
-    <div class="modlist-head" style="justify-content:flex-end;">
-      <button type="button" class="ml-add-btn" id="modAddToggle" aria-haspopup="dialog">
-        <span class="ml-add-ico" aria-hidden="true">+</span> Add a mod
+      <button type="button" class="ov-expand" aria-expanded="false" aria-controls="dailyDetail">
+        <span class="ov-expand-l">Value, equity &amp; mods</span><span class="ov-chev" aria-hidden="true">&#9662;</span>
       </button>
-    </div>
-    <div class="panel" style="margin-bottom:16px;">
-      <div class="ledger" id="modLedger">
-        <div class="ledger-row done"><span class="item">All-Weather Floor Mats <span class="owned">Bought &check;</span><small>Front + rear &middot; black, precision-molded</small></span><span class="amt">$110.00</span></div>
-        <div class="ledger-row done"><span class="item">Ceramic Window Tint <span class="owned">Bought &check;</span><small>Professional install &middot; full vehicle</small></span><span class="amt">$280.00</span></div>
-        <div class="ledger-row done"><span class="item">Dash Cam <span class="owned">Bought &check;</span><small>Front + rear &middot; hardwired</small></span><span class="amt">$150.00</span></div>
-        <div class="ledger-row"><span class="item">Cargo Tray <small>Trunk liner &middot; molded fit</small></span><span class="amt">$55.00</span></div>
-        <div class="ledger-row"><span class="item">Roof Cross Bars <small>Aero crossbars &middot; lockable</small></span><span class="amt">$210.00</span></div>
-        <div class="ledger-row sub div"><span class="item">Spent so far <small>3 mods, in hand</small></span><span class="amt">$540.00</span></div>
-        <div class="ledger-row sub"><span class="item">Still to buy <small>2 mods</small></span><span class="amt">$265.00</span></div>
-        <div class="ledger-row total"><span class="item">Total &middot; All Mods</span><span class="amt">$805.00</span></div>
+      <div class="ov-detail" id="dailyDetail">
+        <div class="feat-block">
+          <div class="feat-block-h"><span>Value &amp; Equity</span></div>
+          <div class="panel">
+            <div class="ledger">
+              <div class="ledger-row"><span class="item">KBB Trade-In <small>rough &mdash; update from KBB</small></span><span class="amt">$<input class="val-in" type="text" data-v="trade" inputmode="numeric" value="15000" aria-label="KBB trade-in value"></span></div>
+              <div class="ledger-row"><span class="item">KBB Private Party <small>rough &mdash; update from KBB</small></span><span class="amt">$<input class="val-in" type="text" data-v="private" inputmode="numeric" value="17000" aria-label="KBB private-party value"></span></div>
+              <div class="ledger-row"><span class="item">KBB Retail <small>rough &mdash; update from KBB</small></span><span class="amt">$<input class="val-in" type="text" data-v="retail" inputmode="numeric" value="19000" aria-label="KBB retail value"></span></div>
+              <div class="ledger-row"><span class="item">Owed <small>loan balance</small></span><span class="amt">$<input class="val-in" type="text" data-v="owed" inputmode="numeric" value="0" aria-label="Amount owed"></span></div>
+              <div class="ledger-row total"><span class="item">Equity <small id="eqNote">private party &minus; owed</small></span><span class="amt" id="eqVal">&mdash;</span></div>
+              <div class="ledger-row sub"><span class="item">Loan-to-value <small>owed &divide; private party</small></span><span class="amt" id="ltvVal">&mdash;</span></div>
+            </div>
+            <div class="val-stamp" id="valStamp" aria-live="polite"></div>
+          </div>
+          <div class="callout" data-dk="kbb">KBB has no free data feed, so this can&rsquo;t auto-pull &mdash; these are placeholder figures for a sample daily driver. <b>Punch in your real numbers</b> from <a href="https://www.kbb.com/whats-my-car-worth/" target="_blank" rel="noopener" style="color:var(--amber);text-decoration:underline">KBB&rsquo;s valuation tool &#8599;</a> and the equity updates live. Owed starts at <b>$0</b> &mdash; set your loan balance.</div>
+        </div>
+        <div class="feat-block">
+          <div class="feat-block-h"><span>Mod List</span>
+            <button type="button" class="ml-add-btn" id="modAddToggle" aria-haspopup="dialog"><span class="ml-add-ico" aria-hidden="true">+</span> Add a mod</button>
+          </div>
+          <div class="panel">
+            <div class="ledger" id="modLedger">
+              <div class="ledger-row done"><span class="item">All-Weather Floor Mats <span class="owned">Bought &check;</span><small>Front + rear &middot; black, precision-molded</small></span><span class="amt">$110.00</span></div>
+              <div class="ledger-row done"><span class="item">Ceramic Window Tint <span class="owned">Bought &check;</span><small>Professional install &middot; full vehicle</small></span><span class="amt">$280.00</span></div>
+              <div class="ledger-row done"><span class="item">Dash Cam <span class="owned">Bought &check;</span><small>Front + rear &middot; hardwired</small></span><span class="amt">$150.00</span></div>
+              <div class="ledger-row"><span class="item">Cargo Tray <small>Trunk liner &middot; molded fit</small></span><span class="amt">$55.00</span></div>
+              <div class="ledger-row"><span class="item">Roof Cross Bars <small>Aero crossbars &middot; lockable</small></span><span class="amt">$210.00</span></div>
+              <div class="ledger-row sub div"><span class="item">Spent so far <small>3 mods, in hand</small></span><span class="amt">$540.00</span></div>
+              <div class="ledger-row sub"><span class="item">Still to buy <small>2 mods</small></span><span class="amt">$265.00</span></div>
+              <div class="ledger-row total"><span class="item">Total &middot; All Mods</span><span class="amt">$805.00</span></div>
+            </div>
+          </div>
+          <div class="callout" data-dk="mods">A sample mod list &mdash; a few practical add-ons, some bought, some still on the list. Tap any price to edit it, or <b>add a mod above</b> &mdash; the Spent / Still-to-buy / total update automatically.</div>
+        </div>
       </div>
-    </div>
-    <div class="callout" data-dk="mods">A sample mod list &mdash; a few practical add-ons, some bought, some still on the list. Tap any price to edit it, or <b>add a mod above</b> &mdash; the Spent / Still-to-buy / total update automatically.</div>
-    </details>
-    </div>
+    </article>
   </section>
 
   <section id="garage-owned" style="border-bottom:none;">
@@ -5731,6 +5778,19 @@ window.mpAddModal = function (cfg) {
   if (ownedSec) { try { new MutationObserver(compute).observe(ownedSec, { childList: true, subtree: true }); } catch (e) {} }
   window.addEventListener('hashchange', function () { if (/garage/.test(location.hash)) compute(); });
   setInterval(compute, 2000);   // safety net for cross-module updates (daily mod recompute, etc.)
+})();
+</script>
+
+<script>
+// Daily featured card — expand/collapse the folded Value & Equity + Mod List.
+(function () {
+  var card = document.getElementById('dailyCard'); if (!card) return;
+  var exp = card.querySelector('.ov-expand'); if (!exp) return;
+  exp.addEventListener('click', function () {
+    var open = !card.classList.contains('open');
+    card.classList.toggle('open', open);
+    exp.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
 })();
 </script>
 
