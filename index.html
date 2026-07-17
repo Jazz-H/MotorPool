@@ -1088,6 +1088,11 @@
   .acct-magic .ai-in{flex:1;min-width:180px;}
   .acct-oauth{display:flex;flex-wrap:wrap;gap:10px;}
   .acct-oauth-btn{flex:1;min-width:200px;justify-content:center;}
+  .acct-oauth-btn.is-soon{opacity:.5;cursor:default;}
+  .acct-oauth-btn.is-soon:hover{border-color:var(--line-steel-strong);}
+  .soon-badge{display:none;margin-left:2px;font-size:.6rem;letter-spacing:.1em;font-weight:700;
+    padding:2px 7px;border-radius:999px;border:1px solid var(--line-steel-strong);color:var(--ink-faint);}
+  .acct-oauth-btn.is-soon .soon-badge{display:inline-block;}
   .acct-me{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
   .acct-avatar{width:44px;height:44px;border-radius:50%;background:var(--redline);color:#fff;display:flex;
     align-items:center;justify-content:center;font-family:"Saira Condensed",sans-serif;font-weight:800;font-size:1.35rem;flex:0 0 auto;}
@@ -2759,8 +2764,8 @@
           </div>
         </div>
         <div class="acct-oauth">
-          <button type="button" class="data-btn acct-oauth-btn" data-provider="google" hidden>Continue with Google</button>
-          <button type="button" class="data-btn acct-oauth-btn" data-provider="github" hidden>Continue with GitHub</button>
+          <button type="button" class="data-btn acct-oauth-btn" data-provider="google" hidden>Continue with Google<span class="soon-badge">Soon</span></button>
+          <button type="button" class="data-btn acct-oauth-btn" data-provider="github" hidden>Continue with GitHub<span class="soon-badge">Soon</span></button>
         </div>
         <span class="data-status" id="acctStatus" role="status" aria-live="polite"></span>
       </div>
@@ -5060,9 +5065,12 @@ if ('serviceWorker' in navigator) {
   var statusEl = document.getElementById('acctStatus');
   function status(m, kind) { if (statusEl) { statusEl.textContent = m || ''; statusEl.className = 'data-status' + (kind ? ' ' + kind : ''); } }
 
-  // Show only the enabled sign-in methods.
+  // OAuth buttons: enabled providers are live; the rest show as disabled "coming soon".
   Array.prototype.forEach.call(document.querySelectorAll('.acct-oauth-btn'), function (b) {
-    if (providers.indexOf(b.getAttribute('data-provider')) >= 0) b.hidden = false;
+    var live = providers.indexOf(b.getAttribute('data-provider')) >= 0;
+    b.hidden = false;                       // always visible once Supabase is configured
+    b.disabled = !live;                     // not enabled yet → coming soon (no click)
+    b.classList.toggle('is-soon', !live);
   });
   if (providers.indexOf('magiclink') < 0 && providers.indexOf('email') < 0) {
     var er = document.getElementById('acctEmailRow'); if (er) er.hidden = true;
