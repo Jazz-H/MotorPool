@@ -1146,6 +1146,9 @@
   .ov-modal .ov-check{display:flex;align-items:center;gap:9px;margin-top:15px;cursor:pointer;
     font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:#b7b3a9;}
   .ov-modal .ov-check input{width:16px;height:16px;accent-color:var(--redline);cursor:pointer;flex:0 0 auto;}
+  /* rater lives in the modal card — flatten its own panel chrome */
+  .ov-modal .rater-form{background:transparent;border:0;padding:0;box-shadow:none;}
+  .ov-modal .rater-result{margin-top:14px;}
   #garage-owned .ov-empty{position:relative;border:1.5px dashed var(--line-steel-strong);border-radius:12px;padding:34px 22px;text-align:center;
     display:flex;flex-direction:column;align-items:center;gap:12px;
     background:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px) 0 0/26px 26px,linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px) 0 0/26px 26px,rgba(255,255,255,.012);}
@@ -3942,15 +3945,7 @@ window.mpAddModal = function (cfg) {
     var mods = v.mods || [];
     return '<div class="owned-mods">' +
       '<div class="om-head"><span class="om-title">Mod list</span>' +
-      '<button type="button" class="ml-add-btn ov-mod-add" aria-expanded="false"><span class="ml-add-ico" aria-hidden="true">+</span> Add mod</button></div>' +
-      '<form class="modadd collapsed ov-mod-form" autocomplete="off">' +
-        '<div class="modadd-row">' +
-          '<input class="modadd-name ovm-name" type="text" placeholder="Mod / part" aria-label="Mod name" maxlength="60" required>' +
-          '<input class="modadd-price ovm-cost" type="text" inputmode="decimal" placeholder="$ cost" aria-label="Cost" maxlength="10">' +
-        '</div>' +
-        '<div class="modadd-foot"><label class="modadd-bought"><input type="checkbox" class="ovm-done"> Already installed</label>' +
-        '<button type="submit" class="modadd-btn">+ Add mod</button></div>' +
-      '</form>' +
+      '<button type="button" class="ml-add-btn ov-mod-add" aria-haspopup="dialog"><span class="ml-add-ico" aria-hidden="true">+</span> Add mod</button></div>' +
       (mods.length ? mods.map(modRow).join('') : '<div class="om-empty">No mods logged yet.</div>') +
       '<div class="om-sum">' + sumText(mods) + '</div>' +
       '</div>';
@@ -4058,6 +4053,28 @@ window.mpAddModal = function (cfg) {
   var targetIdx = -1;
   sec.appendChild(head); sec.appendChild(container); sec.appendChild(fileIn);
   document.body.appendChild(overlay);   // render the modal at body level, above the fixed nav
+
+  // Per-vehicle "Add mod" — one shared modal, opened against the tapped bay.
+  var modTargetIdx = -1;
+  var ovModModal = window.mpAddModal({
+    label: 'New mod', submitLabel: 'Add mod',
+    hint: 'Tick “already installed” for parts already on the vehicle.',
+    bodyHtml:
+      '<div class="ov-frow"><div class="ov-fld"><label>Mod / part</label>' +
+        '<input class="ovm-name" type="text" maxlength="60" placeholder="Exhaust, tires, tune…" required></div></div>' +
+      '<div class="ov-frow"><div class="ov-fld"><label>Cost <i>· optional</i></label>' +
+        '<input class="ovm-cost num" type="text" inputmode="decimal" maxlength="10" placeholder="$540"></div></div>' +
+      '<label class="ov-check"><input type="checkbox" class="ovm-done"> Already installed</label>',
+    onSubmit: function (f) {
+      if (modTargetIdx < 0) return false;
+      var nm = f.querySelector('.ovm-name').value.trim(); if (!nm) { f.querySelector('.ovm-name').focus(); return false; }
+      var cost = f.querySelector('.ovm-cost').value.trim(), done = f.querySelector('.ovm-done').checked;
+      var arr = load(); if (!arr[modTargetIdx]) return false;
+      if (!arr[modTargetIdx].mods) arr[modTargetIdx].mods = [];
+      arr[modTargetIdx].mods.push({ name: nm, cost: cost, done: done });
+      save(arr); render(); return true;
+    }
+  });
   render();
 
   addBtn.addEventListener('click', openForm);
@@ -4145,14 +4162,7 @@ window.mpAddModal = function (cfg) {
     var rmP = e.target.closest('.ov-photo-rm');
     if (rmP) { var pi = idxOf(rmP); var a = load(); if (a[pi]) { delete a[pi].photo; save(a); render(); } return; }
     var modAdd = e.target.closest('.ov-mod-add');
-    if (modAdd) {
-      var f = modAdd.closest('.owned-mods').querySelector('.ov-mod-form');
-      var willOpen = f.classList.contains('collapsed');
-      f.classList.toggle('collapsed', !willOpen);
-      modAdd.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-      if (willOpen) { var nm = f.querySelector('.ovm-name'); if (nm) nm.focus(); }
-      return;
-    }
+    if (modAdd) { modTargetIdx = idxOf(modAdd); ovModModal.open(); return; }
     var modX = e.target.closest('.om-x');
     if (modX) {
       var mxIdx = idxOf(modX); var mr = modX.closest('.om-row'); var mmi = parseInt(mr.getAttribute('data-mi'), 10);
@@ -4166,17 +4176,6 @@ window.mpAddModal = function (cfg) {
     }
   });
 
-  container.addEventListener('submit', function (e) {
-    var f = e.target.closest('.ov-mod-form'); if (!f) return;
-    e.preventDefault();
-    var idx = idxOf(f); if (idx < 0) return;
-    var nm = f.querySelector('.ovm-name').value.trim(); if (!nm) return;
-    var cost = f.querySelector('.ovm-cost').value.trim(), done = f.querySelector('.ovm-done').checked;
-    var arr = load(); if (!arr[idx]) return;
-    if (!arr[idx].mods) arr[idx].mods = [];
-    arr[idx].mods.push({ name: nm, cost: cost, done: done });
-    save(arr); render();
-  });
 })();
 </script>
 
@@ -4286,9 +4285,9 @@ window.mpAddModal = function (cfg) {
     var head = document.createElement('div'); head.className = 'modlist-head';
     head.innerHTML = '<span class="dash-h" style="font-size:.9rem;">Rate a listing <span style="color:var(--ink-faint);font-weight:400;letter-spacing:.06em;">· AI</span></span>';
     var toggle = document.createElement('button'); toggle.type = 'button'; toggle.className = 'ml-add-btn';
-    toggle.setAttribute('aria-expanded', 'false'); toggle.innerHTML = '<span class="ml-add-ico" aria-hidden="true">+</span> Rate a listing';
+    toggle.setAttribute('aria-haspopup', 'dialog'); toggle.innerHTML = '<span class="ml-add-ico" aria-hidden="true">+</span> Rate a listing';
     head.appendChild(toggle);
-    var form = document.createElement('form'); form.className = 'modadd collapsed'; form.setAttribute('autocomplete', 'off');
+    var form = document.createElement('form'); form.className = 'modadd rater-form'; form.setAttribute('autocomplete', 'off');
     form.innerHTML =
       '<div class="rater-photos"></div>' +
       '<div class="modadd-row">' +
@@ -4299,10 +4298,24 @@ window.mpAddModal = function (cfg) {
       '<div class="modadd-foot"><span class="rater-status"></span><button type="submit" class="modadd-btn rt-go">Rate it</button></div>';
     var result = document.createElement('div'); result.className = 'rater-result'; result.hidden = true;
     var fileIn = document.createElement('input'); fileIn.type = 'file'; fileIn.accept = 'image/*'; fileIn.multiple = true; fileIn.style.display = 'none';
-    wrap.appendChild(head); wrap.appendChild(form); wrap.appendChild(result); wrap.appendChild(fileIn);
-    // Mount above the existing "Your candidates" add head (found before we insert our own head).
+    // Present the rater in the shared modal shell (opened from the toggle).
+    var overlay = document.createElement('div'); overlay.className = 'ov-modal collapsed';
+    overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-modal', 'true'); overlay.setAttribute('aria-label', 'Rate a listing');
+    var card = document.createElement('div'); card.className = 'ov-addcard';
+    var chd = document.createElement('div'); chd.className = 'ovc-hd';
+    chd.innerHTML = '<span class="ovc-tick"></span><span class="ovc-lbl">Rate a listing &middot; AI</span><button type="button" class="ovc-cancel">&times; Cancel</button>';
+    var cbd = document.createElement('div'); cbd.className = 'ovc-bd';
+    cbd.appendChild(form); cbd.appendChild(result);
+    card.appendChild(chd); card.appendChild(cbd); overlay.appendChild(card);
+    wrap.appendChild(head); wrap.appendChild(fileIn);
+    document.body.appendChild(overlay);
     var anchor = sec.querySelector('.modlist-head');
     if (anchor) sec.insertBefore(wrap, anchor); else sec.appendChild(wrap);
+    function openRater() { overlay.classList.remove('collapsed'); document.documentElement.style.overflow = 'hidden'; }
+    function closeRater() { overlay.classList.add('collapsed'); document.documentElement.style.overflow = ''; }
+    chd.querySelector('.ovc-cancel').addEventListener('click', closeRater);
+    overlay.addEventListener('mousedown', function (e) { if (e.target === overlay) closeRater(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !overlay.classList.contains('collapsed')) closeRater(); });
 
     var photoBox = form.querySelector('.rater-photos');
     var statusEl = form.querySelector('.rater-status');
@@ -4336,11 +4349,7 @@ window.mpAddModal = function (cfg) {
       }, Promise.resolve()).then(renderPhotos).catch(function () { say('Could not read one of those images.', 'err'); });
     });
 
-    toggle.addEventListener('click', function () {
-      var willOpen = form.classList.contains('collapsed');
-      form.classList.toggle('collapsed', !willOpen);
-      toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-    });
+    toggle.addEventListener('click', openRater);
 
     function renderResult(r, ctx) {
       var v = (r.verdict || 'fair').toLowerCase(); if (['strong', 'fair', 'pass'].indexOf(v) < 0) v = 'fair';
