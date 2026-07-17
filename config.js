@@ -12,5 +12,5 @@ window.MP_SUPABASE = {
   url: 'https://jwkvfibsetjwsfnvmqvy.supabase.co',
   anonKey: 'sb_publishable_ZZTdegcyK_W2DaZ4H27RMQ_rWn5bJP7',  // publishable key — safe to commit, protected by RLS
   // Sign-in methods to offer — remove any you haven't enabled in Supabase Auth.
-  providers: ['magiclink', 'google', 'github']
+  providers: ['magiclink']
 };
