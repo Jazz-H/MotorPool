@@ -1430,7 +1430,7 @@
       <h1>Motor<span class="rev">pool</span></h1>
       <p class="hero-sub">Command center for the whole garage &mdash; your daily, both builds, and the next moves.</p>
       <div class="hero-readout">
-        <div class="ro"><span class="k">Program</span><span class="v"><em>$14,000</em></span></div>
+        <div class="ro"><span class="k">Program</span><span class="v"><em id="hubProgram">$14,000</em></span></div>
         <div class="ro"><span class="k">Projects</span><span class="v">2 <small>&middot; moto + car</small></span></div>
         <div class="ro"><span class="k">Garage</span><span class="v">One bench</span></div>
       </div>
@@ -1455,10 +1455,10 @@
             <span class="pt-phase">Comparing</span>
           </div>
           <div class="pt-stats">
-            <div class="pt-stat"><span class="k">Budget</span><span class="v">$4,000 <small>cash</small></span></div>
-            <div class="pt-stat"><span class="k">Candidates</span><span class="v">4 <small>(3 CB500F)</small></span></div>
-            <div class="pt-stat"><span class="k">Front-runner</span><span class="v">CB500F <small>$3.0k</small></span></div>
-            <div class="pt-stat"><span class="k">Also live</span><span class="v">Triumph 400</span></div>
+            <div class="pt-stat"><span class="k">Budget</span><span class="v">$<span data-mirror="motoCap">4,000</span> <small>cash</small></span></div>
+            <div class="pt-stat"><span class="k">Candidates</span><span class="v"><span id="hubMotoCandN">4</span> <small>logged</small></span></div>
+            <div class="pt-stat"><span class="k">Front-runner</span><span class="v" id="hubMotoLead">&mdash;</span></div>
+            <div class="pt-stat"><span class="k">Also live</span><span class="v" id="hubMotoAlso">&mdash;</span></div>
           </div>
           <a class="pt-open" href="#moto">Open Moto <span class="arr">&rarr;</span></a>
         </div>
@@ -1469,10 +1469,10 @@
             <span class="pt-phase">Comparing</span>
           </div>
           <div class="pt-stats">
-            <div class="pt-stat"><span class="k">Budget</span><span class="v">$10,000 <small>program</small></span></div>
-            <div class="pt-stat"><span class="k">Candidates</span><span class="v">3 <small>logged</small></span></div>
-            <div class="pt-stat"><span class="k">Front-runner</span><span class="v">&mdash; <small>TBD</small></span></div>
-            <div class="pt-stat"><span class="k">Shortlist</span><span class="v">Wrangler &middot; 4Runner</span></div>
+            <div class="pt-stat"><span class="k">Budget</span><span class="v"><span data-mirror="carProgram">$10,000</span> <small>program</small></span></div>
+            <div class="pt-stat"><span class="k">Candidates</span><span class="v"><span id="hubCarCandN">3</span> <small>logged</small></span></div>
+            <div class="pt-stat"><span class="k">Front-runner</span><span class="v" id="hubCarLead">&mdash; <small>TBD</small></span></div>
+            <div class="pt-stat"><span class="k">Shortlist</span><span class="v" id="hubCarShort">&mdash;</span></div>
           </div>
           <a class="pt-open" href="#car">Open Car <span class="arr">&rarr;</span></a>
         </div>
@@ -1484,9 +1484,9 @@
       <h4 class="dash-h">Combined Program</h4>
       <div class="panel" style="margin-bottom:24px;">
         <div class="ledger">
-          <div class="ledger-row"><span class="item">Moto build <small>bike only, cash</small></span><span class="amt">$4,000</span></div>
-          <div class="ledger-row"><span class="item">Car build <small>program: car + fixes + mods</small></span><span class="amt">$10,000</span></div>
-          <div class="ledger-row total"><span class="item">Garage Total</span><span class="amt">$14,000</span></div>
+          <div class="ledger-row"><span class="item">Moto build <small>bike only, cash</small></span><span class="amt">$<span data-mirror="motoCap">4,000</span></span></div>
+          <div class="ledger-row"><span class="item">Car build <small>program: car + fixes + mods</small></span><span class="amt"><span data-mirror="carProgram">$10,000</span></span></div>
+          <div class="ledger-row total"><span class="item">Garage Total</span><span class="amt" id="hubGarageTotal">$14,000</span></div>
         </div>
       </div>
       </div>
@@ -1638,7 +1638,7 @@
   <p class="hero-sub">You've done this before. This is the shortlist, the money, and the checks — built for a rider stepping back on, not starting out.</p>
   <div class="chips" data-notes="moto" aria-label="Your moto notes — tap to edit or add"></div>
   <div class="hero-readout">
-    <div class="ro"><span class="k">Cash cap</span><span class="v"><em>$4,000</em></span></div>
+    <div class="ro"><span class="k">Cash cap</span><span class="v"><em>$<span data-mirror="motoCap">4,000</span></em></span></div>
     <div class="ro"><span class="k">License</span><span class="v">Class M</span></div>
     <div class="ro"><span class="k">Displacement</span><span class="v">&lt; 600cc</span></div>
   </div>
@@ -1650,7 +1650,7 @@
   <details class="sec-block" id="moto-money">
     <summary>
     <div class="sec-head"><span class="sec-num">01</span><h2>The Money</h2></div>
-    <span class="insight"><em>All-in</em> Bike + gear target: <b data-mirror="allIn">&mdash;</b> &middot; keep it under the <b>$4k</b> cash cap.</span>
+    <span class="insight"><em>All-in</em> Bike + gear target: <b data-mirror="allIn">&mdash;</b> &middot; keep it under the <b>$<span data-mirror="motoCap">4,000</span></b> cash cap.</span>
     </summary>
     <div class="money-lead">
       <div class="money-figblock">
@@ -1858,7 +1858,7 @@
   <details class="sec-block" id="moto-candidates">
     <summary>
     <div class="sec-head"><span class="sec-num">05</span><h2>Candidate Log</h2></div>
-    <span class="insight"><em>Front-runner</em> 5 bikes scored vs the CB500F benchmark &mdash; lead pick a clean <b>2015 CB500F ~$3.6k</b>, plus a Triumph Speed 400 wildcard.</span>
+    <span class="insight" data-dyn="candidates"><em>Candidates</em> <span class="dyn">&mdash;</span></span>
     </summary>
     <p class="sec-note">Bikes you're actually looking at, scored against the benchmarks above. Tap the blank fields to fill in the next ones.</p>
 
@@ -2266,7 +2266,7 @@
   <p class="hero-sub">How to find a project worth building &mdash; the platforms, the money, and the checks that separate a good one from someone else&rsquo;s headache.</p>
   <div class="chips" data-notes="car" aria-label="Your car notes — tap to edit or add"></div>
   <div class="hero-readout">
-    <div class="ro"><span class="k">Budget</span><span class="v"><em>$10,000</em></span></div>
+    <div class="ro"><span class="k">Budget</span><span class="v"><em data-mirror="carProgram">$10,000</em></span></div>
     <div class="ro"><span class="k">Drivetrain</span><span class="v">4x4 &middot; AWD</span></div>
     <div class="ro"><span class="k">Body</span><span class="v">4-door</span></div>
   </div>
@@ -2305,7 +2305,7 @@
   <details class="sec-block" id="car-contenders">
     <summary>
     <div class="sec-head"><span class="sec-num">02</span><h2>The Contenders</h2></div>
-    <span class="insight"><em>Complement the daily</em> 6 rigs &mdash; Wrangler, 4Runner, Tacoma, Xterra, Grand Cherokee, Subaru &mdash; weighed on 4x4 capability vs. running cost.</span>
+    <span class="insight" data-dyn="contenders"><em>Complement the daily</em> <span class="dyn">&mdash;</span></span>
     </summary>
     <p class="sec-note">The <b style="color:#e6e2d8">complement</b> to your daily driver &mdash; it already covers the pavement, so these do what it <em>can&rsquo;t</em>: 4 doors, 4x4 / AWD, weather, trails, and gear. Ideally four doors, though the Wrangler works either way.</p>
 
@@ -2461,7 +2461,7 @@
   <details class="sec-block" id="car-candidates">
     <summary>
     <div class="sec-head"><span class="sec-num">04</span><h2>Candidate Log</h2></div>
-    <span class="insight"><em>Picks</em> 3 logged &mdash; <b>Wrangler Unlimited</b> (loved), with the <b>4Runner</b> &amp; <b>Tacoma</b> as the sensible do-it-all suggestions.</span>
+    <span class="insight" data-dyn="candidates"><em>Picks</em> <span class="dyn">&mdash;</span></span>
     </summary>
     <p class="sec-note">Goal: a <b style="color:#e6e2d8">fun secondary car</b> &mdash; no track or drift, maybe some light off-road. Your two loves pull in opposite directions (open-road V8 vs. go-anywhere 4x4); here they are side by side, plus a do-it-all wildcard. Add more with the button below.</p>
 
@@ -2569,7 +2569,7 @@
   <details class="sec-block">
     <summary>
     <div class="sec-head"><span class="sec-num">05</span><h2>Cross-Shop</h2></div>
-    <span class="insight"><em>Insight</em> Buy-once with a <b>Lexus GX470</b>, get a truck with the <b>Colorado</b> or <b>Ridgeline</b>, or go cheap-and-classic with a <b>Cherokee XJ</b>. Each has one known killer to check.</span>
+    <span class="insight" data-dyn="crossshop"><em>Insight</em> <span class="dyn">&mdash;</span></span>
     </summary>
     <p class="sec-note">Honorable mentions worth a look depending on your taste and goal.</p>
     <div class="cross">
@@ -2737,7 +2737,7 @@
     <span class="insight"><em>The path</em> Pick 1&ndash;2 platforms &rarr; learn their weak points &rarr; VIN + <b>frame/4x4 PPI</b> &rarr; buy the cleanest example, <b>$16&ndash;24k</b>.</span>
     </summary>
     <div class="steps">
-      <div class="step"><p><b>Complement the daily</b>: pick a 4-door that does what it can&rsquo;t &mdash; Wrangler Unlimited, 4Runner, Tacoma, Xterra, Grand Cherokee, or a Subaru.</p></div>
+      <div class="step"><p><b>Complement the daily</b>: pick a 4-door that does what it can&rsquo;t &mdash; from your shortlist in <b>The Contenders</b> above.</p></div>
       <div class="step"><p>Set your ceiling &mdash; a clean Wrangler Unlimited or 4Runner runs <b>$16&ndash;24k</b>; keep a reserve for tires, fixes, and setup.</p></div>
       <div class="step"><p>Shortlist <b>1&ndash;2 platforms</b> and learn their known weak points cold.</p></div>
       <div class="step"><p>Watch listings (Marketplace, CarGurus, Cars &amp; Bids, Bring a Trailer) and <b>save comps</b>.</p></div>
@@ -5380,6 +5380,99 @@ if ('serviceWorker' in navigator) {
   function onSignIn() { baseHash = activeHash(); renderStatus(); syncNow(); }  // always reconcile on sign-in (pull + push)
   document.addEventListener('mp:auth', function (ev) { if (ev.detail) onSignIn(); else renderStatus(); });
   if (session()) onSignIn(); else renderStatus();
+})();
+</script>
+
+<script>
+// Live dashboard — keeps every derived summary in sync with the ACTUAL data instead of
+// hardcoded prose: the amber "insight" notes (count + lead pick), the Hub project tiles
+// (candidate counts, front-runner, shortlist), and the combined program total. Anything a
+// user can add / edit / delete flows through here so no summary goes stale.
+(function () {
+  function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function nameOf(card) {
+    if (card.classList.contains('usercand')) { var i = card.querySelector('.uc-name'); return i ? (i.value || '').trim() : ''; }
+    var n = card.querySelector('.cand-name'); return n ? (n.textContent || '').trim() : '';
+  }
+  function candCards(sec) { return sec ? Array.prototype.slice.call(sec.querySelectorAll('.cand-card:not(.blank)')) : []; }
+  // front-runners first, otherwise insertion order (mirrors the candidate list's own sort)
+  function ordered(cards) { var f = [], r = []; cards.forEach(function (c) { (c.classList.contains('st-front') ? f : r).push(c); }); return f.concat(r); }
+  function namesOf(cards) { var out = []; cards.forEach(function (c) { var n = nameOf(c); if (n) out.push(n); }); return out; }
+
+  // ---- amber insight .dyn builders ----
+  function buildCandidates(sec) {
+    var cards = candCards(sec);
+    if (!cards.length) return 'Nothing logged yet — add the ones you’re looking at.';
+    var nm = nameOf(ordered(cards)[0]);
+    return cards.length + ' logged' + (nm ? ' — lead pick <b>' + esc(nm) + '</b>.' : '.');
+  }
+  function buildContenders(sec) {
+    var n = sec.querySelectorAll('.spec-card').length;
+    return n ? (n + ' weighed on 4x4 capability vs. running cost.') : 'None shortlisted yet — add the rigs you’re weighing.';
+  }
+  function buildCrossshop(sec) {
+    var n = sec.querySelectorAll('.cross-item').length;
+    return n ? (n + ' alternative' + (n === 1 ? '' : 's') + ' worth a look — each with one known killer to check.') : 'No alternatives listed yet.';
+  }
+  var BUILD = { candidates: buildCandidates, contenders: buildContenders, crossshop: buildCrossshop };
+
+  var insights = [];
+  Array.prototype.forEach.call(document.querySelectorAll('.insight[data-dyn]'), function (insight) {
+    var sec = insight.closest('details, section'), dyn = insight.querySelector('.dyn');
+    var build = BUILD[insight.getAttribute('data-dyn')];
+    if (sec && dyn && build) insights.push({ sec: sec, dyn: dyn, build: build });
+  });
+
+  // ---- Hub project tiles ----
+  function setText(id, v) { var el = document.getElementById(id); if (el) el.textContent = v; }
+  function hubStats(secId) {
+    var cards = candCards(document.getElementById(secId)), nm = namesOf(ordered(cards));
+    var lead = nm[0] || '—', seen = {}, rest = [];
+    nm.forEach(function (n) { if (n && n !== lead && !seen[n]) { seen[n] = 1; rest.push(n); } });  // distinct, excluding the lead
+    return { count: cards.length, lead: lead, rest: rest.slice(0, 2).join(' · ') || '—' };
+  }
+  function updateHub() {
+    var m = hubStats('moto-candidates'), c = hubStats('car-candidates');
+    setText('hubMotoCandN', m.count); setText('hubMotoLead', m.lead); setText('hubMotoAlso', m.rest);
+    setText('hubCarCandN', c.count); setText('hubCarLead', c.lead); setText('hubCarShort', c.rest);
+  }
+
+  // ---- recompute everything with our own observers paused (so writes don't loop) ----
+  var observers = [];
+  function recompute() {
+    observers.forEach(function (o) { o.obs.disconnect(); });
+    insights.forEach(function (it) { it.dyn.innerHTML = it.build(it.sec); });
+    updateHub();
+    observers.forEach(function (o) { try { o.obs.observe(o.el, o.opt); } catch (e) {} });
+  }
+  var watch = [];
+  function addWatch(el) { if (el && watch.indexOf(el) < 0) watch.push(el); }
+  insights.forEach(function (it) { addWatch(it.sec); });
+  addWatch(document.getElementById('moto-candidates'));  // feed the hub even if their insight is absent
+  addWatch(document.getElementById('car-candidates'));
+  watch.forEach(function (el) {
+    var opt = { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] }, obs;
+    try { obs = new MutationObserver(recompute); } catch (e) { return; }
+    observers.push({ obs: obs, el: el, opt: opt });
+    el.addEventListener('input', recompute);   // field edits (names) → lead pick / shortlist
+    el.addEventListener('change', recompute);  // status dropdown → front-runner
+  });
+  recompute();
+
+  // ---- combined program total = moto cash cap + car program (both editable) ----
+  function num(s) { var v = parseFloat(String(s || '').replace(/[^0-9.]/g, '')); return isFinite(v) ? v : 0; }
+  function money(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+  function budgetSum() {
+    var mc = document.getElementById('motoCap'), cp = document.getElementById('carProgram');
+    if (!mc || !cp) return;
+    var total = money(num(mc.textContent) + num(cp.textContent));
+    setText('hubProgram', total); setText('hubGarageTotal', total);
+  }
+  ['motoCap', 'carProgram'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) { el.addEventListener('input', budgetSum); el.addEventListener('blur', budgetSum); }
+  });
+  budgetSum();
 })();
 </script>
 
