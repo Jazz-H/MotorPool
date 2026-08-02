@@ -418,6 +418,13 @@
     box-shadow:0 2px 0 rgba(0,0,0,.18);}
   .vbadge.todo{background:transparent;color:var(--ink-faint);border:1px dashed var(--line-steel-strong);box-shadow:none;}
   .vbadge.pass{background:#6b7076;color:#fff;box-shadow:0 2px 0 rgba(0,0,0,.18);}
+  /* MT-03 dispatch statuses — color plus glyph, never color alone */
+  .vbadge.dead{background:var(--redline-deep);color:#fff;}
+  .vbadge.fmc{background:#3e7c53;color:#fff;}
+  /* subtotal / total rows inside a market table (Cost to Dispatch, Book Value) */
+  table.mkt tr.sub td{background:var(--paper-dim);font-family:"IBM Plex Mono",monospace;font-weight:600;color:var(--ink);
+    border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong);}
+  table.mkt tr.sub.tot td{border-top:2px solid var(--ink);border-bottom:none;}
   .cand-card.passed .cand-name{color:var(--ink-soft);}
   .cand-card.passed .cand-col li::before{background:var(--ink-faint);}
   .cand-offer.pass{background:#3b4046;}
@@ -1591,7 +1598,7 @@
 <div id="whatsnew" class="whatsnew" role="status" hidden>
   <div class="whatsnew-inner">
     <span class="wn-tag">Template</span>
-    <span class="wn-text"><b>New:</b> rate a listing from photos with <b>AI</b> (add your key in Settings), add <b>vehicles you already own</b> to the Garage, and a dedicated <b>Gear &amp; Setup</b> section. Everything&rsquo;s still editable and saved to your device.</span>
+    <span class="wn-text"><b>New:</b> the Moto section is now the <b>MT-03 dispatch sheet</b> &mdash; asset roster, cost to dispatch, book value check, and the 09&nbsp;Aug decision. Everything&rsquo;s still editable and saved to your device.</span>
     <button class="wn-x" type="button" aria-label="Dismiss">&times;</button>
   </div>
 </div>
@@ -1624,7 +1631,7 @@
       <h1>Motor<span class="rev">pool</span></h1>
       <p class="hero-sub">Command center for the whole garage &mdash; your daily, both builds, and the next moves.</p>
       <div class="hero-readout">
-        <div class="ro"><span class="k">Program</span><span class="v"><em id="hubProgram">$14,000</em></span></div>
+        <div class="ro"><span class="k">Program</span><span class="v"><em id="hubProgram">$15,200</em></span></div>
         <div class="ro"><span class="k">Projects</span><span class="v">2 <small>&middot; moto + car</small></span></div>
         <div class="ro"><span class="k">Garage</span><span class="v">One bench</span></div>
       </div>
@@ -1645,14 +1652,14 @@
 
         <div class="proj-tile">
           <div class="pt-top">
-            <div><span class="pt-ey">Project 01 &middot; Two Wheels</span><h3 class="pt-title">Moto<br>Build</h3></div>
-            <span class="pt-phase">Comparing</span>
+            <div><span class="pt-ey">Project 01 &middot; Two Wheels</span><h3 class="pt-title">MT-03<br>Program</h3></div>
+            <span class="pt-phase">Deciding</span>
           </div>
           <div class="pt-stats">
-            <div class="pt-stat"><span class="k">Budget</span><span class="v">$<span data-mirror="motoCap">4,000</span> <small>cash</small></span></div>
-            <div class="pt-stat"><span class="k">Candidates</span><span class="v"><span id="hubMotoCandN">4</span> <small>logged</small></span></div>
-            <div class="pt-stat"><span class="k">Front-runner</span><span class="v" id="hubMotoLead">&mdash;</span></div>
-            <div class="pt-stat"><span class="k">Also live</span><span class="v" id="hubMotoAlso">&mdash;</span></div>
+            <div class="pt-stat"><span class="k">Ceiling</span><span class="v">$<span data-mirror="motoCap">5,200</span> <small>all-in</small></span></div>
+            <div class="pt-stat"><span class="k">Assets</span><span class="v">2 <small>on the board</small></span></div>
+            <div class="pt-stat"><span class="k">Status</span><span class="v">Deadlined <small>title jumped</small></span></div>
+            <div class="pt-stat"><span class="k">Decision</span><span class="v">09 Aug <small>title or unwind</small></span></div>
           </div>
           <a class="pt-open" href="#moto">Open Moto <span class="arr">&rarr;</span></a>
         </div>
@@ -1678,17 +1685,17 @@
       <h4 class="dash-h">Combined Program</h4>
       <div class="panel" style="margin-bottom:24px;">
         <div class="ledger">
-          <div class="ledger-row"><span class="item">Moto build <small>bike only, cash</small></span><span class="amt">$<span data-mirror="motoCap">4,000</span></span></div>
+          <div class="ledger-row"><span class="item">Moto build <small>MT-03 &middot; all-in cash</small></span><span class="amt">$<span data-mirror="motoCap">5,200</span></span></div>
           <div class="ledger-row"><span class="item">Car build <small>program: car + fixes + mods</small></span><span class="amt"><span data-mirror="carProgram">$10,000</span></span></div>
-          <div class="ledger-row total"><span class="item">Garage Total</span><span class="amt" id="hubGarageTotal">$14,000</span></div>
+          <div class="ledger-row total"><span class="item">Garage Total</span><span class="amt" id="hubGarageTotal">$15,200</span></div>
         </div>
       </div>
       </div>
       <div class="hub-col">
       <h4 class="dash-h">Decision Queue</h4>
       <ul class="check-list">
-        <li><label><input type="checkbox"><span><span class="queue-tag moto">Moto</span>Confirm CB500F service history + book the test ride</span></label></li>
-        <li><label><input type="checkbox"><span><span class="queue-tag moto">Moto</span>Get insurance quotes: CB500F vs Triumph Speed 400</span></label></li>
+        <li><label><input type="checkbox"><span><span class="queue-tag moto">Moto</span>05 Aug &mdash; nudge Jakob for a booked plate-agency date, not a status update</span></label></li>
+        <li><label><input type="checkbox"><span><span class="queue-tag moto">Moto</span>Call Sport Cycles Rockingham &mdash; confirm the 2025 MT-03 is on the lot + get the OTD number</span></label></li>
         <li><label><input type="checkbox"><span><span class="queue-tag car">Car</span>Pick the daily&rsquo;s complement &mdash; a 4-door 4x4/utility (Wrangler / 4Runner / Tacoma)</span></label></li>
         <li><label><input type="checkbox"><span><span class="queue-tag car">Car</span>Shortlist 1&ndash;2 platforms + learn their weak points</span></label></li>
         <li><label><input type="checkbox"><span><span class="queue-tag car">Car</span>Set the car-vs-build budget split</span></label></li>
@@ -1824,618 +1831,247 @@
     <circle cx="160" cy="150" r="8" fill="#d83a29"/>
     <circle cx="160" cy="150" r="3" fill="#1b1f24"/>
   </svg>
-  <div class="gauge-cap">Returning Rider · Build Sheet</div>
-  <h1>Motorcycle<br>Buying <span class="rev">Plan</span></h1>
-  <p class="hero-sub">You've done this before. This is the shortlist, the money, and the checks — built for a rider stepping back on, not starting out.</p>
+  <div class="gauge-cap">MT-03 Program &middot; Dispatch Sheet</div>
+  <h1>MT-03 <span class="rev">Motor Pool</span></h1>
+  <p class="hero-sub">Platform approved &mdash; two assets on the board. This is the roster, the real cost to dispatch, and the 09&nbsp;Aug decision. Until then: <b>deadlined, no parts issue</b>.</p>
   <div class="chips" data-notes="moto" aria-label="Your moto notes — tap to edit or add"></div>
   <div class="hero-readout">
-    <div class="ro"><span class="k">Cash cap</span><span class="v"><em>$<span data-mirror="motoCap">4,000</span></em></span></div>
-    <div class="ro"><span class="k">License</span><span class="v">Class M</span></div>
-    <div class="ro"><span class="k">Displacement</span><span class="v">&lt; 600cc</span></div>
+    <div class="ro"><span class="k">Assets</span><span class="v">2 <small>on the board</small></span></div>
+    <div class="ro"><span class="k">Ceiling</span><span class="v"><em>$<span data-mirror="motoCap">5,200</span></em></span></div>
+    <div class="ro"><span class="k">Decision</span><span class="v">09 Aug</span></div>
   </div>
 </header>
 
 <div class="wrap">
 
-  <!-- MONEY -->
-  <details class="sec-block" id="moto-money">
+  <!-- ASSET ROSTER -->
+  <details class="sec-block" id="moto-roster">
     <summary>
-    <div class="sec-head"><span class="sec-num">01</span><h2>The Money</h2></div>
-    <span class="insight"><em>All-in</em> Bike + gear target: <b data-mirror="allIn">&mdash;</b> &middot; keep it under the <b>$<span data-mirror="motoCap">4,000</span></b> cash cap.</span>
+    <div class="sec-head"><span class="sec-num">01</span><h2>Asset Roster</h2></div>
+    <span class="insight"><em>Status</em> <b>Asset A deadlined</b> &mdash; title jumped, can&rsquo;t register. The 2025 at Sport Cycles is <b>mission capable</b>.</span>
+    </summary>
+    <p class="sec-note">Two MT-03s, one decision. Compare on <b style="color:#e6e2d8">cost to dispatch</b> &mdash; the all-in number to get it on the road &mdash; not on sticker. <b style="color:#e6e2d8">Deadlined</b> = blocked from the road; <b style="color:#e6e2d8">mission capable</b> = ready to go.</p>
+
+    <!-- ASSET A -->
+    <article class="cand-card">
+      <div class="cand-top">
+        <div><span class="cand-ey">Asset A &middot; On hand &middot; Private — Jakob, Charlotte</span><h3 class="cand-name"><span class="fill" contenteditable="true">2024 Yamaha MT-03</span></h3></div>
+        <span class="vbadge dead">&#10005; Deadlined</span>
+      </div>
+      <div class="cand-facts">
+        <div class="cand-fact"><span class="k">Price</span><span class="v"><span class="fill" contenteditable="true">$3,400</span> <small style="text-decoration:none">$1,700 paid</small></span></div>
+        <div class="cand-fact"><span class="k">Miles</span><span class="v"><span class="fill" contenteditable="true">~12,000</span></span></div>
+        <div class="cand-fact"><span class="k">Title</span><span class="v"><span class="fill" contenteditable="true">Jumped ✕</span></span></div>
+        <div class="cand-fact"><span class="k">Records</span><span class="v"><span class="fill" contenteditable="true">None</span></span></div>
+      </div>
+      <div class="pos">
+        <div class="pos-foot"><b>The title is the deadline.</b> The previous owner never titled it in his name and the reassignment space is used, so Jakob cannot legally sign it over. You hold the physical title &mdash; that&rsquo;s your leverage, but the bike cannot be registered until he transfers it properly.</div>
+      </div>
+      <div class="cand-cols">
+        <div class="cand-col">
+          <h5>Sustains</h5>
+          <ul>
+            <li>Cheapest entry &mdash; $1,700 already paid</li>
+            <li>Already in the bay</li>
+            <li>You hold the physical title (leverage)</li>
+          </ul>
+        </div>
+        <div class="cand-col">
+          <h5>Deadlines</h5>
+          <ul>
+            <li>Can&rsquo;t be registered until Jakob transfers</li>
+            <li>12k miles &mdash; every wear item due at once</li>
+            <li>No service history on file</li>
+          </ul>
+        </div>
+      </div>
+      <div class="cand-verify">
+        <div class="vh">// Fault list — priced at shop labor, opens only if the title clears</div>
+        <ul class="check-list">
+          <li><label><input type="checkbox"><span>Tires, mounted — $350&ndash;500</span></label></li>
+          <li><label><input type="checkbox"><span>Chain + sprockets — $220&ndash;340</span></label></li>
+          <li><label><input type="checkbox"><span>Oil + filter — $130&ndash;180</span></label></li>
+          <li><label><input type="checkbox"><span>Brake fluid both ends + coolant flush — $220&ndash;330</span></label></li>
+          <li><label><input type="checkbox"><span>Turn signal, LED module — $80&ndash;220</span></label></li>
+        </ul>
+      </div>
+      <div class="cand-offer">
+        <div><span class="ol">Cost to dispatch</span><span class="oa"><span class="fill" contenteditable="true" data-ph="cost to dispatch">$4,600&ndash;5,200</span></span></div>
+        <p>$3,400 acquisition + tax/title + <b>$1,000&ndash;1,570 of deferred maintenance</b>. Balance due is $1,700 &mdash; <b>do not release the bike or title until cash is in hand.</b></p>
+      </div>
+    </article>
+
+    <!-- ASSET B -->
+    <article class="cand-card">
+      <div class="cand-top">
+        <div><span class="cand-ey">Asset B &middot; Dealer lot &middot; Sport Cycles — Rockingham</span><h3 class="cand-name"><span class="fill" contenteditable="true">2025 Yamaha MT-03</span></h3></div>
+        <span class="vbadge fmc">&#10003; Mission Capable</span>
+      </div>
+      <div class="cand-facts">
+        <div class="cand-fact"><span class="k">Price</span><span class="v"><span class="fill" contenteditable="true">$3,998</span> <small style="text-decoration:none">asking</small></span></div>
+        <div class="cand-fact"><span class="k">Miles</span><span class="v"><span class="fill" contenteditable="true">4,156</span></span></div>
+        <div class="cand-fact"><span class="k">Title</span><span class="v"><span class="fill" contenteditable="true">Clean ✓</span> <small style="text-decoration:none">dealer files</small></span></div>
+        <div class="cand-fact"><span class="k">Stock</span><span class="v"><span class="fill" contenteditable="true">8SK001367A · Silver</span></span></div>
+      </div>
+      <div class="pos">
+        <div class="pos-foot"><b>8,000 fewer miles and zero title risk.</b> Tires and chain are still serviceable, and the dealer files the title and registration. The doc fee ($300&ndash;600) is real money and the only soft line &mdash; sticker is fair market, not a steal.</div>
+      </div>
+      <div class="cand-cols">
+        <div class="cand-col">
+          <h5>Sustains</h5>
+          <ul>
+            <li>8k fewer miles &mdash; wear items not due</li>
+            <li>No title risk; dealer handles paperwork</li>
+            <li>Only fault on intake: oil + fluids</li>
+          </ul>
+        </div>
+        <div class="cand-col">
+          <h5>Deadlines</h5>
+          <ul>
+            <li>Doc fee $300&ndash;600 &mdash; the only soft line</li>
+            <li>Sticker is fair market, not a steal</li>
+            <li>Likely no test ride</li>
+          </ul>
+        </div>
+      </div>
+      <div class="cand-verify">
+        <div class="vh">// Confirm before the trip — the haul is the catch, not the bike</div>
+        <ul class="check-list">
+          <li><label><input type="checkbox"><span>Bike physically at the Rockingham lot — call with the stock number</span></label></li>
+          <li><label><input type="checkbox"><span>Out-the-door number in writing — doc fee is the negotiation</span></label></li>
+          <li><label><input type="checkbox"><span>Ask the test-ride policy before driving out</span></label></li>
+          <li><label><input type="checkbox"><span>Oil + fluids on delivery — $130&ndash;180 is the whole fault list</span></label></li>
+        </ul>
+      </div>
+      <div class="cand-offer">
+        <div><span class="ol">Cost to dispatch</span><span class="oa"><span class="fill" contenteditable="true" data-ph="cost to dispatch">$4,500&ndash;4,800</span></span></div>
+        <p>$3,998 + doc fee + tax, then just <b>$130&ndash;180 of maintenance</b>. Push the doc fee &mdash; it&rsquo;s the only soft number on the sheet.</p>
+      </div>
+    </article>
+
+    <div class="callout">&#9873; <b>Verify the haul</b> &mdash; Rockingham sits roughly <b>70 mi / 1 hr 15</b> from Charlotte, not 30 minutes. Confirm the asset is on that lot before committing a Saturday.</div>
+  </details>
+
+  <!-- COST TO DISPATCH -->
+  <details class="sec-block" id="moto-cost">
+    <summary>
+    <div class="sec-head"><span class="sec-num">02</span><h2>Cost To Dispatch</h2></div>
+    <span class="insight"><em>Finding</em> The $598-cheaper bike carries <b>$1,000&ndash;1,570</b> of deferred maintenance vs <b>$130&ndash;180</b> &mdash; totals overlap.</span>
     </summary>
     <div class="money-lead">
       <div class="money-figblock">
-        <div class="money-fig">$<span id="motoCap" class="num-edit" contenteditable="true" role="textbox" aria-label="Edit cash cap">4,000</span></div>
-        <span class="money-tag" id="motoTag" contenteditable="true" role="textbox" aria-label="Edit funding note — e.g. cash or financed">cash · bike only</span>
+        <div class="money-fig">$<span id="motoCap" class="num-edit" contenteditable="true" role="textbox" aria-label="Edit cash ceiling">5,200</span></div>
+        <span class="money-tag" id="motoTag" contenteditable="true" role="textbox" aria-label="Edit funding note">cash ceiling · all-in</span>
       </div>
-      <p>Enough for a clean used CB500 or most of this list &mdash; and cash keeps lower-mile examples in reach. Gear rides on top of this, so aim the bike a bit under $4k. Lead with cash on a private sale.</p>
+      <p>Both assets land in the same window all-in. The ceiling is the worst case &mdash; Asset A at the top of its range. Every line below is priced at shop labor rates; DIY pulls the maintenance lines down.</p>
     </div>
-    <p class="sec-note">Bike is capped at $4k; gear rides on top &mdash; tick it off in the <b>Gear &amp; Setup</b> section below. Punch in a price to see your all-in:</p>
-    <div class="panel" style="margin-bottom:16px;">
-      <div class="ledger">
-        <div class="ledger-row"><span class="item">Bike <small>your target / offer</small></span><span class="amt">$<input class="val-in" type="text" data-b="bike" inputmode="numeric" value="3600" aria-label="Bike price"></span></div>
-        <div class="ledger-row"><span class="item">vs $<span data-mirror="motoCap">4,000</span> cap <small id="capNote">headroom</small></span><span class="amt" id="capLeft">&mdash;</span></div>
-        <div class="ledger-row"><span class="item">Gear + setup <small>full kit from the Gear &amp; Setup list</small></span><span class="amt" id="gearAllIn">&mdash;</span></div>
-        <div class="ledger-row total"><span class="item">All-in cash <small>bike + gear</small></span><span class="amt" id="allIn">&mdash;</span></div>
-      </div>
+    <div class="mkt-card">
+      <div class="mkt-head"><h4>Line Items &mdash; A vs B</h4><span class="newp">shop labor rates &middot; <b>estimates</b></span></div>
+      <table class="mkt">
+        <thead><tr><th>Line item</th><th class="n">Asset A — 2024</th><th class="n">Asset B — 2025</th></tr></thead>
+        <tbody>
+          <tr><td>Acquisition</td><td class="ask n">$3,400</td><td class="ask n">$3,998</td></tr>
+          <tr><td>Dealer doc fee</td><td class="ask n">—</td><td class="ask n">$300–600</td></tr>
+          <tr><td>Highway use tax, 3%</td><td class="ask n">$102</td><td class="ask n">$120</td></tr>
+          <tr><td>Title + plate + notary</td><td class="ask n">~$90</td><td class="ask n">incl.</td></tr>
+          <tr class="sub"><td>Subtotal — acquisition &amp; fees</td><td class="n">$3,592</td><td class="n">$4,418–4,718</td></tr>
+          <tr><td>Oil + filter</td><td class="ask n">$130–180</td><td class="ask n">$130–180</td></tr>
+          <tr><td>Brake fluid, both ends</td><td class="ask n">$120–180</td><td class="ask n">—</td></tr>
+          <tr><td>Coolant flush</td><td class="ask n">$100–150</td><td class="ask n">—</td></tr>
+          <tr><td>Tires, mounted</td><td class="ask n">$350–500</td><td class="ask n">—</td></tr>
+          <tr><td>Chain + sprockets</td><td class="ask n">$220–340</td><td class="ask n">—</td></tr>
+          <tr><td>Turn signal, LED module</td><td class="ask n">$80–220</td><td class="ask n">—</td></tr>
+          <tr class="sub"><td>Subtotal — maintenance</td><td class="n">$1,000–1,570</td><td class="n">$130–180</td></tr>
+          <tr class="sub tot"><td>Total to dispatch</td><td class="n">$4,592–5,162</td><td class="n">$4,548–4,898</td></tr>
+        </tbody>
+      </table>
     </div>
-    <div class="callout">Also budget separately: <b>title / registration / tax</b> and <b>insurance</b> (varies a lot by state and age — quote it before you buy). Plus gloves and a jacket if you don't already have them.</div>
+    <div class="sweet"><b>Finding:</b> Asset A carries <b>$1,000&ndash;1,570 of deferred maintenance</b> against Asset B&rsquo;s $130&ndash;180. That gap is larger than the $598 price difference, so <b>the cheaper bike is not the cheaper bike</b>. Totals overlap &mdash; treat Asset B as a peer, not a fallback.</div>
   </details>
 
-  <!-- GEAR & SETUP -->
-  <details class="sec-block" id="moto-gear">
+  <!-- BOOK VALUE CHECK -->
+  <details class="sec-block" id="moto-book">
     <summary>
-    <div class="sec-head"><span class="sec-num">02</span><h2>Gear &amp; Setup</h2></div>
-    <span class="insight"><em>Gear</em> <b data-mirror="gearBought">&mdash;</b> bought of <b data-mirror="gearPlanned">&mdash;</b> planned &middot; tick each as you buy it &mdash; the total feeds your all-in.</span>
+    <div class="sec-head"><span class="sec-num">03</span><h2>Book Value Check</h2></div>
+    <span class="insight"><em>Book</em> Both priced under book on paper &mdash; but only the <b>2025</b> is still under book once mileage is weighed.</span>
     </summary>
-    <p class="sec-note">Gear, service &amp; security ride on top of the bike. Tick each as you buy it and tweak the price &mdash; the running total feeds your all-in above.</p>
-    <div class="panel">
-      <div class="ledger gear-list">
-        <div class="ledger-row gear-row">
-          <label class="gear-pick"><input type="checkbox" class="gear-chk" data-g="helmet"><span class="item">Helmet <small>DOT / ECE, entry–mid</small></span></label>
-          <span class="amt">$<input class="val-in gear-cost" type="text" data-g="helmet" inputmode="numeric" value="250" aria-label="Helmet cost"></span>
-        </div>
-        <div class="ledger-row gear-row">
-          <label class="gear-pick"><input type="checkbox" class="gear-chk" data-g="jacket"><span class="item">Jacket <small>armored / mesh</small></span></label>
-          <span class="amt">$<input class="val-in gear-cost" type="text" data-g="jacket" inputmode="numeric" value="200" aria-label="Jacket cost"></span>
-        </div>
-        <div class="ledger-row gear-row">
-          <label class="gear-pick"><input type="checkbox" class="gear-chk" data-g="pants"><span class="item">Riding pants <small>armored or Kevlar-lined</small></span></label>
-          <span class="amt">$<input class="val-in gear-cost" type="text" data-g="pants" inputmode="numeric" value="200" aria-label="Riding pants cost"></span>
-        </div>
-        <div class="ledger-row gear-row">
-          <label class="gear-pick"><input type="checkbox" class="gear-chk" data-g="gloves"><span class="item">Gloves <small>armored knuckle</small></span></label>
-          <span class="amt">$<input class="val-in gear-cost" type="text" data-g="gloves" inputmode="numeric" value="60" aria-label="Gloves cost"></span>
-        </div>
-        <div class="ledger-row gear-row">
-          <label class="gear-pick"><input type="checkbox" class="gear-chk" data-g="boots"><span class="item">Boots / riding shoes</span></label>
-          <span class="amt">$<input class="val-in gear-cost" type="text" data-g="boots" inputmode="numeric" value="150" aria-label="Boots cost"></span>
-        </div>
-        <div class="ledger-row gear-row">
-          <label class="gear-pick"><input type="checkbox" class="gear-chk" data-g="service"><span class="item">First service <small>oil + chain (less if DIY)</small></span></label>
-          <span class="amt">$<input class="val-in gear-cost" type="text" data-g="service" inputmode="numeric" value="150" aria-label="First service cost"></span>
-        </div>
-        <div class="ledger-row gear-row">
-          <label class="gear-pick"><input type="checkbox" class="gear-chk" data-g="lock"><span class="item">Disc / chain lock</span></label>
-          <span class="amt">$<input class="val-in gear-cost" type="text" data-g="lock" inputmode="numeric" value="90" aria-label="Lock cost"></span>
-        </div>
-        <div class="ledger-row gear-row">
-          <label class="gear-pick"><input type="checkbox" class="gear-chk" data-g="cover"><span class="item">Cover</span></label>
-          <span class="amt">$<input class="val-in gear-cost" type="text" data-g="cover" inputmode="numeric" value="45" aria-label="Cover cost"></span>
-        </div>
-        <div class="ledger-row total">
-          <span class="item">Bought <small id="gearNote">tick as you go</small></span>
-          <span class="amt"><span id="gearBought">&mdash;</span> <small style="color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;">/ <span id="gearPlanned">&mdash;</span> planned</small></span>
-        </div>
-      </div>
+    <div class="mkt-card">
+      <div class="mkt-head"><h4>J.D. Power / NADA</h4><span class="newp">dealer <b>retail</b>, not private party</span></div>
+      <table class="mkt">
+        <thead><tr><th>Reference</th><th class="n">Asset A — 2024</th><th class="n">Asset B — 2025</th></tr></thead>
+        <tbody>
+          <tr><td>MSRP new</td><td class="ask n">$4,999</td><td class="ask n">$4,999</td></tr>
+          <tr><td>Low retail</td><td class="ask n">$4,330</td><td class="ask n">~$4,450 est.</td></tr>
+          <tr><td>Average retail</td><td class="ask n">$5,700</td><td class="ask n">~$5,860 est.</td></tr>
+          <tr><td>Odometer</td><td class="mi n">~12,000</td><td class="mi n">4,156</td></tr>
+          <tr class="sub"><td>Your price</td><td class="n">$3,400</td><td class="n">$3,998</td></tr>
+          <tr class="sub"><td>Delta vs low retail</td><td class="n" style="color:#3e7c53">−$930</td><td class="n" style="color:#3e7c53">−$450</td></tr>
+        </tbody>
+      </table>
     </div>
+    <div class="sweet"><b>Read with caution.</b> Book does not adjust for mileage. A 2024 averages roughly 3,000 mi/yr, so Asset A at ~12,000 is running about <b>triple the expected wear</b> and its real market value sits below the $4,330 book figure &mdash; likely closer to <b>$3,500&ndash;3,900</b>. Asset B at 4,156 is near normal for its age, so its book number holds.</div>
+    <p class="cross-note">// 2025 figures are interpolated between the published 2024 and 2026 values. Source: J.D. Power motorcycle values.</p>
   </details>
 
-  <!-- CONTENDERS -->
-  <details class="sec-block" id="moto-contenders">
+  <!-- DISPATCH ORDER -->
+  <details class="sec-block" id="moto-order">
     <summary>
-    <div class="sec-head"><span class="sec-num">03</span><h2>The Contenders</h2></div>
-    <span class="insight"><em>Familiar vs. step up</em> <b>CB300R</b> (~31 hp, the bike you knew) vs the <b>CB500F</b> twin (~47 hp, the real upgrade).</span>
+    <div class="sec-head"><span class="sec-num">04</span><h2>Dispatch Order</h2></div>
+    <span class="insight"><em>09 Aug</em> A booked title appointment keeps Asset A on the roster &mdash; excuses mean <b>unwind + recover $1,700</b>.</span>
     </summary>
-    <p class="sec-note">All under 600cc and A2-legal. If you've ridden an entry 300 before, the real question is <b style="color:#e6e2d8">familiar vs. step up</b>. The bar marks a ~30 hp baseline (about where a 300-class single sits) — watch which bikes actually move past it.</p>
-
-    <!-- CB300R -->
-    <article class="spec-card">
-      <div class="spec-top">
-        <h2 class="spec-name">Honda CB300R<span>286cc single · naked · standard ABS</span></h2>
-        <span class="tag fam">Familiar</span>
-      </div>
-      <div class="spec-grid">
-        <div class="spec-cell"><span class="k">Engine</span><span class="v">286<small>cc</small></span></div>
-        <div class="spec-cell"><span class="k">Power</span><span class="v">~31<small>hp</small></span></div>
-        <div class="spec-cell"><span class="k">Weight</span><span class="v">~318<small>lb</small></span></div>
-        <div class="spec-cell"><span class="k">Seat</span><span class="v">31.6<small>in</small></span></div>
-        <div class="spec-cell"><span class="k">Used</span><span class="v">$3–4.5<small>k</small></span></div>
-      </div>
-      <div class="rev">
-        <div class="rev-label"><span>Output</span><span>redline →</span></div>
-        <div class="rev-track">
-          <div class="rev-redzone"></div>
-          <div class="rev-fill" style="width:62%"></div>
-          <div class="rev-mark" style="left:60%"></div>
-        </div>
-      </div>
-      <p class="verdict">Essentially the modern version of the CB300F — same single, ~30 lb lighter, restyled, with ABS and a slip/assist clutch. If you've ridden a 300-class single, you'd know exactly what you're getting. <b>Cheap, light, reliable, familiar — but a sidestep, not an upgrade.</b> You may want more after a season.</p>
-    </article>
-
-    <!-- CB500 -->
-    <article class="spec-card">
-      <div class="spec-top">
-        <h2 class="spec-name">Honda CB500F / CBR500R<span>471cc twin · naked or faired</span></h2>
-        <span class="tag step">Step Up</span>
-      </div>
-      <div class="spec-grid">
-        <div class="spec-cell"><span class="k">Engine</span><span class="v">471<small>cc</small></span></div>
-        <div class="spec-cell"><span class="k">Power</span><span class="v">~47<small>hp</small></span></div>
-        <div class="spec-cell"><span class="k">Weight</span><span class="v">~416<small>lb</small></span></div>
-        <div class="spec-cell"><span class="k">Seat</span><span class="v">~31<small>in</small></span></div>
-        <div class="spec-cell"><span class="k">Used</span><span class="v">$4.5–6<small>k</small></span></div>
-      </div>
-      <div class="rev">
-        <div class="rev-label"><span>Output</span><span>redline →</span></div>
-        <div class="rev-track">
-          <div class="rev-redzone"></div>
-          <div class="rev-fill" style="width:94%"></div>
-          <div class="rev-mark" style="left:60%"></div>
-        </div>
-      </div>
-      <p class="verdict">The natural step up from a 300-class single: same easygoing Honda manners, but the twin adds real midrange and highway legs you'll feel immediately. ~100 lb heavier — clearly within your range. <b>The faired CBR500R adds wind protection (slight lean); the naked CB500F stays upright. Same engine, your call on ergonomics.</b></p>
-    </article>
-
     <div class="read">
-      <span class="eyebrow">My Read</span>
-      <p>If you're coming off a 300-class single, a CB300R is the safe-but-uninspiring choice — you'd likely want more before long. The <b>CB500 twin</b> is the genuine upgrade: same Honda ease, meaningfully more bike, and it's the sensible step up rather than re-buying what you already had. For something with more style and character, that's where the candidates below come in.</p>
+      <span class="eyebrow">Sunday 09 August — The Decision</span>
+      <p>If Jakob has a <b>booked appointment at a license plate agency</b>, Asset A stays on the roster and the fault list opens. If he has excuses, unwind: he takes back the bike and title, you recover <b>$1,700</b>, and Asset B becomes primary. <b>Do not release the bike or title until cash is in hand.</b></p>
     </div>
-    <p class="naming">// NAMING — Honda's "F" bikes (CB300R, CB500F) are naked/upright. The "R"/CBR bikes (CBR300R, CBR500R) are faired sportbikes with a slight lean. Same engines, different ergonomics + weather protection.</p>
+    <div class="weigh" style="margin-top:14px;">
+      <div class="weigh-row"><span class="wk">05 Aug</span><span class="wv">Nudge Jakob. Ask for a <b>specific day</b>, not a status update. Feel out whether the 3% highway-use tax and late penalty are a cash problem for him.</span></div>
+      <div class="weigh-row"><span class="wk">09 Aug</span><span class="wv"><b>Hard cutoff.</b> Booked date, or unwind.</span></div>
+    </div>
+    <p class="naming">// REJECTED PATHS — bonded title, small claims. The unwind beats both: bike + title back to Jakob, $1,700 recovered, Asset B becomes primary.</p>
   </details>
 
-  <!-- MARKET VALUES -->
-  <details class="sec-block">
+  <!-- FAULT & ISSUE LIST -->
+  <details class="sec-block" id="moto-issue">
     <summary>
-    <div class="sec-head"><span class="sec-num">04</span><h2>Market Values</h2></div>
-    <span class="insight"><em>Insight</em> Use the KBB trade-in as your floor &mdash; a clean CB500F sits around <b>$3&ndash;4.6k</b>; private sellers ask well above it.</span>
+    <div class="sec-head"><span class="sec-num">05</span><h2>Fault &amp; Issue List</h2></div>
+    <span class="insight"><em>Rule</em> Platform-agnostic gear is cleared for purchase now &mdash; <b>no MT-03 parts until 09 Aug</b>.</span>
     </summary>
-    <div class="mkt-intro">
-      <p class="sec-note" style="margin-bottom:0">Popular years, what they actually go for, and the mileage you'll typically see. Use the KBB trade-in figure as your negotiating floor — private sellers ask well above it.</p>
-      <div class="mkt-legend">
-        <span><b>Ask</b> = current dealer + private listings</span>
-        <span><b>KBB Trade-In</b> = dealer floor, good condition</span>
-        <span><b>Miles</b> = typical for age</span>
-      </div>
-    </div>
+    <p class="sec-note">&ldquo;Issue&rdquo; = releasing parts or money. Everything here transfers to <b style="color:#e6e2d8">any</b> asset, so it&rsquo;s cleared now. Tick each as you buy it.</p>
+    <ul class="check-list">
+      <li><label><input type="checkbox"><span>Disc lock — $30&ndash;110</span></label></li>
+      <li><label><input type="checkbox"><span>Rear paddock stand + spools — $85&ndash;130</span></label></li>
+      <li><label><input type="checkbox"><span>Quad Lock mount, case, dampener, charger — $180&ndash;240</span></label></li>
+      <li><label><input type="checkbox"><span>Helmet <small>(later)</small> — $250&ndash;500</span></label></li>
+      <li><label><input type="checkbox"><span>Riding shoes <small>(later)</small> — $150&ndash;280</span></label></li>
+      <li><label><input type="checkbox"><span>Parking lot refresher session</span></label></li>
+    </ul>
+    <div class="callout" style="margin-top:14px;">&#9873; <b>No parts issue until 09 Aug</b> &mdash; fresh tires and a new chain are unrecoverable if the deal unwinds. Stand, lock, helmet and boots transfer to any asset and are cleared for purchase now.</div>
+  </details>
 
-    <div class="mkt-card">
-      <div class="mkt-head"><h4>Honda CB300R</h4><span class="newp">new <b>~$4,499</b> (2026)</span></div>
-      <table class="mkt">
-        <thead><tr><th>Year</th><th class="n">Typical Ask</th><th class="n">KBB Trade-In</th><th class="n">Typical Miles</th></tr></thead>
-        <tbody>
-          <tr><td class="yr">2019</td><td class="ask n">$3.2–4.0k</td><td class="kbb n">~$2.5–2.9k</td><td class="mi n">5–12k</td></tr>
-          <tr><td class="yr">2021</td><td class="ask n">$3.8–4.5k</td><td class="kbb n">~$2.9–3.4k</td><td class="mi n">3–8k</td></tr>
-          <tr><td class="yr">2023</td><td class="ask n">$4.2–4.9k</td><td class="kbb n">~$3.4–3.9k</td><td class="mi n">1–5k</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="mkt-card">
-      <div class="mkt-head"><h4>Honda CB500F / CBR500R</h4><span class="newp">new <b>~$6,800</b></span></div>
-      <table class="mkt">
-        <thead><tr><th>Year</th><th class="n">Typical Ask</th><th class="n">KBB Trade-In</th><th class="n">Typical Miles</th></tr></thead>
-        <tbody>
-          <tr><td class="yr">'16–'18</td><td class="ask n">$4.0–5.0k</td><td class="kbb n">~$3.0–3.8k</td><td class="mi n">6–16k</td></tr>
-          <tr><td class="yr">'19–'21</td><td class="ask n">$4.8–5.8k</td><td class="kbb n">~$3.8–4.6k</td><td class="mi n">4–10k</td></tr>
-          <tr><td class="yr">'22–'23</td><td class="ask n">$5.5–6.5k</td><td class="kbb n">~$4.5–5.3k</td><td class="mi n">1.5–6k</td></tr>
-        </tbody>
-      </table>
-    </div>
-
+  <!-- TECHNICAL DATA -->
+  <details class="sec-block" id="moto-tech" style="border-bottom:none;">
+    <summary>
+    <div class="sec-head"><span class="sec-num">06</span><h2>Technical Data</h2></div>
+    <span class="insight"><em>Appendix</em> Tires, chain, oil capacity, VIN &mdash; the numbers the shop (and the DMV) will ask for.</span>
+    </summary>
     <div class="mkt-quick">
-      <div class="qh">Cross-Shop — Typical Used (all years)</div>
+      <div class="qh">2024&ndash;2025 MT-03 &mdash; Common Platform</div>
       <table class="mkt">
-        <thead><tr><th>Model</th><th class="n">Typical Ask</th><th class="n">KBB Trade-In</th><th class="n">Typical Miles</th></tr></thead>
+        <thead><tr><th>Item</th><th class="n">Value</th></tr></thead>
         <tbody>
-          <tr><td class="yr" style="font-size:.98rem">Ninja 400 / Z400</td><td class="ask n">$4.0–5.9k</td><td class="kbb n">~$3.1–5.0k</td><td class="mi n">1–12k</td></tr>
-          <tr><td class="yr" style="font-size:.98rem">Yamaha MT-03 / R3</td><td class="ask n">$3.5–5.0k</td><td class="kbb n">~$2.6–4.1k</td><td class="mi n">2–12k</td></tr>
-          <tr><td class="yr" style="font-size:.98rem">KTM 390 Duke</td><td class="ask n">$3.5–5.0k</td><td class="kbb n">~$2.6–4.0k</td><td class="mi n">2–12k</td></tr>
-          <tr><td class="yr" style="font-size:.98rem">Triumph Scrambler 400 X</td><td class="ask n">$4.5–5.5k</td><td class="kbb n">~$3.9–4.6k</td><td class="mi n">&lt;5k</td></tr>
-          <tr><td class="yr" style="font-size:.98rem">Honda SCL500 <span style="font-family:'IBM Plex Mono',monospace;font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--redline);padding:2px 5px;border-radius:2px;vertical-align:middle;">over $5k</span></td><td class="ask n">$5.0–6.0k</td><td class="kbb n">~$4.0–5.0k</td><td class="mi n">1–8k</td></tr>
+          <tr><td class="yr">Engine</td><td class="mi n">321cc liquid-cooled parallel twin</td></tr>
+          <tr><td class="yr">Tire, front</td><td class="mi n">110/70R17</td></tr>
+          <tr><td class="yr">Tire, rear</td><td class="mi n">140/70R17</td></tr>
+          <tr><td class="yr">Oil capacity</td><td class="mi n">2.5 L — draw 3 qt</td></tr>
+          <tr><td class="yr">Final drive</td><td class="mi n">520 chain</td></tr>
+          <tr><td class="yr">Turn signals</td><td class="mi n">LED front and rear — no bulbs</td></tr>
+          <tr><td class="yr">Seat height</td><td class="mi n">30.7 in</td></tr>
+          <tr><td class="yr">Wet weight</td><td class="mi n">367 lb</td></tr>
+          <tr><td class="yr">VIN, Asset A</td><td class="mi n">MH3RH20Y0RK014419</td></tr>
         </tbody>
       </table>
     </div>
-
-    <div class="mkt-quick">
-      <div class="qh">Year Targets @ $3k Cash <span style="font-family:'IBM Plex Mono',monospace;font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--redline);padding:2px 5px;border-radius:2px;vertical-align:middle;">re-entry</span></div>
-      <table class="mkt">
-        <thead><tr><th>Model</th><th class="n">Target Years</th><th>Watch-Item</th></tr></thead>
-        <tbody>
-          <tr><td class="yr" style="font-size:.98rem">Honda CB500F / CBR500R <span style="font-family:'IBM Plex Mono',monospace;font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--redline);padding:2px 5px;border-radius:2px;vertical-align:middle;">best value</span></td><td class="ask n">'14–'16</td><td>Bulletproof every year — buy on <b>service history</b>, not year</td></tr>
-          <tr><td class="yr" style="font-size:.98rem">Kawasaki Ninja 400 / Z400</td><td class="ask n">'18–'19</td><td>Unchanged since launch; expect <b>higher miles</b> at $3k</td></tr>
-          <tr><td class="yr" style="font-size:.98rem">KTM 390 Duke / RC390</td><td class="ask n">'15–'17</td><td>Valve checks matter on the single; early electrical niggles</td></tr>
-          <tr><td class="yr" style="font-size:.98rem">Yamaha R3 / MT-03</td><td class="ask n">'15–'17</td><td>Confirm '15 recall work (trans/frame) was done</td></tr>
-          <tr><td class="yr" style="font-size:.98rem">BMW G310R</td><td class="ask n">'17–'19</td><td>Verify early fuel-pump / stalling recall completed</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="sweet">At <b>$3k cash</b> — the goal now being to just get back on two wheels — a <b>2014–2016 CB500F</b> is the smart-money pick: same easy Honda manners you know from the 300F, a genuine step up, and it lands in budget on private-party (Facebook) even though dealer sites floor higher. The <b>rule that beats any model year:</b> a well-kept older bike with records + a done valve check beats a neglected newer one every time. At <b>$4k</b>, widen to a 2–4-year-old example of any bike above in the 3,000–8,000-mile range.</div>
-    <p class="cross-note">// Values reflect mid-2026 U.S. listings (Autotrader / CycleTrader) and KBB motorcycle trade-in data. Many of these bikes are lightly ridden — low-mile examples are common and worth holding out for.</p>
-  </details>
-
-  <!-- CANDIDATES -->
-  <details class="sec-block" id="moto-candidates">
-    <summary>
-    <div class="sec-head"><span class="sec-num">05</span><h2>Candidate Log</h2></div>
-    <span class="insight" data-dyn="candidates"><em>Candidates</em> <span class="dyn">&mdash;</span></span>
-    </summary>
-    <p class="sec-note">Bikes you're actually looking at, scored against the benchmarks above. Tap the blank fields to fill in the next ones.</p>
-
-    <!-- CANDIDATE 01 -->
-    <article class="cand-card">
-      <div class="cand-top">
-        <div><span class="cand-ey">Candidate 01 · Facebook Marketplace</span><h3 class="cand-name"><span class="fill" contenteditable="true">2015 Honda CB500F</span></h3></div>
-        <span class="vbadge">Strong buy</span>
-      </div>
-      <div class="cand-facts">
-        <div class="cand-fact"><span class="k">Price</span><span class="v"><span class="fill" contenteditable="true">$3,900</span> <small>$4,500</small></span></div>
-        <div class="cand-fact"><span class="k">Miles</span><span class="v"><span class="fill" contenteditable="true">7,500</span></span></div>
-        <div class="cand-fact"><span class="k">Condition</span><span class="v"><span class="fill" contenteditable="true">Used–Good</span></span></div>
-        <div class="cand-fact"><span class="k">Title</span><span class="v"><span class="fill" contenteditable="true">Clean ✓</span></span></div>
-      </div>
-      <div class="pos">
-        <div class="pos-row"><span>CB500F benchmark ask</span><span>$4.0k ←→ $5.0k</span></div>
-        <div class="pos-track"><div class="pos-mark" data-v="$3.9k" style="left:2%"></div></div>
-        <div class="pos-foot">Sits <b>below the benchmark floor</b> — and 7,500 miles on a 2015 is exceptionally low (~750/yr). KBB trade-in floor ~$3.0–3.8k. <b>Great value; the catch is age, not wear.</b></div>
-      </div>
-      <div class="cand-cols">
-        <div class="cand-col">
-          <h5>Stock &amp; History</h5>
-          <ul>
-            <li>Fully stock — no surprises</li>
-            <li>Never dropped or wrecked</li>
-            <li>2 keys included</li>
-            <li>Tires in good shape</li>
-            <li>Finn GPS anti-theft tracker built in</li>
-            <li class="extra">No trades &middot; $3,900 OBO</li>
-          </ul>
-        </div>
-        <div class="cand-col">
-          <h5>Why it fits</h5>
-          <ul>
-            <li>The "Step Up" twin — your real upgrade</li>
-            <li>~47 hp, highway-capable</li>
-            <li>Cheapest of any pick to own</li>
-            <li>Bulletproof Honda reliability</li>
-            <li>Clean title in hand</li>
-          </ul>
-        </div>
-      </div>
-      <div class="cand-verify">
-        <div class="vh">// Confirm before buying — age, not miles, is the watch-item</div>
-        <ul class="check-list">
-          <li><label><input type="checkbox"><span>Valve-clearance check — likely due by time on a 2015; ask if ever done</span></label></li>
-          <li><label><input type="checkbox"><span>Tire date codes — 10-yr-old bike may wear original, hardened rubber</span></label></li>
-          <li><label><input type="checkbox"><span>Fluids age out: coolant + brake fluid freshness, fork seals dry</span></label></li>
-          <li><label><input type="checkbox"><span>Battery age / strong cold crank; chain + sprockets</span></label></li>
-          <li><label><input type="checkbox"><span>Cold start clean, no smoke/rattle; VIN matches title; 2 keys present</span></label></li>
-          <li><label><input type="checkbox"><span>Finn GPS — confirm account transfer + monthly cost, or plan to cancel it</span></label></li>
-        </ul>
-      </div>
-      <div class="cand-offer">
-        <div><span class="ol">Target offer</span><span class="oa"><span class="fill" contenteditable="true">$3,500–3,700</span></span></div>
-        <p>Already dropped $600. Low miles justify near-ask, but it's a decade old — use the likely <b>tire + fluid refresh</b> as leverage. A clean cash offer around <b>$3,600</b> is fair, and still leaves room for that refresh under $5k.</p>
-      </div>
-    </article>
-
-    <!-- CANDIDATE 02 — the cheaper, higher-mile CB500F -->
-    <article class="cand-card">
-      <div class="cand-top">
-        <div><span class="cand-ey">Candidate 02 · Facebook Marketplace</span><h3 class="cand-name"><span class="fill" contenteditable="true">2015 Honda CB500F</span></h3></div>
-        <span class="vbadge">Strong buy</span>
-      </div>
-      <div class="cand-facts">
-        <div class="cand-fact"><span class="k">Price</span><span class="v"><span class="fill" contenteditable="true">$3,200</span> <small>$3,500</small></span></div>
-        <div class="cand-fact"><span class="k">Miles</span><span class="v"><span class="fill" contenteditable="true">27,000</span></span></div>
-        <div class="cand-fact"><span class="k">Title</span><span class="v"><span class="fill" contenteditable="true">Clean ✓</span></span></div>
-        <div class="cand-fact"><span class="k">Location</span><span class="v"><span class="fill" contenteditable="true">Mars Hill, NC</span></span></div>
-      </div>
-      <div class="pos">
-        <div class="pos-row"><span>CB500F benchmark ask</span><span>$4.0k ←→ $5.0k</span></div>
-        <div class="pos-track"><div class="pos-mark" data-v="$3.2k" style="left:0%"></div></div>
-        <div class="pos-foot"><b>Cheapest running CB500F on the board</b> &mdash; $700 under Candidate 01 and well below the market floor. 27k miles is still low for this bulletproof twin (they run 60k+). <b>You&rsquo;re paying for miles + a pipe, not for trouble.</b></div>
-      </div>
-      <div class="cand-cols">
-        <div class="cand-col">
-          <h5>Condition &amp; Mods</h5>
-          <ul>
-            <li>Clean title, ~26&ndash;27k miles</li>
-            <li>Fresh oil change, good tires</li>
-            <li>LeoVince-style slip-on exhaust</li>
-            <li>1-finger adjustable clutch lever</li>
-            <li>&ldquo;No issues, ready to ride&rdquo;</li>
-            <li class="extra">Trades: MT-07 / FZ-07 only &middot; $3,200 OBO</li>
-          </ul>
-        </div>
-        <div class="cand-col">
-          <h5>Why it fits</h5>
-          <ul>
-            <li>Same &ldquo;step up&rdquo; twin, lowest cash out</li>
-            <li>Leaves the whole gear budget under $4k</li>
-            <li>~47 hp, highway-capable</li>
-            <li>Bulletproof Honda &mdash; barely broken in</li>
-            <li>Established seller (4.5&#9733;, 8 reviews)</li>
-          </ul>
-        </div>
-      </div>
-      <div class="cand-verify">
-        <div class="vh">// Confirm before buying &mdash; the miles + the exhaust are the watch-items</div>
-        <ul class="check-list">
-          <li><label><input type="checkbox"><span>Valve-clearance check &mdash; ~16k-mi interval; done, or due at 27k?</span></label></li>
-          <li><label><input type="checkbox"><span>Chain + sprockets &mdash; 27k is when they need replacing; check wear</span></label></li>
-          <li><label><input type="checkbox"><span>Exhaust: any tune / fuel controller? Decel popping or lean running?</span></label></li>
-          <li><label><input type="checkbox"><span>Check for drop damage &mdash; bar ends, levers, case covers, frame</span></label></li>
-          <li><label><input type="checkbox"><span>Confirm true odometer (26k vs 27k), VIN matches title, keys</span></label></li>
-          <li><label><input type="checkbox"><span>Cold start clean, no smoke/rattle; brakes + fork seals</span></label></li>
-        </ul>
-      </div>
-      <div class="cand-offer">
-        <div><span class="ol">Target offer</span><span class="oa"><span class="fill" contenteditable="true">$2,900&ndash;3,100</span></span></div>
-        <p>Already OBO at $3,200. Higher miles + an aftermarket pipe (not every buyer wants one) are your leverage &mdash; a clean <b>cash offer near $3,000</b> is fair and keeps <b>~$900 under the $4k cap</b> for a valve/chain service cushion. It&rsquo;s a ~2-hr drive from Charlotte, so confirm condition before you make the trip.</p>
-      </div>
-    </article>
-
-    <!-- CANDIDATE 03 — cheapest CB500F, drop + odometer history -->
-    <article class="cand-card">
-      <div class="cand-top">
-        <div><span class="cand-ey">Candidate 03 · Facebook Marketplace</span><h3 class="cand-name"><span class="fill" contenteditable="true">2014 Honda CB500F</span></h3></div>
-        <span class="vbadge">Strong buy*</span>
-      </div>
-      <div class="cand-facts">
-        <div class="cand-fact"><span class="k">Price</span><span class="v"><span class="fill" contenteditable="true">$3,000</span></span></div>
-        <div class="cand-fact"><span class="k">Miles</span><span class="v"><span class="fill" contenteditable="true">13,546</span><small>true</small></span></div>
-        <div class="cand-fact"><span class="k">Title</span><span class="v"><span class="fill" contenteditable="true">Clean ✓</span></span></div>
-        <div class="cand-fact"><span class="k">Location</span><span class="v"><span class="fill" contenteditable="true">NC</span></span></div>
-      </div>
-      <div class="pos">
-        <div class="pos-row"><span>CB500F benchmark ask</span><span>$4.0k ←→ $5.0k</span></div>
-        <div class="pos-track"><div class="pos-mark" data-v="$3.0k" style="left:0%"></div></div>
-        <div class="pos-foot"><b>*Cheapest of the three CB500Fs &mdash; but it&rsquo;s been laid down.</b> True miles are a genuinely-low 13,546 (dash reads ~2.5k; the cluster was swapped after the drop). <b>The asterisk is the crash history &mdash; inspect it before anything else.</b></div>
-      </div>
-      <div class="cand-cols">
-        <div class="cand-col">
-          <h5>Condition &amp; History</h5>
-          <ul>
-            <li>Clean NC title, low true miles</li>
-            <li>Regularly serviced, <b>new tires</b></li>
-            <li>Odo cluster replaced (true 13,546)</li>
-            <li class="extra">Laid down by past owner &middot; $3,000, trades OK</li>
-          </ul>
-        </div>
-        <div class="cand-col">
-          <h5>Why it fits</h5>
-          <ul>
-            <li>Lowest cash out of any pick</li>
-            <li>Low true miles + fresh rubber</li>
-            <li>Same &ldquo;step up&rdquo; twin, ~47 hp</li>
-            <li>Bulletproof Honda &mdash; cheap to run</li>
-            <li>Trade-flexible seller (or just cash)</li>
-          </ul>
-        </div>
-      </div>
-      <div class="cand-verify">
-        <div class="vh">// Confirm before buying &mdash; the drop + the odometer are the watch-items</div>
-        <ul class="check-list">
-          <li><label><input type="checkbox"><span>Crash damage: bent forks/bars, cracked case covers, frame straightness, subframe</span></label></li>
-          <li><label><input type="checkbox"><span>Does the fork compress/rebound straight? Wheels true, no wobble at speed?</span></label></li>
-          <li><label><input type="checkbox"><span>Odometer: does the NC title note the mileage discrepancy / cluster swap? Get it in writing</span></label></li>
-          <li><label><input type="checkbox"><span>Service records for the &ldquo;regularly serviced&rdquo; claim; valve check status</span></label></li>
-          <li><label><input type="checkbox"><span>Chain + sprockets and brake pad life at 13.5k</span></label></li>
-          <li><label><input type="checkbox"><span>Cold start clean, no smoke/rattle; VIN matches title; keys</span></label></li>
-        </ul>
-      </div>
-      <div class="cand-offer">
-        <div><span class="ol">Target offer</span><span class="oa"><span class="fill" contenteditable="true">$2,600&ndash;2,800</span></span></div>
-        <p>The <b>laid-down history + odometer swap are real value-killers on paper</b> &mdash; use them. If the frame/forks check out straight, this is a low-mile, freshly-shod CB500F for the least money on the board. If they don&rsquo;t, walk. A cash offer <b>$2,600&ndash;2,800</b> is fair given the damage risk.</p>
-      </div>
-    </article>
-
-    <!-- CANDIDATE 04 -->
-    <article class="cand-card">
-      <div class="cand-top">
-        <div><span class="cand-ey">Candidate 04 · Dealer (Marketplace)</span><h3 class="cand-name"><span class="fill" contenteditable="true">2025 Triumph Speed 400</span></h3></div>
-        <span class="vbadge">Strong buy*</span>
-      </div>
-      <div class="cand-facts">
-        <div class="cand-fact"><span class="k">Price</span><span class="v"><span class="fill" contenteditable="true">$4,899</span></span></div>
-        <div class="cand-fact"><span class="k">Miles</span><span class="v"><span class="fill" contenteditable="true">New?</span></span></div>
-        <div class="cand-fact"><span class="k">Listed</span><span class="v"><span class="fill" contenteditable="true">28 days</span></span></div>
-        <div class="cand-fact"><span class="k">Location</span><span class="v"><span class="fill" contenteditable="true">Concord, NC</span></span></div>
-      </div>
-      <div class="pos">
-        <div class="pos-row"><span>new bike · under sticker</span><span>MSRP ~$5,195</span></div>
-        <div class="pos-track"><div class="pos-mark" data-v="$4,899" style="left:6%"></div></div>
-        <div class="pos-foot"><b>*Watch the out-the-door price.</b> This is a dealer — freight, doc fee, and tax can stack on top, possibly pushing it to <b>~$5.5–6k OTD</b>, over your cash budget. Unlike the private listings, the sticker may not be the real number. Confirm OTD first.</div>
-      </div>
-      <div class="cand-cols">
-        <div class="cand-col">
-          <h5>Spec &amp; Status</h5>
-          <ul>
-            <li>398cc single · ~40 hp</li>
-            <li>375 lb · 31.1" seat (lowest pick)</li>
-            <li>ABS + traction control</li>
-            <li>Ride-by-wire, slip clutch</li>
-            <li>Near-new + Triumph warranty*</li>
-          </ul>
-        </div>
-        <div class="cand-col">
-          <h5>Why it fits</h5>
-          <ul>
-            <li>Newest pick — basically zero wear</li>
-            <li>Modern-retro style, premium finish</li>
-            <li>Lowest, friendliest seat height</li>
-            <li>Long service intervals, low upkeep</li>
-            <li>Modern-classic style, but brand new</li>
-          </ul>
-        </div>
-      </div>
-      <div class="cand-verify">
-        <div class="vh">// Confirm before buying — the price is the catch, not the bike</div>
-        <ul class="check-list">
-          <li><label><input type="checkbox"><span>Out-the-door price — is $4,899 all-in, or plus freight + doc + tax?</span></label></li>
-          <li><label><input type="checkbox"><span>New, demo, or used? Get mileage + confirm full warranty applies/starts</span></label></li>
-          <li><label><input type="checkbox"><span>Test the low-rpm fueling — some report a slightly snatchy throttle down low</span></label></li>
-          <li><label><input type="checkbox"><span>Confirm it's the Speed 400 single (listing says "Speed Four")</span></label></li>
-          <li><label><input type="checkbox"><span>Sit on it — 31.1" is the easiest of your picks, but still check</span></label></li>
-        </ul>
-      </div>
-      <div class="cand-offer">
-        <div><span class="ol">Play</span><span class="oa"><span class="fill" contenteditable="true">OTD ≤ $5k</span></span></div>
-        <p>Less haggle room than private, but it's a leftover 2025 sitting 28 days. Push to get it <b>out-the-door at/under $5k</b> — or have them eat freight and throw in the first service. A new, warrantied bike for used money is the upside, <b>if the OTD number holds.</b></p>
-      </div>
-    </article>
-
-  </details>
-
-  <!-- CROSS SHOP -->
-  <details class="sec-block">
-    <summary>
-    <div class="sec-head"><span class="sec-num">06</span><h2>Cross-Shop</h2></div>
-    <span class="insight"><em>Insight</em> The <b>Ninja 400 / Z400</b> is the value benchmark &mdash; a real step up from a 300-class single and cheaper to run than the KTM.</span>
-    </summary>
-    <p class="sec-note">Mostly A2-legal, under 600cc, and in reach at $4k cash used — with one over-budget exception, flagged below. Worth a test ride against your shortlist.</p>
-    <div class="cross">
-      <div class="cross-item">
-        <h4>Kawasaki Ninja 400 / Z400</h4>
-        <p>The value benchmark &mdash; 399cc twin, ~45 hp, standard ABS, and a real step up from a 300-class single for cheaper running than the KTM. Z400 is the naked, Ninja 400 the faired. <b>Watch:</b> dropped/track bikes; discontinued for 2024 (&rarr; Ninja 500), so hunt the low-mile late ones.</p>
-      </div>
-      <div class="cross-item">
-        <h4>Yamaha MT-03 / R3</h4>
-        <p>The other easy twin &mdash; 321cc, ~42 hp, inverted forks + slipper clutch and the <b>lowest, friendliest seat</b> of the group. Smooth and dirt-cheap to own. <b>Watch:</b> mildest power here; some riders want more midrange for the highway.</p>
-      </div>
-      <div class="cross-item">
-        <h4>KTM 390 Duke</h4>
-        <p>The character pick &mdash; 373cc single, ~44 hp, sharpest handling and the most attitude of the bunch. <b>Watch:</b> pricier service + parts and faster depreciation than the Japanese twins; confirm ABS is present.</p>
-      </div>
-      <div class="cross-item">
-        <h4>Honda CBR500R</h4>
-        <p>Your CB500F&rsquo;s <b>faired sibling</b> &mdash; identical 471cc twin and running gear, just a fairing and a slight forward lean for wind protection. Same bulletproof reliability. <b>Watch:</b> lean ergonomics if you prefer upright; otherwise a pure ergonomics-vs-CB500F call.</p>
-      </div>
-      <div class="cross-item">
-        <h4>BMW G310 R</h4>
-        <p>Premium badge on a budget &mdash; 313cc single, ~34 hp, light and flickable, easy in town. <b>Watch:</b> modest power, early-build fueling quirks/recalls, and a thinner service network than Honda.</p>
-      </div>
-      <div class="cross-item">
-        <h4>Kawasaki Ninja 650 / Z650 <small style="font-weight:400;color:var(--ink-faint)">— over-budget stretch</small></h4>
-        <p>The step past the brief &mdash; 649cc twin, ~67 hp, more real-world grunt. The flagged exception: it&rsquo;s <b>over 600cc and usually over $4k</b>. <b>Watch:</b> more bike than a returning rider needs day one; not A2-legal unrestricted.</p>
-      </div>
-    <p class="cross-note">// The Ninja 400 / Z400 is the strongest all-round alternative to the Hondas — cheaper to run than the KTM, and a real step up from a 300-class single.</p>
-  </details>
-
-  <!-- THINGS TO WEIGH -->
-  <details class="sec-block">
-    <summary>
-    <div class="sec-head"><span class="sec-num">07</span><h2>Before You Commit</h2></div>
-    <span class="insight"><em>Insight</em> Rust-bust first, ride a <b>twin vs. a single</b> back-to-back, and quote comprehensive insurance before you buy.</span>
-    </summary>
-    <div class="weigh">
-      <div class="weigh-row"><span class="wk">Rust-busting first</span><span class="wv">If it's been a while, do a parking-lot refresh (or an MSF Returning Rider course) before highway miles. Your hands remember more than your reflexes — give them a session to catch up.</span></div>
-      <div class="weigh-row"><span class="wk">Singles vs. twins</span><span class="wv">Your 300F was a single. The CB500 / Ninja 400 / MT-03 are <b>twins</b> — smoother, more top-end, happier on the highway. The Triumph 400 / 390 Duke are <b>punchier singles</b> with more character and vibration. Ride both types back to back — it's the biggest difference in feel.</span></div>
-      <div class="weigh-row"><span class="wk">Ownership cost</span><span class="wv">Honda / Yamaha / Kawasaki = cheap parts, long intervals, easy DIY, strong resale. KTM = pricier service and parts, faster depreciation. Factor the <b>real</b> cost, not just the sticker.</span></div>
-      <div class="weigh-row"><span class="wk">Prioritize ABS</span><span class="wv">The CB300R, CB500s, and Triumph 400 have it standard — just confirm it's present on any KTM or Aprilia you look at.</span></div>
-      <div class="weigh-row"><span class="wk">Theft</span><span class="wv">Light naked/sport bikes are common targets — your cover + lock instincts are right. Add a ground anchor if you park outside, a hidden tracker, and <b>comprehensive insurance</b> so theft is actually covered.</span></div>
-      <div class="weigh-row"><span class="wk">Tire age</span><span class="wv">Cheap used bikes often wear old, hard rubber. Check the 4-digit date code on the sidewall — anything 5+ years old should be replaced regardless of tread.</span></div>
-      <div class="weigh-row"><span class="wk">Season timing</span><span class="wv">It's peak riding season, so prices are at their highest. If you're not rushing, <b>late fall / winter</b> is when sellers get motivated.</span></div>
-      <div class="weigh-row"><span class="wk">Seat-height fit</span><span class="wv">You know your comfort range from the 300F. Most of these sit around 31", and the Triumph 400 is the lowest at 31.1" — but always flat-foot a bike before you commit.</span></div>
-    </div>
-  </details>
-
-  <!-- CHECKLIST -->
-  <details class="sec-block">
-    <summary>
-    <div class="sec-head"><span class="sec-num">08</span><h2>Inspection Checklist</h2></div>
-    <span class="insight"><em>Insight</em> Insist on a <b>cold start</b>, check valve/tire/fluid age, and walk from any no-title &ldquo;ran when parked&rdquo; deal.</span>
-    </summary>
-    <p class="sec-note">Buying used is the right call — run this yourself, or get a pre-purchase inspection, before money moves. Tap to check off as you go.</p>
-
-    <div class="check-group">
-      <h4>Paperwork</h4>
-      <ul class="check-list">
-        <li><label><input type="checkbox"><span>Title in seller's name; VIN matches the frame</span></label></li>
-        <li><label><input type="checkbox"><span>Run the VIN for theft / salvage / liens</span></label></li>
-        <li><label><input type="checkbox"><span>Service records — especially valve checks</span></label></li>
-      </ul>
-    </div>
-
-    <div class="check-group">
-      <h4>Cold start <small style="font-weight:400;color:#b7b3a9;font-family:'IBM Plex Mono';font-size:.7rem;letter-spacing:.04em;">— insist the bike is cold on arrival</small></h4>
-      <ul class="check-list">
-        <li><label><input type="checkbox"><span>Starts easily — no excessive smoke, no rattles or knocks</span></label></li>
-        <li><label><input type="checkbox"><span>Idles steadily once warm</span></label></li>
-      </ul>
-    </div>
-
-    <div class="check-group">
-      <h4>Mechanical</h4>
-      <ul class="check-list">
-        <li><label><input type="checkbox"><span>Chain + sprockets — stretch, rust, hooked teeth</span></label></li>
-        <li><label><input type="checkbox"><span>Tires — tread depth + date code</span></label></li>
-        <li><label><input type="checkbox"><span>Brakes — pad life, rotor wear, lever feel</span></label></li>
-        <li><label><input type="checkbox"><span>Fork seals dry; no leaks under the bike</span></label></li>
-        <li><label><input type="checkbox"><span>Coolant level + clean oil</span></label></li>
-        <li><label><input type="checkbox"><span>No frame damage or drop scars (bar ends, levers, pegs, tank)</span></label></li>
-      </ul>
-    </div>
-
-    <div class="check-group">
-      <h4>Electrical</h4>
-      <ul class="check-list">
-        <li><label><input type="checkbox"><span>All lights, signals, horn, and dash work</span></label></li>
-        <li><label><input type="checkbox"><span>No warning lights stuck on (ABS, check engine)</span></label></li>
-      </ul>
-    </div>
-
-    <div class="check-group">
-      <h4>Ride it <small style="font-weight:400;color:#b7b3a9;font-family:'IBM Plex Mono';font-size:.7rem;letter-spacing:.04em;">— bring your license + gear</small></h4>
-      <ul class="check-list">
-        <li><label><input type="checkbox"><span>Shifts cleanly through all gears; clutch isn't slipping</span></label></li>
-        <li><label><input type="checkbox"><span>Tracks straight, no wobble, brakes pull straight</span></label></li>
-      </ul>
-    </div>
-
-    <div class="redflags"><b>Walk away if</b>Seller won't let it sit cold · no title · "mechanic friend" stories · price too good to be true.</div>
-  </details>
-
-  <!-- SHOPPING -->
-  <details class="sec-block">
-    <summary>
-    <div class="sec-head"><span class="sec-num">09</span><h2>First-Day List</h2></div>
-    <span class="insight"><em>Insight</em> Keep <b>~$600&ndash;1,400</b> aside on top of the bike for gear, security, and the first service.</span>
-    </summary>
-    <div class="shop-grid">
-      <div class="shop-col">
-        <h4>Gear</h4>
-        <ul>
-          <li>Helmet — DOT/ECE, snug fit</li>
-          <li>Riding pants — armored / Kevlar</li>
-          <li>Boots / over-ankle shoes</li>
-          <li>Gloves + jacket <small>(if needed)</small></li>
-        </ul>
-      </div>
-      <div class="shop-col">
-        <h4>Security</h4>
-        <ul>
-          <li>Bike cover</li>
-          <li>Disc lock w/ reminder cable</li>
-          <li>Ground anchor <small>(if parking outside)</small></li>
-        </ul>
-      </div>
-      <div class="shop-col">
-        <h4>First Service</h4>
-        <ul>
-          <li>Oil + filter change</li>
-          <li>Chain clean / lube / adjust</li>
-          <li>Top off coolant, check pads</li>
-        </ul>
-      </div>
-    </div>
-  </details>
-
-  <!-- NEXT STEPS -->
-  <details class="sec-block" id="moto-next" style="border-bottom:none;">
-    <summary>
-    <div class="sec-head"><span class="sec-num">10</span><h2>Next Steps</h2></div>
-    <span class="insight"><em>The path</em> Confirm history &rarr; test ride &rarr; <b>~$3.3k cash</b> offer &rarr; insure &rarr; ride. Keep <b>~$600&ndash;1,400</b> for gear.</span>
-    </summary>
-    <div class="steps">
-      <div class="step"><p>Cap the bike at <b>$4k cash</b> and bring it as leverage on private sales — sellers move on a clean cash offer.</p></div>
-      <div class="step"><p>Get <b>insurance quotes</b> for your shortlist — comprehensive, not just liability. It may settle the decision.</p></div>
-      <div class="step"><p>Watch listings (Marketplace, Cycle Trader, local dealers) and <b>save comps</b>.</p></div>
-      <div class="step"><p>Line up a <b>pre-purchase inspection</b> before committing.</p></div>
-      <div class="step"><p>Keep <b>~$600–1,400</b> aside for gear + setup — non-negotiable, even on a tight day.</p></div>
-    </div>
+    <p class="cross-note">// All costs are estimates — verify before committing. Sources: NCDMV title &amp; registration fees, J.D. Power motorcycle values.</p>
   </details>
 
 </div>
@@ -3011,7 +2647,7 @@
 
   <section style="border-bottom:none;padding-top:26px;">
     <div class="sec-head"><span class="sec-num">&#9670;</span><h2>AI Listing Rater</h2></div>
-    <p class="sec-note">Add your <b style="color:#e6e2d8">Anthropic API key</b> to unlock photo ratings &mdash; then, in either Candidate Log, drop in listing photos and let the app score the deal like a sharp-eyed buyer. Your key is stored <b style="color:#e6e2d8">only on this device</b> and sent straight to Anthropic when you rate a listing (nothing runs through any server of ours).</p>
+    <p class="sec-note">Add your <b style="color:#e6e2d8">Anthropic API key</b> to unlock photo ratings &mdash; then, in the Car Candidate Log, drop in listing photos and let the app score the deal like a sharp-eyed buyer. Your key is stored <b style="color:#e6e2d8">only on this device</b> and sent straight to Anthropic when you rate a listing (nothing runs through any server of ours).</p>
     <div class="ai-row">
       <label for="aiKey">Anthropic API key</label>
       <input class="ai-in" id="aiKey" type="password" placeholder="sk-ant-…" autocomplete="off" spellcheck="false" aria-label="Anthropic API key">
@@ -3787,8 +3423,8 @@ window.mpAddModal = function (cfg) {
       bodyHtml:
         '<div class="ov-frow">' +
           '<div class="ov-fld yr"><label>Year</label><input class="cadd-year num" type="text" inputmode="numeric" maxlength="4" placeholder="2018"></div>' +
-          '<div class="ov-fld"><label>Make</label><input class="cadd-make" type="text" maxlength="30" placeholder="Honda" required></div>' +
-          '<div class="ov-fld"><label>Model</label><input class="cadd-model" type="text" maxlength="40" placeholder="CB500F"></div>' +
+          '<div class="ov-fld"><label>Make</label><input class="cadd-make" type="text" maxlength="30" placeholder="Toyota" required></div>' +
+          '<div class="ov-fld"><label>Model</label><input class="cadd-model" type="text" maxlength="40" placeholder="4Runner"></div>' +
         '</div>' +
         '<div class="ov-frow">' +
           '<div class="ov-fld"><label>Price</label><input class="cadd-price" type="text" inputmode="numeric" maxlength="12" placeholder="$3,900"></div>' +
@@ -4477,7 +4113,7 @@ window.mpAddModal = function (cfg) {
 // suggestions ("ideally 4-door", …) they make their own; each chip is editable, with a + to add.
 (function () {
   var SEEDS = {
-    moto: ['budget: bike only', 'A2-legal / under 600cc', 'low miles', 'clean title', 'test-ride first'],
+    moto: ['hold title until cash in hand', 'no parts issue until 09 Aug', 'compare cost to dispatch, not sticker', 'verify Rockingham stock'],
     car:  ['complements the daily', 'ideally 4-door', '4x4 / AWD', 'within budget', 'condition > miles']
   };
   function esc(s) { return (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
@@ -4531,7 +4167,7 @@ window.mpAddModal = function (cfg) {
 <script>
 // What's-new banner — shows once, remembers dismissal. Bump the version to re-announce.
 (function () {
-  var KEY = 'mp.whatsnew.v4';
+  var KEY = 'mp.whatsnew.v5';
   var el = document.getElementById('whatsnew');
   if (!el) return;
   var dismissed = false;
@@ -4795,161 +4431,18 @@ window.mpAddModal = function (cfg) {
 </script>
 
 <script>
-// Moto budget — editable cash cap + bike + add/remove/edit gear -> all-in cash. Persisted.
+// MT-03 dispatch — editable cash ceiling + funding note (feeds the hub mirrors + garage total). Persisted.
 (function () {
-  var bike = document.querySelector('.val-in[data-b="bike"]');
-  if (!bike) return;
-  var list = document.querySelector('.gear-list');
-  var totalRow = list ? list.querySelector('.ledger-row.total') : null;
-  var capEl = document.getElementById('motoCap');
-  var USERKEY = 'mp.gear.user', RMKEY = 'mp.gear.rmseed';
-  function n(v) { var x = parseFloat(String(v == null ? '' : v).replace(/[^0-9.]/g, '')); return isFinite(x) ? x : 0; }
-  function money(x) { return '$' + Math.round(x).toLocaleString('en-US'); }
-  function loadArr(k) { try { return JSON.parse(localStorage.getItem(k) || '[]'); } catch (e) { return []; } }
-  function saveArr(k, a) { try { localStorage.setItem(k, JSON.stringify(a)); } catch (e) {} }
-  function boughtFor(key) { var el = list.querySelector('.gear-chk[data-g="' + key + '"]'); return !!(el && el.checked); }
-
-  function compute() {
-    var CAP = capEl ? (n(capEl.textContent) || 4000) : 4000;
-    var b = n(bike.value), head = CAP - b;
-    var cl = document.getElementById('capLeft'), cn = document.getElementById('capNote');
-    if (cl) { cl.textContent = (head < 0 ? '−' : '') + money(Math.abs(head)) + (head < 0 ? ' over' : ' under'); cl.style.color = head >= 0 ? '#4f9e6a' : 'var(--redline-deep)'; }
-    if (cn) cn.textContent = head >= 0 ? 'under the cap' : 'over the cap';
-    var costs = Array.prototype.slice.call(list.querySelectorAll('.gear-cost'));
-    var planned = 0, bought = 0, boughtCount = 0;
-    costs.forEach(function (el) {
-      var key = el.getAttribute('data-g'), c = n(el.value), row = el.closest('.gear-row');
-      planned += c;
-      if (boughtFor(key)) { bought += c; boughtCount++; if (row) row.classList.add('is-bought'); }
-      else if (row) row.classList.remove('is-bought');
-    });
-    var gp = document.getElementById('gearPlanned'), gb = document.getElementById('gearBought'), gnote = document.getElementById('gearNote');
-    if (gp) gp.textContent = money(planned);
-    if (gb) gb.textContent = money(bought);
-    if (gnote) gnote.textContent = boughtCount ? boughtCount + ' of ' + costs.length + ' bought' : 'tick as you go';
-    var ga = document.getElementById('gearAllIn'), ai = document.getElementById('allIn');
-    if (ga) ga.textContent = money(planned);
-    if (ai) ai.textContent = money(b + planned);
+  function wire(id, key) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    try { var sv = localStorage.getItem(key); if (sv !== null) el.textContent = sv; else localStorage.setItem(key, (el.textContent || '').trim()); } catch (e) {}
+    var save = function () { try { localStorage.setItem(key, (el.textContent || '').trim()); } catch (e) {} };
+    el.addEventListener('input', save);
+    el.addEventListener('blur', save);
   }
-
-  function addX(row, onClick) {
-    var amt = row.querySelector('.amt'); if (!amt || amt.querySelector('.gear-x')) return;
-    var x = document.createElement('button');
-    x.type = 'button'; x.className = 'gear-x'; x.setAttribute('aria-label', 'Remove gear item'); x.innerHTML = '&times;';
-    x.addEventListener('click', onClick); amt.appendChild(x);
-  }
-
-  function reorderGear() {
-    if (!list || !totalRow) return;
-    var rows = Array.prototype.slice.call(list.querySelectorAll('.gear-row'));
-    var bought = [], unbought = [];
-    rows.forEach(function (r) { var c = r.querySelector('.gear-chk'); (c && c.checked ? bought : unbought).push(r); });
-    unbought.concat(bought).forEach(function (r) { list.insertBefore(r, totalRow); }); // bought sink to the bottom, above the total
-  }
-
-  function wireSeed(row) {
-    var cost = row.querySelector('.gear-cost'), chk = row.querySelector('.gear-chk');
-    if (!cost) return;
-    var key = cost.getAttribute('data-g');
-    try { var sv = localStorage.getItem('mp.gear.cost.' + key); if (sv !== null) cost.value = sv; else localStorage.setItem('mp.gear.cost.' + key, cost.value); } catch (e) {}
-    cost.addEventListener('input', function () { try { localStorage.setItem('mp.gear.cost.' + key, cost.value); } catch (e) {} compute(); });
-    if (chk) {
-      try { if (localStorage.getItem('mp.gear.chk.' + key) === '1') chk.checked = true; } catch (e) {}
-      chk.addEventListener('change', function () { try { localStorage.setItem('mp.gear.chk.' + key, chk.checked ? '1' : '0'); } catch (e) {} compute(); reorderGear(); });
-    }
-    addX(row, function () {
-      var rm = loadArr(RMKEY); if (rm.indexOf(key) < 0) rm.push(key); saveArr(RMKEY, rm);
-      row.remove(); compute();
-    });
-  }
-
-  function makeUserRow(item) {
-    var key = 'u_' + item.id;
-    var row = document.createElement('div'); row.className = 'ledger-row gear-row';
-    var l = document.createElement('label'); l.className = 'gear-pick';
-    var chk = document.createElement('input'); chk.type = 'checkbox'; chk.className = 'gear-chk'; chk.setAttribute('data-g', key); chk.checked = !!item.bought;
-    var it = document.createElement('span'); it.className = 'item'; it.textContent = item.name || 'Gear item';
-    it.setAttribute('contenteditable', 'true'); it.setAttribute('role', 'textbox'); it.setAttribute('aria-label', 'Gear name');
-    l.appendChild(chk); l.appendChild(it);
-    var amt = document.createElement('span'); amt.className = 'amt'; amt.appendChild(document.createTextNode('$'));
-    var cost = document.createElement('input'); cost.className = 'val-in gear-cost'; cost.type = 'text'; cost.setAttribute('data-g', key); cost.setAttribute('inputmode', 'numeric'); cost.value = item.cost || 0; cost.setAttribute('aria-label', 'Gear cost');
-    amt.appendChild(cost);
-    row.appendChild(l); row.appendChild(amt);
-    function persist() {
-      var arr = loadArr(USERKEY);
-      for (var i = 0; i < arr.length; i++) { if (arr[i].id === item.id) { arr[i].name = it.textContent.trim(); arr[i].cost = n(cost.value); arr[i].bought = chk.checked; } }
-      saveArr(USERKEY, arr);
-    }
-    it.addEventListener('input', persist);
-    cost.addEventListener('input', function () { persist(); compute(); });
-    chk.addEventListener('change', function () { persist(); compute(); reorderGear(); });
-    addX(row, function () {
-      saveArr(USERKEY, loadArr(USERKEY).filter(function (g) { return g.id !== item.id; }));
-      row.remove(); compute();
-    });
-    return row;
-  }
-
-  // cap persistence (+ snapshot default on first load)
-  try { var cps = localStorage.getItem('mp.mbud.cap'); if (cps !== null && capEl) capEl.textContent = cps; else if (capEl) localStorage.setItem('mp.mbud.cap', (capEl.textContent || '').trim()); } catch (e) {}
-  if (capEl) capEl.addEventListener('input', function () { try { localStorage.setItem('mp.mbud.cap', (capEl.textContent || '').trim()); } catch (e) {} compute(); });
-  // funding note (cash / financed …) persistence
-  var tagEl = document.getElementById('motoTag');
-  try { var ts = localStorage.getItem('mp.mbud.tag'); if (ts !== null && tagEl) tagEl.textContent = ts; else if (tagEl) localStorage.setItem('mp.mbud.tag', (tagEl.textContent || '').trim()); } catch (e) {}
-  if (tagEl) { var saveTag = function () { try { localStorage.setItem('mp.mbud.tag', (tagEl.textContent || '').trim()); } catch (e) {} }; tagEl.addEventListener('input', saveTag); tagEl.addEventListener('blur', saveTag); }
-  // bike persistence
-  try { var bs = localStorage.getItem('mp.mbud.bike'); if (bs !== null) bike.value = bs; else localStorage.setItem('mp.mbud.bike', bike.value); } catch (e) {}
-  bike.addEventListener('input', function () { try { localStorage.setItem('mp.mbud.bike', bike.value); } catch (e) {} compute(); });
-  // seed gear rows: drop user-deleted ones, wire the rest
-  if (list) {
-    var rm = loadArr(RMKEY);
-    Array.prototype.slice.call(list.querySelectorAll('.gear-row')).forEach(function (row) {
-      var cost = row.querySelector('.gear-cost'); if (!cost) return;
-      if (rm.indexOf(cost.getAttribute('data-g')) >= 0) { row.remove(); return; }
-      wireSeed(row);
-    });
-    // restore user-added gear
-    var seq = 0;
-    loadArr(USERKEY).forEach(function (item) {
-      list.insertBefore(makeUserRow(item), totalRow);
-      var m = /(\d+)$/.exec(String(item.id)); if (m) seq = Math.max(seq, parseInt(m[1], 10));
-    });
-    // add-gear: button toggle + collapsible form (same pattern as Add-a-mod)
-    var gpanel = list.closest('.panel') || list.parentNode;
-    var ghead = document.createElement('div'); ghead.className = 'modlist-head';
-    ghead.innerHTML = '<span class="dash-h" style="font-size:.9rem;">Gear &amp; setup</span>';
-    var addBtn = document.createElement('button'); addBtn.type = 'button'; addBtn.className = 'ml-add-btn';
-    addBtn.setAttribute('aria-expanded', 'false'); addBtn.innerHTML = '<span class="ml-add-ico" aria-hidden="true">+</span> Add gear';
-    ghead.appendChild(addBtn);
-    var gform = document.createElement('form'); gform.className = 'modadd collapsed'; gform.setAttribute('autocomplete', 'off');
-    gform.innerHTML =
-      '<div class="modadd-row">' +
-        '<input class="modadd-name gadd-name" type="text" placeholder="Gear / item" aria-label="Gear name" maxlength="60" required>' +
-        '<input class="modadd-price gadd-cost" type="text" inputmode="decimal" placeholder="$ cost" aria-label="Cost" maxlength="10">' +
-      '</div>' +
-      '<div class="modadd-foot">' +
-        '<label class="modadd-bought"><input type="checkbox" class="gadd-bought"> Already bought</label>' +
-        '<button type="submit" class="modadd-btn">+ Add gear</button>' +
-      '</div>';
-    if (gpanel && gpanel.parentNode) { gpanel.parentNode.insertBefore(ghead, gpanel); gpanel.parentNode.insertBefore(gform, gpanel); }
-    addBtn.addEventListener('click', function () {
-      var willOpen = gform.classList.contains('collapsed');
-      gform.classList.toggle('collapsed', !willOpen);
-      addBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-      if (willOpen) { var nm = gform.querySelector('.gadd-name'); if (nm) nm.focus(); }
-    });
-    gform.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var nm = gform.querySelector('.gadd-name').value.trim(); if (!nm) return;
-      var cost = n(gform.querySelector('.gadd-cost').value), bought = gform.querySelector('.gadd-bought').checked;
-      seq++; var item = { id: 't' + seq, name: nm, cost: cost, bought: bought };
-      saveArr(USERKEY, loadArr(USERKEY).concat([item]));
-      list.insertBefore(makeUserRow(item), totalRow); compute(); reorderGear();
-      gform.reset(); gform.classList.add('collapsed'); addBtn.setAttribute('aria-expanded', 'false');
-    });
-  }
-  compute();
-  reorderGear();
+  wire('motoCap', 'mp.mt03.cap');
+  wire('motoTag', 'mp.mt03.tag');
 })();
 </script>
 
@@ -5905,7 +5398,7 @@ window.mpBlankSlate = function () {
   set('mp.daily', JSON.stringify({ nick: 'ride', title1: 'Your Vehicle', title2: '', engine: '—', output: '—', drive: '—', miles: '—' }));
   set('mp.daily.snapshotted', '1');
   ['trade', 'private', 'retail', 'owed'].forEach(function (k) { set('mp.val.' + k, '0'); });
-  set('mp.mbud.cap', '0'); set('mp.mbud.tag', ''); set('mp.mbud.bike', '0');
+  set('mp.mt03.cap', '0'); set('mp.mt03.tag', '');
   ['program', 'car', 'immediate', 'tools', 'setup', 'reserve'].forEach(function (f) { set('mp.carmoney.' + f, '$0'); });
   set('mp.carmoney.tag', '');
   [['#moto-contenders .spec-card', 'mp.rm.moto-contenders'],
