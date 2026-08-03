@@ -425,6 +425,13 @@
   table.mkt tr.sub td{background:var(--paper-dim);font-family:"IBM Plex Mono",monospace;font-weight:600;color:var(--ink);
     border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong);}
   table.mkt tr.sub.tot td{border-top:2px solid var(--ink);border-bottom:none;}
+  /* MT-03 sheet — tap-to-edit affordances: dashed underline on key values,
+     hover-reveal outline on prose/table lines, amber ring while editing */
+  #view-moto [data-ed]{cursor:text;-webkit-tap-highlight-color:transparent;border-radius:2px;}
+  #view-moto [data-ed]:hover{outline:1px dashed rgba(133,127,108,.5);outline-offset:3px;}
+  #view-moto [data-ed]:focus{outline:1px solid var(--amber);outline-offset:3px;}
+  #view-moto [data-ed]:empty::before{content:"— tap to edit —";opacity:.45;font-style:italic;}
+  #view-moto .ed-v[data-ed]{border-bottom:1px dashed rgba(133,127,108,.6);}
   .cand-card.passed .cand-name{color:var(--ink-soft);}
   .cand-card.passed .cand-col li::before{background:var(--ink-faint);}
   .cand-offer.pass{background:#3b4046;}
@@ -1831,15 +1838,16 @@
     <circle cx="160" cy="150" r="8" fill="#d83a29"/>
     <circle cx="160" cy="150" r="3" fill="#1b1f24"/>
   </svg>
-  <div class="gauge-cap">MT-03 Program &middot; Dispatch Sheet</div>
-  <h1>MT-03 <span class="rev">Motor Pool</span></h1>
-  <p class="hero-sub">Platform approved &mdash; one asset on the board. The <b>2024 stays</b>: Jakob is clearing the jumped title, and the fault list opens the day the transfer is done.</p>
+  <div class="gauge-cap" data-ed="hero.eyebrow" aria-label="Edit page eyebrow">MT-03 Program &middot; Dispatch Sheet</div>
+  <h1>24&rsquo; <span class="rev">MT-03</span></h1>
+  <p class="hero-sub" data-ed="hero.sub" aria-label="Edit page intro">Platform approved &mdash; one asset on the board. The <b>2024 stays</b>: Jakob is clearing the jumped title, and the fault list opens the day the transfer is done.</p>
   <div class="chips" data-notes="moto" aria-label="Your moto notes — tap to edit or add"></div>
   <div class="hero-readout">
-    <div class="ro"><span class="k">Asset</span><span class="v">2024 MT-03</span></div>
+    <div class="ro"><span class="k">Asset</span><span class="v ed-v" data-ed="hero.asset" aria-label="Edit asset">2024 MT-03</span></div>
     <div class="ro"><span class="k">Ceiling</span><span class="v"><em>$<span data-mirror="motoCap">5,200</span></em></span></div>
-    <div class="ro"><span class="k">Next</span><span class="v">Title transfer</span></div>
+    <div class="ro"><span class="k">Next</span><span class="v ed-v" data-ed="hero.next" aria-label="Edit next step">Title transfer</span></div>
   </div>
+  <p class="naming" style="margin-top:16px;">// EVERYTHING ON THIS SHEET IS TAP-TO-EDIT &mdash; values, notes, findings, table lines. Changes save to this device.</p>
 </header>
 
 <div class="wrap">
@@ -1848,9 +1856,9 @@
   <details class="sec-block" id="moto-roster">
     <summary>
     <div class="sec-head"><span class="sec-num">01</span><h2>Asset Roster</h2></div>
-    <span class="insight"><em>Status</em> <b>Deadlined until the title clears</b> &mdash; Jakob is fixing the transfer. The fault list opens when it&rsquo;s done.</span>
+    <span class="insight" data-ed="roster.insight" aria-label="Edit section summary"><em>Status</em> <b>Deadlined until the title clears</b> &mdash; Jakob is fixing the transfer. The fault list opens when it&rsquo;s done.</span>
     </summary>
-    <p class="sec-note">Budget on <b style="color:#e6e2d8">cost to dispatch</b> &mdash; the all-in number to get it on the road &mdash; not the sticker. <b style="color:#e6e2d8">Deadlined</b> = blocked from the road until the paperwork clears.</p>
+    <p class="sec-note" data-ed="roster.note" aria-label="Edit section note">Budget on <b style="color:#e6e2d8">cost to dispatch</b> &mdash; the all-in number to get it on the road &mdash; not the sticker. <b style="color:#e6e2d8">Deadlined</b> = blocked from the road until the paperwork clears.</p>
 
     <article class="cand-card">
       <div class="cand-top">
@@ -1864,38 +1872,38 @@
         <div class="cand-fact"><span class="k">Records</span><span class="v"><span class="fill" contenteditable="true">None</span></span></div>
       </div>
       <div class="pos">
-        <div class="pos-foot"><b>The title is the schedule.</b> The previous owner never titled it in his name, so Jakob couldn&rsquo;t sign it over &mdash; he&rsquo;s now getting that fixed. Until the transfer is done the bike can&rsquo;t be registered: <b>hold the physical title and the $1,700 balance until it clears.</b></div>
+        <div class="pos-foot" data-ed="roster.title" aria-label="Edit title status note"><b>The title is the schedule.</b> The previous owner never titled it in his name, so Jakob couldn&rsquo;t sign it over &mdash; he&rsquo;s now getting that fixed. Until the transfer is done the bike can&rsquo;t be registered: <b>hold the physical title and the $1,700 balance until it clears.</b></div>
       </div>
       <div class="cand-cols">
         <div class="cand-col">
           <h5>Sustains</h5>
           <ul>
-            <li>Cheapest entry &mdash; $1,700 already paid</li>
-            <li>Already in the bay</li>
-            <li>Title fix in progress; you hold the paper</li>
+            <li data-ed="roster.sus.1">Cheapest entry &mdash; $1,700 already paid</li>
+            <li data-ed="roster.sus.2">Already in the bay</li>
+            <li data-ed="roster.sus.3">Title fix in progress; you hold the paper</li>
           </ul>
         </div>
         <div class="cand-col">
           <h5>Deadlines</h5>
           <ul>
-            <li>Can&rsquo;t be registered until the transfer clears</li>
-            <li>12k miles &mdash; every wear item due at once</li>
-            <li>No service history on file</li>
+            <li data-ed="roster.dl.1">Can&rsquo;t be registered until the transfer clears</li>
+            <li data-ed="roster.dl.2">12k miles &mdash; every wear item due at once</li>
+            <li data-ed="roster.dl.3">No service history on file</li>
           </ul>
         </div>
       </div>
       <div class="cand-verify">
-        <div class="vh">// Title clearance — the fault list and parts budget open when these are done</div>
+        <div class="vh" data-ed="roster.vh">// Title clearance — the fault list and parts budget open when these are done</div>
         <ul class="check-list">
-          <li><label><input type="checkbox"><span>Jakob books the plate-agency appointment — a date, not a status update</span></label></li>
-          <li><label><input type="checkbox"><span>Odometer disclosure (MVR-180) actually filled in — the bill of sale left it blank</span></label></li>
-          <li><label><input type="checkbox"><span>MVR-1 signed at the counter only — the agency notarizes it there</span></label></li>
-          <li><label><input type="checkbox"><span>Pay the $1,700 balance at transfer, not before</span></label></li>
+          <li><label><input type="checkbox"><span data-ed="roster.chk.1">Jakob books the plate-agency appointment — a date, not a status update</span></label></li>
+          <li><label><input type="checkbox"><span data-ed="roster.chk.2">Odometer disclosure (MVR-180) actually filled in — the bill of sale left it blank</span></label></li>
+          <li><label><input type="checkbox"><span data-ed="roster.chk.3">MVR-1 signed at the counter only — the agency notarizes it there</span></label></li>
+          <li><label><input type="checkbox"><span data-ed="roster.chk.4">Pay the $1,700 balance at transfer, not before</span></label></li>
         </ul>
       </div>
       <div class="cand-offer">
         <div><span class="ol">Cost to dispatch</span><span class="oa"><span class="fill" contenteditable="true" data-ph="cost to dispatch">$4,600&ndash;5,200</span></span></div>
-        <p>$3,400 acquisition + tax/title + <b>$1,000&ndash;1,570 of deferred maintenance</b> at 12k miles. Budget the full number, not the sticker.</p>
+        <p data-ed="roster.offer" aria-label="Edit cost note">$3,400 acquisition + tax/title + <b>$1,000&ndash;1,570 of deferred maintenance</b> at 12k miles. Budget the full number, not the sticker.</p>
       </div>
     </article>
   </details>
@@ -1904,105 +1912,105 @@
   <details class="sec-block" id="moto-cost">
     <summary>
     <div class="sec-head"><span class="sec-num">02</span><h2>Cost To Dispatch</h2></div>
-    <span class="insight"><em>All-in</em> The $3,400 bike lands at <b>$4,592&ndash;5,162</b> on the road &mdash; deferred maintenance is the real cost, not the sticker.</span>
+    <span class="insight" data-ed="cost.insight" aria-label="Edit section summary"><em>All-in</em> The $3,400 bike lands at <b>$4,592&ndash;5,162</b> on the road &mdash; deferred maintenance is the real cost, not the sticker.</span>
     </summary>
     <div class="money-lead">
       <div class="money-figblock">
         <div class="money-fig">$<span id="motoCap" class="num-edit" contenteditable="true" role="textbox" aria-label="Edit cash ceiling">5,200</span></div>
         <span class="money-tag" id="motoTag" contenteditable="true" role="textbox" aria-label="Edit funding note">cash ceiling · all-in</span>
       </div>
-      <p>The ceiling is the worst case &mdash; every maintenance line at the top of its range, priced at shop labor rates. DIY pulls the maintenance lines down hard.</p>
+      <p data-ed="cost.lead" aria-label="Edit ceiling note">The ceiling is the worst case &mdash; every maintenance line at the top of its range, priced at shop labor rates. DIY pulls the maintenance lines down hard.</p>
     </div>
     <div class="mkt-card">
-      <div class="mkt-head"><h4>Line Items</h4><span class="newp">shop labor rates &middot; <b>estimates</b></span></div>
+      <div class="mkt-head"><h4 data-ed="cost.h">Line Items</h4><span class="newp" data-ed="cost.basis">shop labor rates &middot; <b>estimates</b></span></div>
       <table class="mkt">
         <thead><tr><th>Line item</th><th class="n">2024 MT-03</th></tr></thead>
         <tbody>
-          <tr><td>Acquisition</td><td class="ask n">$3,400</td></tr>
-          <tr><td>Highway use tax, 3%</td><td class="ask n">$102</td></tr>
-          <tr><td>Title + plate + notary</td><td class="ask n">~$90</td></tr>
-          <tr class="sub"><td>Subtotal — acquisition &amp; fees</td><td class="n">$3,592</td></tr>
-          <tr><td>Oil + filter</td><td class="ask n">$130–180</td></tr>
-          <tr><td>Brake fluid, both ends</td><td class="ask n">$120–180</td></tr>
-          <tr><td>Coolant flush</td><td class="ask n">$100–150</td></tr>
-          <tr><td>Tires, mounted</td><td class="ask n">$350–500</td></tr>
-          <tr><td>Chain + sprockets</td><td class="ask n">$220–340</td></tr>
-          <tr><td>Turn signal, LED module</td><td class="ask n">$80–220</td></tr>
-          <tr class="sub"><td>Subtotal — maintenance</td><td class="n">$1,000–1,570</td></tr>
-          <tr class="sub tot"><td>Total to dispatch</td><td class="n">$4,592–5,162</td></tr>
+          <tr><td data-ed="cost.l1">Acquisition</td><td class="ask n" data-ed="cost.v1">$3,400</td></tr>
+          <tr><td data-ed="cost.l2">Highway use tax, 3%</td><td class="ask n" data-ed="cost.v2">$102</td></tr>
+          <tr><td data-ed="cost.l3">Title + plate + notary</td><td class="ask n" data-ed="cost.v3">~$90</td></tr>
+          <tr class="sub"><td data-ed="cost.l4">Subtotal — acquisition &amp; fees</td><td class="n" data-ed="cost.v4">$3,592</td></tr>
+          <tr><td data-ed="cost.l5">Oil + filter</td><td class="ask n" data-ed="cost.v5">$130–180</td></tr>
+          <tr><td data-ed="cost.l6">Brake fluid, both ends</td><td class="ask n" data-ed="cost.v6">$120–180</td></tr>
+          <tr><td data-ed="cost.l7">Coolant flush</td><td class="ask n" data-ed="cost.v7">$100–150</td></tr>
+          <tr><td data-ed="cost.l8">Tires, mounted</td><td class="ask n" data-ed="cost.v8">$350–500</td></tr>
+          <tr><td data-ed="cost.l9">Chain + sprockets</td><td class="ask n" data-ed="cost.v9">$220–340</td></tr>
+          <tr><td data-ed="cost.l10">Turn signal, LED module</td><td class="ask n" data-ed="cost.v10">$80–220</td></tr>
+          <tr class="sub"><td data-ed="cost.l11">Subtotal — maintenance</td><td class="n" data-ed="cost.v11">$1,000–1,570</td></tr>
+          <tr class="sub tot"><td data-ed="cost.l12">Total to dispatch</td><td class="n" data-ed="cost.v12">$4,592–5,162</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="sweet"><b>Finding:</b> at ~12,000 miles every wear item comes due at once &mdash; <b>$1,000&ndash;1,570 of deferred maintenance</b> on top of the $3,400 bike. That&rsquo;s the real cost of the cheap entry. Knock the maintenance out in order of safety: tires and brake fluid first, cosmetics last.</div>
+    <div class="sweet" data-ed="cost.finding" aria-label="Edit finding"><b>Finding:</b> at ~12,000 miles every wear item comes due at once &mdash; <b>$1,000&ndash;1,570 of deferred maintenance</b> on top of the $3,400 bike. That&rsquo;s the real cost of the cheap entry. Knock the maintenance out in order of safety: tires and brake fluid first, cosmetics last.</div>
   </details>
 
   <!-- BOOK VALUE CHECK -->
   <details class="sec-block" id="moto-book">
     <summary>
     <div class="sec-head"><span class="sec-num">03</span><h2>Book Value Check</h2></div>
-    <span class="insight"><em>Book</em> <b>$930 under low retail</b> on paper &mdash; closer to $100&ndash;500 under once triple-rate mileage is weighed. Still a fair deal.</span>
+    <span class="insight" data-ed="book.insight" aria-label="Edit section summary"><em>Book</em> <b>$930 under low retail</b> on paper &mdash; closer to $100&ndash;500 under once triple-rate mileage is weighed. Still a fair deal.</span>
     </summary>
     <div class="mkt-card">
-      <div class="mkt-head"><h4>J.D. Power / NADA</h4><span class="newp">dealer <b>retail</b>, not private party</span></div>
+      <div class="mkt-head"><h4 data-ed="book.h">J.D. Power / NADA</h4><span class="newp" data-ed="book.basis">dealer <b>retail</b>, not private party</span></div>
       <table class="mkt">
         <thead><tr><th>Reference</th><th class="n">2024 MT-03</th></tr></thead>
         <tbody>
-          <tr><td>MSRP new</td><td class="ask n">$4,999</td></tr>
-          <tr><td>Low retail</td><td class="ask n">$4,330</td></tr>
-          <tr><td>Average retail</td><td class="ask n">$5,700</td></tr>
-          <tr><td>Odometer</td><td class="mi n">~12,000</td></tr>
-          <tr class="sub"><td>Your price</td><td class="n">$3,400</td></tr>
-          <tr class="sub"><td>Delta vs low retail</td><td class="n" style="color:#3e7c53">−$930</td></tr>
+          <tr><td data-ed="book.l1">MSRP new</td><td class="ask n" data-ed="book.v1">$4,999</td></tr>
+          <tr><td data-ed="book.l2">Low retail</td><td class="ask n" data-ed="book.v2">$4,330</td></tr>
+          <tr><td data-ed="book.l3">Average retail</td><td class="ask n" data-ed="book.v3">$5,700</td></tr>
+          <tr><td data-ed="book.l4">Odometer</td><td class="mi n" data-ed="book.v4">~12,000</td></tr>
+          <tr class="sub"><td data-ed="book.l5">Your price</td><td class="n" data-ed="book.v5">$3,400</td></tr>
+          <tr class="sub"><td data-ed="book.l6">Delta vs low retail</td><td class="n" style="color:#3e7c53" data-ed="book.v6">−$930</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="sweet"><b>Read with caution.</b> Book does not adjust for mileage. A 2024 averages roughly 3,000 mi/yr, so at ~12,000 this one is running about <b>triple the expected wear</b> and its real market value sits below the $4,330 book figure &mdash; likely <b>$3,500&ndash;3,900</b>. $3,400 is still under that band, just not by the $930 the table implies.</div>
-    <p class="cross-note">// Source: J.D. Power motorcycle values, published 2024 figures.</p>
+    <div class="sweet" data-ed="book.caveat" aria-label="Edit caveat"><b>Read with caution.</b> Book does not adjust for mileage. A 2024 averages roughly 3,000 mi/yr, so at ~12,000 this one is running about <b>triple the expected wear</b> and its real market value sits below the $4,330 book figure &mdash; likely <b>$3,500&ndash;3,900</b>. $3,400 is still under that band, just not by the $930 the table implies.</div>
+    <p class="cross-note" data-ed="book.note" aria-label="Edit source note">// Source: J.D. Power motorcycle values, published 2024 figures.</p>
   </details>
 
   <!-- FAULT & ISSUE LIST -->
   <details class="sec-block" id="moto-issue">
     <summary>
     <div class="sec-head"><span class="sec-num">04</span><h2>Fault &amp; Issue List</h2></div>
-    <span class="insight"><em>Rule</em> Platform-agnostic gear is cleared now &mdash; <b>MT-03 parts open when the title transfer is done</b>.</span>
+    <span class="insight" data-ed="issue.insight" aria-label="Edit section summary"><em>Rule</em> Platform-agnostic gear is cleared now &mdash; <b>MT-03 parts open when the title transfer is done</b>.</span>
     </summary>
-    <p class="sec-note">&ldquo;Issue&rdquo; = releasing parts or money. Gear that transfers to <b style="color:#e6e2d8">any</b> asset is cleared now; MT-03-specific parts wait for the title. Tick each as you buy it.</p>
+    <p class="sec-note" data-ed="issue.note" aria-label="Edit section note">&ldquo;Issue&rdquo; = releasing parts or money. Gear that transfers to <b style="color:#e6e2d8">any</b> asset is cleared now; MT-03-specific parts wait for the title. Tick each as you buy it &mdash; tap the text to reword or reprice it.</p>
     <ul class="check-list">
-      <li><label><input type="checkbox"><span>Disc lock — $30&ndash;110</span></label></li>
-      <li><label><input type="checkbox"><span>Rear paddock stand + spools — $85&ndash;130</span></label></li>
-      <li><label><input type="checkbox"><span>Quad Lock mount, case, dampener, charger — $180&ndash;240</span></label></li>
-      <li><label><input type="checkbox"><span>Frame sliders <small>(MT-03-specific — after title)</small> — $60&ndash;150</span></label></li>
-      <li><label><input type="checkbox"><span>Helmet <small>(later)</small> — $250&ndash;500</span></label></li>
-      <li><label><input type="checkbox"><span>Riding shoes <small>(later)</small> — $150&ndash;280</span></label></li>
-      <li><label><input type="checkbox"><span>Parking lot refresher session</span></label></li>
+      <li><label><input type="checkbox"><span data-ed="issue.chk.1">Disc lock — $30&ndash;110</span></label></li>
+      <li><label><input type="checkbox"><span data-ed="issue.chk.2">Rear paddock stand + spools — $85&ndash;130</span></label></li>
+      <li><label><input type="checkbox"><span data-ed="issue.chk.3">Quad Lock mount, case, dampener, charger — $180&ndash;240</span></label></li>
+      <li><label><input type="checkbox"><span data-ed="issue.chk.4">Frame sliders <small>(MT-03-specific — after title)</small> — $60&ndash;150</span></label></li>
+      <li><label><input type="checkbox"><span data-ed="issue.chk.5">Helmet <small>(later)</small> — $250&ndash;500</span></label></li>
+      <li><label><input type="checkbox"><span data-ed="issue.chk.6">Riding shoes <small>(later)</small> — $150&ndash;280</span></label></li>
+      <li><label><input type="checkbox"><span data-ed="issue.chk.7">Parking lot refresher session</span></label></li>
     </ul>
-    <div class="callout" style="margin-top:14px;">&#9873; <b>Title first</b> &mdash; frame sliders, tires, chain, and the rest of the fault list are MT-03-specific and open the day the transfer clears. Stand, lock, helmet and boots transfer to any asset and are cleared for purchase now.</div>
+    <div class="callout" style="margin-top:14px;" data-ed="issue.callout" aria-label="Edit rule">&#9873; <b>Title first</b> &mdash; frame sliders, tires, chain, and the rest of the fault list are MT-03-specific and open the day the transfer clears. Stand, lock, helmet and boots transfer to any asset and are cleared for purchase now.</div>
   </details>
 
   <!-- TECHNICAL DATA -->
   <details class="sec-block" id="moto-tech" style="border-bottom:none;">
     <summary>
     <div class="sec-head"><span class="sec-num">05</span><h2>Technical Data</h2></div>
-    <span class="insight"><em>Appendix</em> Tires, chain, oil capacity, VIN &mdash; the numbers the shop (and the DMV) will ask for.</span>
+    <span class="insight" data-ed="tech.insight" aria-label="Edit section summary"><em>Appendix</em> Tires, chain, oil capacity, VIN &mdash; the numbers the shop (and the DMV) will ask for.</span>
     </summary>
     <div class="mkt-quick">
-      <div class="qh">2024 MT-03</div>
+      <div class="qh" data-ed="tech.h">2024 MT-03</div>
       <table class="mkt">
         <thead><tr><th>Item</th><th class="n">Value</th></tr></thead>
         <tbody>
-          <tr><td class="yr">Engine</td><td class="mi n">321cc liquid-cooled parallel twin</td></tr>
-          <tr><td class="yr">Tire, front</td><td class="mi n">110/70R17</td></tr>
-          <tr><td class="yr">Tire, rear</td><td class="mi n">140/70R17</td></tr>
-          <tr><td class="yr">Oil capacity</td><td class="mi n">2.5 L — draw 3 qt</td></tr>
-          <tr><td class="yr">Final drive</td><td class="mi n">520 chain</td></tr>
-          <tr><td class="yr">Turn signals</td><td class="mi n">LED front and rear — no bulbs</td></tr>
-          <tr><td class="yr">Seat height</td><td class="mi n">30.7 in</td></tr>
-          <tr><td class="yr">Wet weight</td><td class="mi n">367 lb</td></tr>
-          <tr><td class="yr">VIN</td><td class="mi n">MH3RH20Y0RK014419</td></tr>
+          <tr><td class="yr" data-ed="tech.l1">Engine</td><td class="mi n" data-ed="tech.v1">321cc liquid-cooled parallel twin</td></tr>
+          <tr><td class="yr" data-ed="tech.l2">Tire, front</td><td class="mi n" data-ed="tech.v2">110/70R17</td></tr>
+          <tr><td class="yr" data-ed="tech.l3">Tire, rear</td><td class="mi n" data-ed="tech.v3">140/70R17</td></tr>
+          <tr><td class="yr" data-ed="tech.l4">Oil capacity</td><td class="mi n" data-ed="tech.v4">2.5 L — draw 3 qt</td></tr>
+          <tr><td class="yr" data-ed="tech.l5">Final drive</td><td class="mi n" data-ed="tech.v5">520 chain</td></tr>
+          <tr><td class="yr" data-ed="tech.l6">Turn signals</td><td class="mi n" data-ed="tech.v6">LED front and rear — no bulbs</td></tr>
+          <tr><td class="yr" data-ed="tech.l7">Seat height</td><td class="mi n" data-ed="tech.v7">30.7 in</td></tr>
+          <tr><td class="yr" data-ed="tech.l8">Wet weight</td><td class="mi n" data-ed="tech.v8">367 lb</td></tr>
+          <tr><td class="yr" data-ed="tech.l9">VIN</td><td class="mi n" data-ed="tech.v9">MH3RH20Y0RK014419</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="cross-note">// All costs are estimates — verify before committing. Sources: NCDMV title &amp; registration fees, J.D. Power motorcycle values.</p>
+    <p class="cross-note" data-ed="tech.note" aria-label="Edit source note">// All costs are estimates — verify before committing. Sources: NCDMV title &amp; registration fees, J.D. Power motorcycle values.</p>
   </details>
 
 </div>
@@ -4047,10 +4055,20 @@ window.mpAddModal = function (cfg) {
     moto: ['title fix in progress', 'pay balance at transfer only', 'fault list opens when title clears'],
     car:  ['complements the daily', 'ideally 4-door', '4x4 / AWD', 'within budget', 'condition > miles']
   };
+  // Untouched seed sets from earlier versions of the moto plan — reseed instead of
+  // showing a stale plan. Any user-edited list won't match and is left alone.
+  var STALE = {
+    moto: [
+      ['budget: bike only', 'A2-legal / under 600cc', 'low miles', 'clean title', 'test-ride first'],
+      ['hold title until cash in hand', 'no parts issue until 09 Aug', 'compare cost to dispatch, not sticker', 'verify Rockingham stock'],
+      ['verify Rockingham stock', 'get the OTD in writing', 'compare cost to dispatch, not sticker']
+    ].map(function (a) { return JSON.stringify(a); })
+  };
   function esc(s) { return (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function save(scope, a) { try { localStorage.setItem('mp.notes.' + scope, JSON.stringify(a)); } catch (e) {} }
   function load(scope) {
     var raw = null; try { raw = localStorage.getItem('mp.notes.' + scope); } catch (e) {}
+    if (raw !== null && (STALE[scope] || []).indexOf(raw) >= 0) raw = null; // stale untouched seeds → reseed
     if (raw === null) { var d = (SEEDS[scope] || []).slice(); save(scope, d); return d; } // seed once for new users
     try { var a = JSON.parse(raw); return Array.isArray(a) ? a : []; } catch (e) { return []; }
   }
@@ -4378,6 +4396,56 @@ window.mpAddModal = function (cfg) {
   }
   wire('motoCap', 'mp.mt03.cap', '4,800');
   wire('motoTag', 'mp.mt03.tag');
+})();
+</script>
+
+<script>
+// MT-03 sheet — every value, note, finding, and table line is tap-to-edit.
+// Elements tagged data-ed persist under mp.mt03.ed.<key>; authored markup
+// (bold, emphasis) survives edits but is scrubbed of anything active on restore.
+(function () {
+  var view = document.getElementById('view-moto'); if (!view) return;
+  var SNAPKEY = 'mp.mt03.ed.snapshotted';
+  var SNAP = false; try { SNAP = localStorage.getItem(SNAPKEY) === '1'; } catch (e) {}
+  function scrub(html) {
+    var t = document.createElement('div'); t.innerHTML = html;
+    Array.prototype.slice.call(t.querySelectorAll('script,style,iframe,object,embed,link,meta')).forEach(function (n) { n.remove(); });
+    Array.prototype.slice.call(t.querySelectorAll('*')).forEach(function (el) {
+      Array.prototype.slice.call(el.attributes).forEach(function (a) {
+        var n = a.name.toLowerCase();
+        if (n.indexOf('on') === 0 || ((n === 'href' || n === 'src') && /^\s*javascript:/i.test(a.value))) el.removeAttribute(a.name);
+      });
+    });
+    return t.innerHTML;
+  }
+  view.querySelectorAll('[data-ed]').forEach(function (el) {
+    var k = 'mp.mt03.ed.' + el.getAttribute('data-ed');
+    el.setAttribute('contenteditable', 'true');
+    el.setAttribute('role', 'textbox');
+    if (!el.hasAttribute('aria-label')) el.setAttribute('aria-label', 'Edit text');
+    try {
+      var sv = localStorage.getItem(k);
+      if (sv !== null) el.innerHTML = scrub(sv);
+      else if (!SNAP) localStorage.setItem(k, el.innerHTML); // first load: snapshot so the backup carries the whole sheet
+    } catch (e) {}
+    function save() { try { localStorage.setItem(k, el.innerHTML); } catch (e) {} }
+    el.addEventListener('input', save);
+    el.addEventListener('blur', save);
+    el.addEventListener('paste', function (e) { // rich clipboard content flattens to plain text
+      e.preventDefault();
+      var txt = (e.clipboardData || window.clipboardData).getData('text/plain');
+      document.execCommand('insertText', false, txt);
+    });
+    // single-line fields commit on Enter; prose blocks keep multi-line editing
+    if (/^(SPAN|TD|H4|H5|LI)$/.test(el.tagName) || el.closest('summary')) {
+      el.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); el.blur(); } });
+    }
+    // editing an insight must not toggle its section; editing a checklist label must not tick the box
+    if (el.closest('summary') || el.closest('label')) {
+      el.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); });
+    }
+  });
+  try { localStorage.setItem(SNAPKEY, '1'); } catch (e) {}
 })();
 </script>
 
