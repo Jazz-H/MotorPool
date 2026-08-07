@@ -432,6 +432,19 @@
   #view-moto [data-ed]:focus{outline:1px solid var(--amber);outline-offset:3px;}
   #view-moto [data-ed]:empty::before{content:"— tap to edit —";opacity:.45;font-style:italic;}
   #view-moto .ed-v[data-ed]{border-bottom:1px dashed rgba(133,127,108,.6);}
+  /* Bike-shopping sheet — negotiation plays + out-the-door calculator */
+  .play-list{counter-reset:play;list-style:none;margin:0;padding:0;}
+  .play-list li{counter-increment:play;position:relative;padding:0 0 20px 48px;font-size:.95rem;color:#c8c4ba;}
+  .play-list li:last-child{padding-bottom:4px;}
+  .play-list li::before{content:counter(play,decimal-leading-zero);position:absolute;left:0;top:0;
+    font-family:"Saira Condensed",sans-serif;font-weight:800;font-size:1.3rem;line-height:1.35;
+    color:var(--redline);letter-spacing:.04em;}
+  .play-list li b{color:var(--paper);font-weight:600;}
+  .play-say{display:block;margin-top:9px;padding:11px 14px;background:var(--steel-850);
+    border-left:3px solid var(--amber);border-radius:0 4px 4px 0;font-style:italic;color:#e1ddd1;font-size:.9rem;}
+  .otd-total{font-family:"Saira Condensed",sans-serif;font-weight:800;font-size:1.5rem;line-height:1;letter-spacing:.02em;}
+  .otd-total.ok{color:#2f7d4c;}
+  .otd-total.bad{color:var(--redline-deep);}
   .cand-card.passed .cand-name{color:var(--ink-soft);}
   .cand-card.passed .cand-col li::before{background:var(--ink-faint);}
   .cand-offer.pass{background:#3b4046;}
@@ -1605,7 +1618,7 @@
 <div id="whatsnew" class="whatsnew" role="status" hidden>
   <div class="whatsnew-inner">
     <span class="wn-tag">Template</span>
-    <span class="wn-text"><b>New:</b> the Moto section is now the <b>MT-03 dispatch sheet</b> &mdash; asset roster, cost to dispatch, book value check, and the fault &amp; issue list. Everything&rsquo;s still editable and saved to your device.</span>
+    <span class="wn-text"><b>New:</b> the Moto section is now the <b>Friday bike-shopping sheet</b> &mdash; seven bikes across two Charlotte dealers, negotiation targets, an out-the-door calculator, and the pre-commit checks. Everything&rsquo;s still editable and saved to your device.</span>
     <button class="wn-x" type="button" aria-label="Dismiss">&times;</button>
   </div>
 </div>
@@ -1659,14 +1672,14 @@
 
         <div class="proj-tile">
           <div class="pt-top">
-            <div><span class="pt-ey">Project 01 &middot; Two Wheels</span><h3 class="pt-title">MT-03<br>Program</h3></div>
-            <span class="pt-phase">Deciding</span>
+            <div><span class="pt-ey">Project 01 &middot; Two Wheels</span><h3 class="pt-title">Bike<br>Shopping</h3></div>
+            <span class="pt-phase">Negotiating</span>
           </div>
           <div class="pt-stats">
-            <div class="pt-stat"><span class="k">Ceiling</span><span class="v">$<span data-mirror="motoCap">5,000</span> <small>all-in</small></span></div>
-            <div class="pt-stat"><span class="k">Assets</span><span class="v">0 <small>board open</small></span></div>
-            <div class="pt-stat"><span class="k">Status</span><span class="v">Searching</span></div>
-            <div class="pt-stat"><span class="k">Next</span><span class="v">Log candidates</span></div>
+            <div class="pt-stat"><span class="k">Cap</span><span class="v">$<span data-mirror="motoCap">6,000</span> <small>OTD</small></span></div>
+            <div class="pt-stat"><span class="k">Bikes</span><span class="v">7 <small>&middot; 2 under cap</small></span></div>
+            <div class="pt-stat"><span class="k">Status</span><span class="v">Shopping Fri</span></div>
+            <div class="pt-stat"><span class="k">Next</span><span class="v">Z400 first</span></div>
           </div>
           <a class="pt-open" href="#moto">Open Moto <span class="arr">&rarr;</span></a>
         </div>
@@ -1692,7 +1705,7 @@
       <h4 class="dash-h">Combined Program</h4>
       <div class="panel" style="margin-bottom:24px;">
         <div class="ledger">
-          <div class="ledger-row"><span class="item">Moto build <small>MT-03 &middot; all-in cash</small></span><span class="amt">$<span data-mirror="motoCap">5,000</span></span></div>
+          <div class="ledger-row"><span class="item">Moto build <small>Z400 / CBR500R &middot; out-the-door cap</small></span><span class="amt">$<span data-mirror="motoCap">6,000</span></span></div>
           <div class="ledger-row"><span class="item">Car build <small>program: car + fixes + mods</small></span><span class="amt"><span data-mirror="carProgram">$10,000</span></span></div>
           <div class="ledger-row total"><span class="item">Garage Total</span><span class="amt" id="hubGarageTotal">$15,000</span></div>
         </div>
@@ -1701,8 +1714,8 @@
       <div class="hub-col">
       <h4 class="dash-h">Decision Queue</h4>
       <ul class="check-list">
-        <li><label><input type="checkbox"><span><span class="queue-tag moto">Moto</span>Log MT-03 candidates from Marketplace / CycleTrader &mdash; clean title in the seller&rsquo;s name only</span></label></li>
-        <li><label><input type="checkbox"><span><span class="queue-tag moto">Moto</span>Quote insurance on the shortlist before committing</span></label></li>
+        <li><label><input type="checkbox"><span><span class="queue-tag moto">Moto</span>Get the out-the-door number in writing on every bike before naming a price</span></label></li>
+        <li><label><input type="checkbox"><span><span class="queue-tag moto">Moto</span>Quote insurance on the Z400 / CBR500R before committing</span></label></li>
         <li><label><input type="checkbox"><span><span class="queue-tag car">Car</span>Pick the daily&rsquo;s complement &mdash; a 4-door 4x4/utility (Wrangler / 4Runner / Tacoma)</span></label></li>
         <li><label><input type="checkbox"><span><span class="queue-tag car">Car</span>Shortlist 1&ndash;2 platforms + learn their weak points</span></label></li>
         <li><label><input type="checkbox"><span><span class="queue-tag car">Car</span>Set the car-vs-build budget split</span></label></li>
@@ -1838,128 +1851,174 @@
     <circle cx="160" cy="150" r="8" fill="#d83a29"/>
     <circle cx="160" cy="150" r="3" fill="#1b1f24"/>
   </svg>
-  <div class="gauge-cap" data-ed="hero.eyebrow" aria-label="Edit page eyebrow">MT-03 Program &middot; Dispatch Sheet</div>
-  <h1>MT-03 <span class="rev">Motor Pool</span></h1>
-  <p class="hero-sub" data-ed="hero.sub" aria-label="Edit page intro">The board is open &mdash; no asset on the roster. Log the bikes you&rsquo;re actually looking at, compare on <b>cost to dispatch</b>, and buy on clean paper only.</p>
+  <div class="gauge-cap" data-ed="hero.eyebrow" aria-label="Edit page eyebrow">Two Wheels Program &middot; Friday Aug 7 &middot; Two-Dealer Run</div>
+  <h1>Bike <span class="rev">Shopping</span></h1>
+  <p class="hero-sub" data-ed="hero.sub" aria-label="Edit page intro">Seven bikes, two stops. Only two land under the cap &mdash; and they&rsquo;re the two cheapest. Lead with the <b>Z400</b>, keep the <b>CBR500R</b> live as the walk-away.</p>
   <div class="chips" data-notes="moto" aria-label="Your moto notes — tap to edit or add"></div>
   <div class="hero-readout">
-    <div class="ro"><span class="k">Assets</span><span class="v ed-v" data-ed="hero.asset" aria-label="Edit asset">0 <small>board open</small></span></div>
-    <div class="ro"><span class="k">Ceiling</span><span class="v"><em>$<span data-mirror="motoCap">5,000</span></em></span></div>
-    <div class="ro"><span class="k">Next</span><span class="v ed-v" data-ed="hero.next" aria-label="Edit next step">Log candidates</span></div>
+    <div class="ro"><span class="k">Stops</span><span class="v ed-v" data-ed="hero.stops" aria-label="Edit stops">2 <small>&middot; 7 bikes</small></span></div>
+    <div class="ro"><span class="k">Cap</span><span class="v"><em>$<span data-mirror="motoCap">6,000</span></em> <small>OTD</small></span></div>
+    <div class="ro"><span class="k">Next</span><span class="v ed-v" data-ed="hero.next" aria-label="Edit next step">Z400 first</span></div>
   </div>
-  <p class="naming" style="margin-top:16px;">// EVERYTHING ON THIS SHEET IS TAP-TO-EDIT &mdash; values, notes, findings, table lines. Changes save to this device.</p>
+  <p class="naming" style="margin-top:16px;">// EVERYTHING ON THIS SHEET IS TAP-TO-EDIT &mdash; values, notes, targets, table lines. Changes save to this device.</p>
 </header>
 
 <div class="wrap">
 
-  <!-- CANDIDATE LOG -->
-  <details class="sec-block" id="moto-candidates">
+  <!-- STOP 1 — TEAM CHARLOTTE -->
+  <details class="sec-block" id="moto-stop1">
     <summary>
-    <div class="sec-head"><span class="sec-num">01</span><h2>Candidate Log</h2></div>
-    <span class="insight" data-ed="roster.insight" aria-label="Edit section summary"><em>Board open</em> Nothing on the roster &mdash; add candidates as you find them; the <b>AI rater</b> can score a listing from photos.</span>
+    <div class="sec-head"><span class="sec-num">01</span><h2>Stop 1 &middot; Team Charlotte</h2></div>
+    <span class="insight" data-ed="s1.insight" aria-label="Edit section summary"><em>6 bikes &middot; 1 under cap</em> The <b>2023 Z400</b> is the pick &mdash; everything else on this floor busts the cap once fees land.</span>
     </summary>
-    <p class="sec-note" data-ed="roster.note" aria-label="Edit section note">MT-03s you&rsquo;re actually looking at. Two rules from the last round: <b style="color:#e6e2d8">clean title in the seller&rsquo;s own name</b> &mdash; walk from jumped paper, no exceptions &mdash; and compare on <b style="color:#e6e2d8">cost to dispatch</b>, not the sticker.</p>
+    <p class="sec-note" data-ed="s1.note" aria-label="Edit dealer info">Team Charlotte Motorsports &mdash; <b style="color:#e6e2d8">3004 Freedom Dr</b>, I-85 Exit 34A &middot; <a href="tel:7043947301" style="color:var(--amber);text-decoration:none;">704-394-7301</a> &middot; <a href="https://www.teamcharlottemotorsports.com/used-motorcycles-atvs-utility-vehicles-for-sale-raleigh-salisbury-fayetteville-nc--xPreOwnedInventory" target="_blank" rel="noopener" style="color:var(--amber);text-decoration:none;">pre-owned inventory</a>. Tue&ndash;Fri 9:30&ndash;6 &middot; Sat 9:30&ndash;5 &mdash; <b style="color:#e6e2d8">closes 6:00</b>.</p>
+    <div class="mkt-card">
+      <div class="mkt-head"><h4 data-ed="s1.h">The Floor &mdash; Six Bikes</h4><span class="newp" data-ed="s1.basis">est. OTD includes NC tax + <b>typical fees</b></span></div>
+      <table class="mkt">
+        <thead><tr><th>Bike</th><th class="n">Price</th><th class="n">Miles</th><th>ABS</th><th class="n">Est. OTD</th><th>Call</th></tr></thead>
+        <tbody>
+          <tr><td class="yr" data-ed="s1.r1b">2023 Kawasaki Z400</td><td class="ask n" data-ed="s1.r1p">$4,999</td><td class="mi n" data-ed="s1.r1m">2,714</td><td data-ed="s1.r1a">ABS</td><td class="ask n" data-ed="s1.r1o">$5,450&ndash;6,300</td><td data-ed="s1.r1c"><b>The pick</b></td></tr>
+          <tr><td class="yr" data-ed="s1.r2b">2019 Suzuki SV650</td><td class="ask n" data-ed="s1.r2p">$5,999</td><td class="mi n" data-ed="s1.r2m">12,026</td><td data-ed="s1.r2a">ABS</td><td class="ask n" data-ed="s1.r2o">$6,450&ndash;7,300</td><td data-ed="s1.r2c">Over cap</td></tr>
+          <tr><td class="yr" data-ed="s1.r3b">2022 Suzuki SV650</td><td class="ask n" data-ed="s1.r3p">$5,999</td><td class="mi n" data-ed="s1.r3m">12,045</td><td data-ed="s1.r3a">likely none</td><td class="ask n" data-ed="s1.r3o">$6,450&ndash;7,300</td><td data-ed="s1.r3c">Over cap</td></tr>
+          <tr><td class="yr" data-ed="s1.r4b">2020 Suzuki SV650</td><td class="ask n" data-ed="s1.r4p">$6,399</td><td class="mi n" data-ed="s1.r4m">6,544</td><td data-ed="s1.r4a">likely none</td><td class="ask n" data-ed="s1.r4o">$7,000&ndash;7,900</td><td data-ed="s1.r4c">Worst value</td></tr>
+          <tr><td class="yr" data-ed="s1.r5b">2018 Honda CB650F</td><td class="ask n" data-ed="s1.r5p">$6,499</td><td class="mi n" data-ed="s1.r5m">8,344</td><td data-ed="s1.r5a">verify</td><td class="ask n" data-ed="s1.r5o">$7,100&ndash;8,000</td><td data-ed="s1.r5c">Over cap</td></tr>
+          <tr><td class="yr" data-ed="s1.r6b">2020 Yamaha MT-07</td><td class="ask n" data-ed="s1.r6p">$6,999</td><td class="mi n" data-ed="s1.r6m">9,159</td><td data-ed="s1.r6a">ABS</td><td class="ask n" data-ed="s1.r6o">$7,500&ndash;8,600</td><td data-ed="s1.r6c">Sit only</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sweet" data-ed="s1.pick" aria-label="Edit pick rationale"><b>The pick &mdash; 2023 Z400, $4,999.</b> Three years old with <b>900 miles a year</b> on it. Same money as the CBR500R with half the miles and two model years newer, and ABS is in the model name so there&rsquo;s nothing to verify. Closest thing on the floor to the CB300F you already know &mdash; similar weight (~366 lb), seat (~30.9 in) and power delivery. At the $4,700 target: <b>~$5,640 OTD</b> &middot; $3,140 financed after $2,500 down &middot; about $525/mo to clear it in six. Ask for the <b>in-service date</b> &mdash; it may still be inside the original Kawasaki warranty.</div>
+    <div class="mkt-card" style="margin-top:14px;">
+      <div class="mkt-head"><h4 data-ed="s1.th">Negotiation Targets</h4><span class="newp" data-ed="s1.tbasis">walk-above assumes ~$800 <b>fee stack</b></span></div>
+      <table class="mkt">
+        <thead><tr><th>Bike</th><th class="n">Open at</th><th class="n">Target</th><th class="n">Walk above</th><th class="n">At target OTD</th></tr></thead>
+        <tbody>
+          <tr><td class="yr" data-ed="s1.t1b">Z400</td><td class="ask n" data-ed="s1.t1o">$4,400</td><td class="ask n" data-ed="s1.t1t">$4,700</td><td class="ask n" data-ed="s1.t1w">$5,050</td><td class="ask n" data-ed="s1.t1f">~$5,640</td></tr>
+          <tr><td class="yr" data-ed="s1.t2b">SV650 &rsquo;19</td><td class="ask n" data-ed="s1.t2o">$4,600</td><td class="ask n" data-ed="s1.t2t">$5,000</td><td class="ask n" data-ed="s1.t2w">$5,050</td><td class="ask n" data-ed="s1.t2f">~$5,950</td></tr>
+          <tr><td class="yr" data-ed="s1.t3b">SV650 &rsquo;22</td><td class="ask n" data-ed="s1.t3o">$4,400</td><td class="ask n" data-ed="s1.t3t">$4,800</td><td class="ask n" data-ed="s1.t3w">$5,050</td><td class="ask n" data-ed="s1.t3f">~$5,740</td></tr>
+          <tr><td class="yr" data-ed="s1.t4b">SV650 &rsquo;20</td><td class="ask n" data-ed="s1.t4o">$4,900</td><td class="ask n" data-ed="s1.t4t">$5,300</td><td class="ask n" data-ed="s1.t4w">$5,050</td><td class="ask n" data-ed="s1.t4f">busts cap</td></tr>
+          <tr><td class="yr" data-ed="s1.t5b">CB650F</td><td class="ask n" data-ed="s1.t5o">$4,800</td><td class="ask n" data-ed="s1.t5t">$5,200</td><td class="ask n" data-ed="s1.t5w">$5,050</td><td class="ask n" data-ed="s1.t5f">busts cap</td></tr>
+          <tr><td class="yr" data-ed="s1.t6b">MT-07</td><td class="ask n" data-ed="s1.t6o">$5,200</td><td class="ask n" data-ed="s1.t6t">$5,600</td><td class="ask n" data-ed="s1.t6w">$5,050</td><td class="ask n" data-ed="s1.t6f">busts cap</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="cross-note" data-ed="s1.tnote" aria-label="Edit targets note">// On the last three, a <b>fair</b> price still sits above your walk-away &mdash; even a great deal doesn&rsquo;t fit the cap. Price them to make the dealer justify the ask, not to buy.</p>
+    <div class="callout" style="margin-top:14px;" data-ed="s1.vin" aria-label="Edit ABS decode">&#9873; <b>The VIN settles the SV650 ABS question.</b> The 2019 reads <b>VP55B</b> &mdash; the ABS model code. The 2020 and 2022 both read <b>VP55A</b>, almost certainly the non-ABS versions. Confirm at the bike, but assume it: same price, same miles &mdash; 19 apart &mdash; and the <b>2019</b> is the only SV worth talking about.</div>
+    <div class="sweet" data-ed="s1.lever" aria-label="Edit leverage note"><b>Your lever &mdash; the 2020 SV650 at $6,399.</b> Most expensive SV, probably no ABS, and low mileage is its only advantage. Make them justify it &mdash; it&rsquo;s your best opening for getting movement elsewhere. On the <b>CB650F</b>: the only inline-four here (11k-rpm redline, heaviest at ~456 lb, 31.9 in seat), but Honda sold 2018s both ways &mdash; check the front hub and startup light, and <b>ask for valve-service records</b> on an eight-year-old bike. The <b>MT-07</b> needs $1,950 off the ask to fit. Not happening &mdash; enjoy sitting on it, and ask whether the stock exhaust comes with it ($200&ndash;300 resale ding if not).</div>
+    <div class="mkt-quick" style="margin-top:14px;">
+      <div class="qh" data-ed="s1.vh">VIN &amp; Stock Reference</div>
+      <table class="mkt">
+        <thead><tr><th>Bike</th><th>Stock</th><th class="n">VIN</th></tr></thead>
+        <tbody>
+          <tr><td class="yr" data-ed="s1.v1b">Z400 &rsquo;23</td><td class="mi" data-ed="s1.v1s">PP2142A</td><td class="mi n" data-ed="s1.v1v">JKAERKD11PDAP2142</td></tr>
+          <tr><td class="yr" data-ed="s1.v2b">SV650 &rsquo;19</td><td class="mi" data-ed="s1.v2s">P01036</td><td class="mi n" data-ed="s1.v2v">JS1VP55B2K7101036</td></tr>
+          <tr><td class="yr" data-ed="s1.v3b">SV650 &rsquo;22</td><td class="mi" data-ed="s1.v3s">P00383A</td><td class="mi n" data-ed="s1.v3v">JS1VP55A2N7100383</td></tr>
+          <tr><td class="yr" data-ed="s1.v4b">SV650 &rsquo;20</td><td class="mi" data-ed="s1.v4s">P00185A</td><td class="mi n" data-ed="s1.v4v">JS1VP55A2L7100185</td></tr>
+          <tr><td class="yr" data-ed="s1.v5b">CB650F &rsquo;18</td><td class="mi" data-ed="s1.v5s">P00192A</td><td class="mi n" data-ed="s1.v5v">MLHRC7518J5000192</td></tr>
+          <tr><td class="yr" data-ed="s1.v6b">MT-07 &rsquo;20</td><td class="mi" data-ed="s1.v6s">P06683</td><td class="mi n" data-ed="s1.v6v">JYARM27E1LA006683</td></tr>
+        </tbody>
+      </table>
+    </div>
   </details>
 
-  <!-- COST TO DISPATCH -->
-  <details class="sec-block" id="moto-cost">
+  <!-- STOP 2 — MOTORCYCLES OF CHARLOTTE -->
+  <details class="sec-block" id="moto-stop2">
     <summary>
-    <div class="sec-head"><span class="sec-num">02</span><h2>Cost To Dispatch</h2></div>
-    <span class="insight" data-ed="cost.insight" aria-label="Edit section summary"><em>Worksheet</em> Budget the <b>all-in</b>, not the ask &mdash; tax, title, and first-service always ride on top. Wear items can add $800+.</span>
+    <div class="sec-head"><span class="sec-num">02</span><h2>Stop 2 &middot; Motorcycles of CLT</h2></div>
+    <span class="insight" data-ed="s2.insight" aria-label="Edit section summary"><em>Backup pick</em> The <b>2021 CBR500R</b> &mdash; same $4,999 as the Z400, and what makes &ldquo;six out the door or I walk&rdquo; a credible line at Stop 1.</span>
+    </summary>
+    <p class="sec-note" data-ed="s2.note" aria-label="Edit dealer info">Motorcycles of Charlotte &mdash; <b style="color:#e6e2d8">731 Westinghouse Blvd</b> &middot; <a href="tel:7048826106" style="color:var(--amber);text-decoration:none;">704-882-6106</a> &middot; <a href="https://www.bmw-ducati.com/" target="_blank" rel="noopener" style="color:var(--amber);text-decoration:none;">website</a>. Tue&ndash;Fri 9&ndash;6 &middot; Sat 9&ndash;4 &mdash; <b style="color:#e6e2d8">closed Sun &amp; Mon</b>.</p>
+    <div class="mkt-card">
+      <div class="mkt-head"><h4 data-ed="s2.h">The One Bike</h4><span class="newp" data-ed="s2.basis">same targets as the Z400</span></div>
+      <table class="mkt">
+        <thead><tr><th>Bike</th><th class="n">Price</th><th class="n">Miles</th><th>ABS</th><th class="n">Est. OTD</th><th class="n">Open / target / walk</th></tr></thead>
+        <tbody>
+          <tr><td class="yr" data-ed="s2.r1b">2021 Honda CBR500R</td><td class="ask n" data-ed="s2.r1p">$4,999</td><td class="mi n" data-ed="s2.r1m">4,983</td><td data-ed="s2.r1a">ABS</td><td class="ask n" data-ed="s2.r1o">$5,450&ndash;6,300</td><td class="ask n" data-ed="s2.r1t">$4,400 / $4,700 / $5,050</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sweet" data-ed="s2.pick" aria-label="Edit backup rationale"><b>Backup pick.</b> 471cc twin, gear indicator on the LCD, ABS, full fairing &mdash; same price as the Z400 with 2,300 more miles. At the $4,700 target: <b>~$5,640 OTD</b> &middot; $3,140 financed after $2,500 down &middot; about $525/mo in six. More than a fallback, it&rsquo;s <b>your leverage at Stop 1</b> &mdash; a real alternative at the same price across town turns &ldquo;six out the door or I go look at the CBR&rdquo; from a bluff into a plan.</div>
+    <p class="cross-note" data-ed="s2.vin" aria-label="Edit VIN note">// Stock SM5200013 &middot; VIN MLHPC6250M5200013. Loose end from the doc: the <b>2024 CBR500R</b> on CycleTrader &mdash; if it&rsquo;s near $5,000 it competes directly with the Z400. Worth a tap before you drive.</p>
+  </details>
+
+  <!-- OUT-THE-DOOR CALCULATOR -->
+  <details class="sec-block" id="moto-otd">
+    <summary>
+    <div class="sec-head"><span class="sec-num">03</span><h2>Out-The-Door Calculator</h2></div>
+    <span class="insight" data-ed="calc.insight" aria-label="Edit section summary"><em>The one number</em> $<b data-mirror="motoCap">6,000</b> out the door is the hard cap &mdash; sticker + 3% tax + whatever fees they stack. Run every quote through it.</span>
     </summary>
     <div class="money-lead">
       <div class="money-figblock">
-        <div class="money-fig">$<span id="motoCap" class="num-edit" contenteditable="true" role="textbox" aria-label="Edit cash ceiling">5,000</span></div>
-        <span class="money-tag" id="motoTag" contenteditable="true" role="textbox" aria-label="Edit funding note">cash ceiling · all-in</span>
+        <div class="money-fig">$<span id="motoCap" class="num-edit" contenteditable="true" role="textbox" aria-label="Edit out-the-door cap">6,000</span></div>
+        <span class="money-tag" id="motoTag" contenteditable="true" role="textbox" aria-label="Edit funding note">out the door &middot; hard cap</span>
       </div>
-      <p data-ed="cost.lead" aria-label="Edit ceiling note">Fill the worksheet in per candidate as you shortlist. A clean low-mile example needs little beyond fluids; a 12k-mile one can owe <b>$1,000+ in wear items</b> the day you buy it &mdash; that&rsquo;s the lesson from the last round.</p>
+      <p data-ed="calc.lead" aria-label="Edit cap note">Your <b>$2,500 down</b> comes off <em>after</em> the out-the-door total, so it doesn&rsquo;t change the cap &mdash; it changes what you finance. At $6,000 OTD you&rsquo;d carry $3,500, about <b>$585/mo</b> to clear in six months. Every $300 off the price is roughly $50/mo off that payment.</p>
     </div>
     <div class="mkt-card">
-      <div class="mkt-head"><h4 data-ed="cost.h">Worksheet — Per Candidate</h4><span class="newp" data-ed="cost.basis">shop labor rates &middot; <b>estimates</b></span></div>
+      <div class="mkt-head"><h4 data-ed="calc.h">Run The Quote</h4><span class="newp" data-ed="calc.basis">NC 3% highway use tax <b>auto-added</b></span></div>
       <table class="mkt">
-        <thead><tr><th>Line item</th><th class="n">Budget</th></tr></thead>
+        <thead><tr><th>Line item</th><th class="n">Amount</th></tr></thead>
         <tbody>
-          <tr><td data-ed="cost.l1">Acquisition — target ask</td><td class="ask n" data-ed="cost.v1">$3,500–4,300</td></tr>
-          <tr><td data-ed="cost.l2">Highway use tax, 3%</td><td class="ask n" data-ed="cost.v2">~$105–130</td></tr>
-          <tr><td data-ed="cost.l3">Title + plate + notary <small>(dealer: doc fee instead)</small></td><td class="ask n" data-ed="cost.v3">~$90 / $300–600</td></tr>
-          <tr class="sub"><td data-ed="cost.l4">Subtotal — acquisition &amp; fees</td><td class="n" data-ed="cost.v4">$3,700–5,030</td></tr>
-          <tr><td data-ed="cost.l5">Oil + filter on intake</td><td class="ask n" data-ed="cost.v5">$130–180</td></tr>
-          <tr><td data-ed="cost.l6">Tires, if worn or aged out</td><td class="ask n" data-ed="cost.v6">$0–500</td></tr>
-          <tr><td data-ed="cost.l7">Chain + sprockets, if worn</td><td class="ask n" data-ed="cost.v7">$0–340</td></tr>
-          <tr><td data-ed="cost.l8">Fluids — brake + coolant, if aged</td><td class="ask n" data-ed="cost.v8">$0–330</td></tr>
-          <tr class="sub"><td data-ed="cost.l9">Subtotal — maintenance</td><td class="n" data-ed="cost.v9">$130–1,350</td></tr>
-          <tr class="sub tot"><td data-ed="cost.l10">Total to dispatch</td><td class="n" data-ed="cost.v10">fill in per candidate</td></tr>
+          <tr><td data-ed="calc.l1">Sale price</td><td class="ask n">$<input class="val-in otd-in" data-o="p" type="text" inputmode="numeric" value="4,999" aria-label="Sale price"></td></tr>
+          <tr><td data-ed="calc.l2">Highway use tax &mdash; 3%</td><td class="ask n" id="otdTax">$150</td></tr>
+          <tr><td data-ed="calc.l3">Doc fee</td><td class="ask n">$<input class="val-in otd-in" data-o="d" type="text" inputmode="numeric" value="799" aria-label="Doc fee"></td></tr>
+          <tr><td data-ed="calc.l4">Setup / recon</td><td class="ask n">$<input class="val-in otd-in" data-o="s" type="text" inputmode="numeric" value="400" aria-label="Setup and recon fee"></td></tr>
+          <tr><td data-ed="calc.l5">Title + tag</td><td class="ask n">$<input class="val-in otd-in" data-o="t" type="text" inputmode="numeric" value="85" aria-label="Title and tag"></td></tr>
+          <tr class="sub tot"><td data-ed="calc.l6">Out the door</td><td class="n"><span id="otdTotal" class="otd-total">&mdash;</span></td></tr>
         </tbody>
       </table>
+      <div class="verdict" id="otdVerdict"></div>
     </div>
-    <div class="sweet" data-ed="cost.finding" aria-label="Edit finding"><b>Rule of thumb:</b> a cheaper bike with deferred maintenance is not the cheaper bike. Price every candidate at its <b>total to dispatch</b> &mdash; tires, chain, and fluids swing the real number by more than most asking-price gaps.</div>
+    <div class="sweet" data-ed="calc.fees" aria-label="Edit fee note"><b>Doc fees are unregulated in NC</b> &mdash; they run $200 to $900 and they are the softest number on the sheet. Dealers guard sticker price harder than fees; a waived $700 doc fee is worth exactly the same to you as $700 off the price.</div>
+    <div class="callout" style="margin-top:14px;" data-ed="calc.walk" aria-label="Edit walk-away derivation">&#9873; <b>Where &ldquo;walk above $5,050&rdquo; comes from.</b> Working backward from $6,000 out the door with a middling fee stack (~$800 in doc, setup, title and tag), the most you can pay on the sticker is about <b>$5,050</b>. Light fees (~$285) stretch it to <b>$5,550</b>; heavy (~$1,285) drops it to <b>$4,580</b>. Get the fee sheet before you commit to a number.</div>
   </details>
 
-  <!-- BOOK VALUE CHECK -->
-  <details class="sec-block" id="moto-book">
+  <!-- HOW TO PLAY IT -->
+  <details class="sec-block" id="moto-plays">
     <summary>
-    <div class="sec-head"><span class="sec-num">03</span><h2>Book Value Check</h2></div>
-    <span class="insight" data-ed="book.insight" aria-label="Edit section summary"><em>Reference</em> Published MT-03 book values by year &mdash; use <b>low retail</b> as the negotiating floor, minus wear for high miles.</span>
+    <div class="sec-head"><span class="sec-num">04</span><h2>How To Play It</h2></div>
+    <span class="insight" data-ed="play.insight" aria-label="Edit section summary"><em>Six plays</em> Get the OTD number in writing first, push on the <b>doc fee</b> not the sticker, name the ceiling once &mdash; then stop talking.</span>
     </summary>
-    <div class="mkt-card">
-      <div class="mkt-head"><h4 data-ed="book.h">J.D. Power / NADA — MT-03 by year</h4><span class="newp" data-ed="book.basis">dealer <b>retail</b>, not private party</span></div>
-      <table class="mkt">
-        <thead><tr><th>Year</th><th class="n">MSRP</th><th class="n">Low retail</th><th class="n">Average retail</th></tr></thead>
-        <tbody>
-          <tr><td class="yr" data-ed="book.y22">2022</td><td class="ask n" data-ed="book.y22m">$4,799</td><td class="ask n" data-ed="book.y22l">$3,410</td><td class="ask n" data-ed="book.y22a">$4,485</td></tr>
-          <tr><td class="yr" data-ed="book.y23">2023</td><td class="ask n" data-ed="book.y23m">$4,999</td><td class="ask n" data-ed="book.y23l">$4,160</td><td class="ask n" data-ed="book.y23a">$5,475</td></tr>
-          <tr><td class="yr" data-ed="book.y24">2024</td><td class="ask n" data-ed="book.y24m">$4,999</td><td class="ask n" data-ed="book.y24l">$4,330</td><td class="ask n" data-ed="book.y24a">$5,700</td></tr>
-          <tr><td class="yr" data-ed="book.y25">2025</td><td class="ask n" data-ed="book.y25m">$4,999</td><td class="ask n" data-ed="book.y25l">~$4,450 est.</td><td class="ask n" data-ed="book.y25a">~$5,860 est.</td></tr>
-          <tr><td class="yr" data-ed="book.y26">2026</td><td class="ask n" data-ed="book.y26m">$4,999</td><td class="ask n" data-ed="book.y26l">$4,570</td><td class="ask n" data-ed="book.y26a">$6,015</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="sweet" data-ed="book.caveat" aria-label="Edit caveat"><b>Read with caution.</b> Book does not adjust for mileage &mdash; an MT-03 averages roughly 3,000 mi/yr, so knock the value down hard on anything running double or triple that. A well-priced high-miler is usually just fairly priced once the wear items are counted.</div>
-    <p class="cross-note" data-ed="book.note" aria-label="Edit source note">// 2025 figures are interpolated between the published 2024 and 2026 values. Source: J.D. Power motorcycle values.</p>
+    <ol class="play-list">
+      <li data-ed="play.1" aria-label="Edit play">Ask for the <b>out-the-door number</b> on every bike before you name a price of your own. Get it written down.
+        <span class="play-say">&ldquo;What&rsquo;s the out-the-door on this one?&rdquo;</span></li>
+      <li data-ed="play.2" aria-label="Edit play">Lead with the <b>Z400</b>. Show interest in it first, and let them see you comparing.</li>
+      <li data-ed="play.3" aria-label="Edit play">Use the lineup against itself &mdash; a fair question, and the kind that gets fees waived.
+        <span class="play-say">&ldquo;You&rsquo;ve got a 2019 with ABS and a 2022 without, same price, same miles. And a 2023 Z400 with ABS and 2,700 miles for a thousand less. Help me understand the 2020 at $6,399.&rdquo;</span></li>
+      <li data-ed="play.4" aria-label="Edit play">Push on the <b>doc fee, not the sticker</b>. Dealers guard price harder than fees, and a waived $700 doc fee is worth the same to you.</li>
+      <li data-ed="play.5" aria-label="Edit play">Name your ceiling once, then stop talking.
+        <span class="play-say">&ldquo;Six thousand out the door. That&rsquo;s my ceiling.&rdquo;</span></li>
+      <li data-ed="play.6" aria-label="Edit play">Keep the <b>CBR500R</b> live as your walk-away. Six bikes and four over cap is a sign to be patient, not to stretch.</li>
+    </ol>
   </details>
 
-  <!-- FAULT & ISSUE LIST -->
-  <details class="sec-block" id="moto-issue">
+  <!-- CHECK BEFORE YOU COMMIT -->
+  <details class="sec-block" id="moto-checks">
     <summary>
-    <div class="sec-head"><span class="sec-num">04</span><h2>Fault &amp; Issue List</h2></div>
-    <span class="insight" data-ed="issue.insight" aria-label="Edit section summary"><em>Rule</em> Platform-agnostic gear is cleared now &mdash; <b>model-specific parts wait until a bike is bought</b>.</span>
+    <div class="sec-head"><span class="sec-num">05</span><h2>Check Before You Commit</h2></div>
+    <span class="insight" data-ed="chk.insight" aria-label="Edit section summary"><em>On the floor</em> ABS ring, tire dates, chain, forks, pads, cold start, records &mdash; tick each on the bike before money moves.</span>
     </summary>
-    <p class="sec-note" data-ed="issue.note" aria-label="Edit section note">&ldquo;Issue&rdquo; = releasing parts or money. Gear that transfers to <b style="color:#e6e2d8">any</b> asset is cleared now; anything model-specific waits until there&rsquo;s a bike in the bay. Tick each as you buy it &mdash; tap the text to reword or reprice it.</p>
+    <p class="sec-note" data-ed="chk.note" aria-label="Edit section note">Run the list on <b style="color:#e6e2d8">the actual bike</b>, not the listing. Boxes remember themselves on this device &mdash; tap the text to reword an item.</p>
     <ul class="check-list">
-      <li><label><input type="checkbox"><span data-ed="issue.chk.1">Disc lock — $30&ndash;110</span></label></li>
-      <li><label><input type="checkbox"><span data-ed="issue.chk.2">Rear paddock stand + spools — $85&ndash;130</span></label></li>
-      <li><label><input type="checkbox"><span data-ed="issue.chk.3">Quad Lock mount, case, dampener, charger — $180&ndash;240</span></label></li>
-      <li><label><input type="checkbox"><span data-ed="issue.chk.4">Frame sliders <small>(model-specific — after purchase)</small> — $60&ndash;150</span></label></li>
-      <li><label><input type="checkbox"><span data-ed="issue.chk.5">Helmet <small>(later)</small> — $250&ndash;500</span></label></li>
-      <li><label><input type="checkbox"><span data-ed="issue.chk.6">Riding shoes <small>(later)</small> — $150&ndash;280</span></label></li>
-      <li><label><input type="checkbox"><span data-ed="issue.chk.7">Parking lot refresher session</span></label></li>
+      <li><label><input type="checkbox"><span data-ed="chk.1">ABS ring on the front hub + ABS light lights then goes out on startup</span></label></li>
+      <li><label><input type="checkbox"><span data-ed="chk.2">Tire date codes &mdash; 4 digits on the sidewall; low-mileage bikes age out rubber</span></label></li>
+      <li><label><input type="checkbox"><span data-ed="chk.3">Chain slack and sprocket teeth</span></label></li>
+      <li><label><input type="checkbox"><span data-ed="chk.4">Fork seals &mdash; any weeping or oil film on the lowers</span></label></li>
+      <li><label><input type="checkbox"><span data-ed="chk.5">Brake pad thickness front and rear</span></label></li>
+      <li><label><input type="checkbox"><span data-ed="chk.6">Cold start &mdash; listen before they warm it for you</span></label></li>
+      <li><label><input type="checkbox"><span data-ed="chk.7">Service records, especially valve clearance intervals</span></label></li>
+      <li><label><input type="checkbox"><span data-ed="chk.8">Battery and fluids on anything that&rsquo;s been sitting</span></label></li>
+      <li><label><input type="checkbox"><span data-ed="chk.9">Gear position indicator on the dash</span></label></li>
     </ul>
-    <div class="callout" style="margin-top:14px;" data-ed="issue.callout" aria-label="Edit rule">&#9873; <b>No model-specific parts until a bike is bought</b> &mdash; sliders, tires, and chain only fit the bike you end up with. Stand, lock, helmet and boots transfer to any asset and are cleared for purchase now.</div>
+    <p class="cross-note" style="margin-top:14px;" data-ed="chk.stamp" aria-label="Edit source note">// Prices as listed 8/6/26 &mdash; verify everything on the floor.</p>
   </details>
 
-  <!-- TECHNICAL DATA -->
-  <details class="sec-block" id="moto-tech" style="border-bottom:none;">
+  <!-- CANDIDATE LOG -->
+  <details class="sec-block" id="moto-candidates" style="border-bottom:none;">
     <summary>
-    <div class="sec-head"><span class="sec-num">05</span><h2>Technical Data</h2></div>
-    <span class="insight" data-ed="tech.insight" aria-label="Edit section summary"><em>Appendix</em> Platform numbers for any recent MT-03 &mdash; what the shop (and the listing) should match.</span>
+    <div class="sec-head"><span class="sec-num">06</span><h2>Candidate Log</h2></div>
+    <span class="insight" data-dyn="candidates"><em>Live</em> <span class="dyn">&mdash;</span></span>
     </summary>
-    <div class="mkt-quick">
-      <div class="qh" data-ed="tech.h">MT-03 Platform</div>
-      <table class="mkt">
-        <thead><tr><th>Item</th><th class="n">Value</th></tr></thead>
-        <tbody>
-          <tr><td class="yr" data-ed="tech.l1">Engine</td><td class="mi n" data-ed="tech.v1">321cc liquid-cooled parallel twin</td></tr>
-          <tr><td class="yr" data-ed="tech.l2">Tire, front</td><td class="mi n" data-ed="tech.v2">110/70R17</td></tr>
-          <tr><td class="yr" data-ed="tech.l3">Tire, rear</td><td class="mi n" data-ed="tech.v3">140/70R17</td></tr>
-          <tr><td class="yr" data-ed="tech.l4">Oil capacity</td><td class="mi n" data-ed="tech.v4">2.5 L — draw 3 qt</td></tr>
-          <tr><td class="yr" data-ed="tech.l5">Final drive</td><td class="mi n" data-ed="tech.v5">520 chain</td></tr>
-          <tr><td class="yr" data-ed="tech.l6">Turn signals</td><td class="mi n" data-ed="tech.v6">LED front and rear — no bulbs</td></tr>
-          <tr><td class="yr" data-ed="tech.l7">Seat height</td><td class="mi n" data-ed="tech.v7">30.7 in</td></tr>
-          <tr><td class="yr" data-ed="tech.l8">Wet weight</td><td class="mi n" data-ed="tech.v8">367 lb</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="cross-note" data-ed="tech.note" aria-label="Edit source note">// All costs are estimates — verify before committing. Sources: NCDMV title &amp; registration fees, J.D. Power motorcycle values.</p>
+    <p class="sec-note" data-ed="roster.note" aria-label="Edit section note">Anything beyond the seven on the sheet &mdash; log it here as you find it; the <b style="color:#e6e2d8">AI rater</b> can score a listing from photos. Standing rule: <b style="color:#e6e2d8">clean title in the seller&rsquo;s own name</b> &mdash; walk from jumped paper, no exceptions.</p>
   </details>
 
 </div>
@@ -4066,7 +4125,7 @@ window.mpAddModal = function (cfg) {
 <script>
 // What's-new banner — shows once, remembers dismissal. Bump the version to re-announce.
 (function () {
-  var KEY = 'mp.whatsnew.v5';
+  var KEY = 'mp.whatsnew.v6';
   var el = document.getElementById('whatsnew');
   if (!el) return;
   var dismissed = false;
@@ -4344,8 +4403,50 @@ window.mpAddModal = function (cfg) {
     el.addEventListener('input', save);
     el.addEventListener('blur', save);
   }
-  wire('motoCap', 'mp.mt03.cap', ['4,800', '5,200']);
-  wire('motoTag', 'mp.mt03.tag');
+  wire('motoCap', 'mp.mt03.cap', ['4,800', '5,200', '5,000']);
+  wire('motoTag', 'mp.mt03.tag', ['cash ceiling · all-in']);
+})();
+</script>
+
+<script>
+// Out-the-door calculator — sale price + NC 3% highway use tax + fees, judged against the editable cap. Persisted.
+(function () {
+  var view = document.getElementById('view-moto'); if (!view) return;
+  var P = 'mp.moto.otd.';
+  var inp = {};
+  ['p', 'd', 's', 't'].forEach(function (k) { inp[k] = view.querySelector('.otd-in[data-o="' + k + '"]'); });
+  var taxEl = document.getElementById('otdTax'), outEl = document.getElementById('otdTotal'), vEl = document.getElementById('otdVerdict');
+  if (!inp.p || !outEl) return;
+  function num(s) { var v = parseFloat(String(s || '').replace(/[^0-9.]/g, '')); return isFinite(v) ? v : 0; }
+  function money(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+  function cap() { var el = document.getElementById('motoCap'); return num(el ? el.textContent : '') || 6000; }
+  function compute() {
+    var p = num(inp.p.value), tax = p * 0.03;
+    var total = p + tax + num(inp.d.value) + num(inp.s.value) + num(inp.t.value);
+    if (taxEl) taxEl.textContent = money(tax);
+    outEl.textContent = money(total);
+    var c = cap(), diff = Math.round(c - total);
+    outEl.className = 'otd-total ' + (total <= c ? 'ok' : 'bad');
+    if (vEl) {
+      if (total <= c) vEl.innerHTML = 'Under the ' + money(c) + ' cap with <b>' + money(diff) + '</b> to spare.';
+      else vEl.innerHTML = 'Over the ' + money(c) + ' cap by <b>' + money(-diff) + '</b> &mdash; ask them to cut ' + money(-diff) + ' from the doc fee, or ' + money(Math.round(-diff / 1.03)) + ' from the price.';
+    }
+  }
+  ['p', 'd', 's', 't'].forEach(function (k) {
+    if (!inp[k]) return;
+    try {
+      var s = localStorage.getItem(P + k);
+      if (s !== null) inp[k].value = s;
+      else localStorage.setItem(P + k, inp[k].value); // snapshot default into backup
+    } catch (e) {}
+    inp[k].addEventListener('input', function () {
+      try { localStorage.setItem(P + k, inp[k].value); } catch (e) {}
+      compute();
+    });
+  });
+  var capEl = document.getElementById('motoCap');
+  if (capEl) { capEl.addEventListener('input', compute); capEl.addEventListener('blur', compute); }
+  compute();
 })();
 </script>
 
@@ -4355,12 +4456,12 @@ window.mpAddModal = function (cfg) {
 // (bold, emphasis) survives edits but is scrubbed of anything active on restore.
 (function () {
   var view = document.getElementById('view-moto'); if (!view) return;
-  var SNAPKEY = 'mp.mt03.ed2.snapshotted';
-  // Drop the previous sheet's field store — that content described an asset no longer on the roster.
+  var SNAPKEY = 'mp.mt03.ed3.snapshotted';
+  // Drop the previous sheets' field stores — that content described pages no longer on the site.
   try {
     for (var i = localStorage.length - 1; i >= 0; i--) {
       var ok = localStorage.key(i);
-      if (ok && ok.indexOf('mp.mt03.ed.') === 0) localStorage.removeItem(ok);
+      if (ok && (ok.indexOf('mp.mt03.ed.') === 0 || ok.indexOf('mp.mt03.ed2.') === 0)) localStorage.removeItem(ok);
     }
   } catch (e) {}
   var SNAP = false; try { SNAP = localStorage.getItem(SNAPKEY) === '1'; } catch (e) {}
@@ -4376,7 +4477,7 @@ window.mpAddModal = function (cfg) {
     return t.innerHTML;
   }
   view.querySelectorAll('[data-ed]').forEach(function (el) {
-    var k = 'mp.mt03.ed2.' + el.getAttribute('data-ed');
+    var k = 'mp.mt03.ed3.' + el.getAttribute('data-ed');
     el.setAttribute('contenteditable', 'true');
     el.setAttribute('role', 'textbox');
     if (!el.hasAttribute('aria-label')) el.setAttribute('aria-label', 'Edit text');
