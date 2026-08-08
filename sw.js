@@ -1,5 +1,5 @@
 /* The Garage — service worker: network-first for HTML, cache-first for assets. */
-var CACHE = 'motorpool-v31';
+var CACHE = 'motorpool-v32';
 var FONT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 var ASSETS = [
   './',
@@ -9,7 +9,8 @@ var ASSETS = [
   './icon-192.png',
   './icon-512.png',
   './apple-touch-icon.png',
-  './favicon-32.png'
+  './favicon-32.png',
+  './z650.jpg'
 ];
 
 self.addEventListener('install', function (e) {
