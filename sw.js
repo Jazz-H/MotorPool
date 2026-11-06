@@ -1,5 +1,5 @@
 /* The Garage — service worker: network-first for HTML, cache-first for assets. */
-var CACHE = 'motorpool-v32';
+var CACHE = 'motorpool-v33';
 var FONT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 var ASSETS = [
   './',
@@ -58,14 +58,27 @@ self.addEventListener('fetch', function (e) {
 
   var isHTML = req.mode === 'navigate' || (url.origin === location.origin && url.pathname.endsWith('.html'));
 
-  if (isHTML) {
+  // config.js carries the Supabase keys, so a stale copy decides whether the
+  // Account section appears at all. Cache-first would pin it until CACHE is
+  // bumped — and the install handler only re-runs when sw.js itself changes,
+  // so a config-only edit would never reach a returning visitor. Serve it
+  // network-first, like HTML, and fall back to cache offline.
+  var isConfig = url.origin === location.origin && url.pathname.endsWith('/config.js');
+
+  if (isHTML || isConfig) {
     // Network-first so deploys show up immediately; fall back to cache offline.
     e.respondWith(
       fetch(req).then(function (resp) {
         if (cacheable(resp)) { var copy = resp.clone(); caches.open(CACHE).then(function (c) { c.put(req, copy); }); }
         return resp;
       }).catch(function () {
-        return caches.match(req).then(function (r) { return r || caches.match('./index.html'); });
+        return caches.match(req).then(function (r) {
+          if (r) return r;
+          // Only a navigation may fall back to the app shell. Returning
+          // index.html for an uncached config.js would hand HTML to a
+          // <script> tag.
+          return isHTML ? caches.match('./index.html') : Response.error();
+        });
       })
     );
   } else {
@@ -78,7 +91,7 @@ self.addEventListener('fetch', function (e) {
             caches.open(CACHE).then(function (c) { c.put(req, copy); });
           }
           return resp;
-        });
+        }).catch(function () { return cached; });
       })
     );
   }
